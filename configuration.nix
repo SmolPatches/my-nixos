@@ -107,7 +107,7 @@
     binwalk
     yubikey-personalization
     usbutils
-    ];
+  ];
 
   programs = {
     sway = {
@@ -165,10 +165,22 @@
       }];
     };
     pam = {
+      services = {
+        sudo.u2fAuth = true;
+        sudo.yubicoAuth = true;
+        doas.yubicoAuth = true;
+      };
       yubico = {
         enable = true;
         mode = "challenge-response";
         control = "sufficient";
+      };
+      u2f = {
+        enable = true;
+        cue = true;
+        debug = false;
+        interactive = true;
+        control = "sufficient";       
       };
     };
 
