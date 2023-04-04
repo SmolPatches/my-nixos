@@ -105,7 +105,9 @@
     tree
     file
     binwalk
-  ];
+    yubikey-personalization
+    usbutils
+    ];
 
   programs = {
     sway = {
