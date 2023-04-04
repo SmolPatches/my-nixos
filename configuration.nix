@@ -165,6 +165,10 @@
       }];
     };
     pam = {
+    # based on configuration options below
+    # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/security/pam.nix
+    # and 
+    # guide here https://nixos.wiki/wiki/Yubikey
       services = {
         sudo.u2fAuth = true;
         sudo.yubicoAuth = true;
