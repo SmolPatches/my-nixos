@@ -179,15 +179,20 @@
     enableSSHSupport = true;
   };
 
-  services.openssh = {
-    enable = true;
-    settings = {
-      passwordAuthentication = true;
-      PermitRootLogin = "yes";
+  services = {
+    # Enable the OpenSSH daemon. 
+    openssh = {
+      enable = true;
+      settings = {
+        passwordAuthentication = true;
+        PermitRootLogin = "yes";
+      };
     };
-  }; # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
+    #yubikey smartcard stuff
+    pcscd = {
+      enable = true;
+    };
+  };
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
