@@ -192,6 +192,9 @@
     pcscd = {
       enable = true;
     };
+    udev = {
+      packages = with pkgs;[ yubikey-personalization ];
+    };
   };
   # services.openssh.enable = true;
 
