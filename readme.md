@@ -1,6 +1,6 @@
-#How to Use
+# How to Use
 
--Install
+- Install
 > ```doas nixos-rebuild switch --flake flake.nix```  
 - Test
 > ```nix flake check```  
