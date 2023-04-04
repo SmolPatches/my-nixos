@@ -173,6 +173,9 @@
         sudo.u2fAuth = true;
         sudo.yubicoAuth = true;
         doas.yubicoAuth = true;
+        doas.u2fAuth = true;
+        login.yubicoAuth = true;
+        login.u2fAuth = true;
       };
       yubico = {
         enable = true;
