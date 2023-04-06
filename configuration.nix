@@ -56,6 +56,7 @@
   users = {
     mutableUsers = false;
     users.watashi = {
+      shell = pkgs.zsh;
       hashedPassword = "$y$j9T$/9B9a0OrsQpd5BAniXssM.$kuA1aZ4odb8738jr/TGzBlYIvPQXV7l5C5dmdIWseJ7";
       isNormalUser = true;
       extraGroups = [ "networkmanager" "wheel" "video" "audio" ]; # Enable ‘sudo’ for the user.
