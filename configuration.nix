@@ -6,6 +6,8 @@
 
 {
   #enable flakes
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   imports =
     [
@@ -79,8 +81,6 @@
     };
   };
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
   fonts.fonts = with pkgs; [
     (nerdfonts.override { fonts = [ "FiraCode" "CascadiaCode" ]; })
   ];
@@ -108,6 +108,7 @@
     binwalk
     yubikey-personalization
     usbutils
+    pciutils
   ];
 
   programs = {
@@ -124,6 +125,11 @@
     xwayland = {
       enable = false;
     };
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+    };
   };
   services = {
     pipewire = {
@@ -134,6 +140,9 @@
     deluge = {
       enable = true;
       package = pkgs.deluge-gtk;
+    };
+    flatpak = {
+      enable = true;
     };
   };
   xdg = {
