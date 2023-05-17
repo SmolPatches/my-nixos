@@ -1,5 +1,5 @@
 {
-  inputs = {
+inputs = {
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
     flake-utils.url = github:numtide/flake-utils;
     hyprland.url = "github:hyprwm/Hyprland";
@@ -37,7 +37,6 @@
             home-manager.nixosModules.home-manager {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.rob = import ./home.nix;
               home-manager.users.watashi = import ./home.nix;
             }
             #hyprland#

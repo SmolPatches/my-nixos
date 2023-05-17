@@ -53,7 +53,12 @@
     layout = "us";
     xkbVariant = "";
   };
-
+  # bluetooth support
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    package = pkgs.bluez;
+  };
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users = {
     mutableUsers = false;
@@ -61,19 +66,9 @@
       shell = pkgs.zsh;
       hashedPassword = "$y$j9T$/9B9a0OrsQpd5BAniXssM.$kuA1aZ4odb8738jr/TGzBlYIvPQXV7l5C5dmdIWseJ7";
       isNormalUser = true;
-      extraGroups = [ "networkmanager" "wheel" "video" "audio" ]; # Enable ‘sudo’ for the user.
+      extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
       packages = with pkgs; [
-      ];
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDMqnUtVfxGgzVD/rsHOhZphgSTztDjTxCdZ4yJkr4zQ r3b@eldnmac.resource.campus.njit.edu"
-      ];
-    };
-
-    users.rob = {
-      hashedPassword = "$y$j9T$/9B9a0OrsQpd5BAniXssM.$kuA1aZ4odb8738jr/TGzBlYIvPQXV7l5C5dmdIWseJ7";
-      isNormalUser = true;
-      extraGroups = [ "networkmanager" "wheel" "video" "audio" ]; # Enable ‘sudo’ for the user.
-      packages = with pkgs; [
+      virt-manager
       ];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDMqnUtVfxGgzVD/rsHOhZphgSTztDjTxCdZ4yJkr4zQ r3b@eldnmac.resource.campus.njit.edu"
@@ -130,6 +125,9 @@
       remotePlay.openFirewall = true;
       dedicatedServer.openFirewall = true;
     };
+    dconf = {
+    enable = true;
+    };
   };
   services = {
     pipewire = {
@@ -142,6 +140,9 @@
       package = pkgs.deluge-gtk;
     };
     flatpak = {
+      enable = true;
+    };
+    blueman = {
       enable = true;
     };
   };
@@ -166,7 +167,7 @@
       enable = true;
       wheelNeedsPassword = false;
       extraRules = [{
-        users = [ "watashi" "rob" ];
+        users = [ "watashi" ];
         keepEnv = true;
         setEnv = [ "HOME" "PATH" ];
         #persist useless if passwords are disabled
@@ -175,10 +176,10 @@
       }];
     };
     pam = {
-    # based on configuration options below
-    # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/security/pam.nix
-    # and 
-    # guide here https://nixos.wiki/wiki/Yubikey
+      # based on configuration options below
+      # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/security/pam.nix
+      # and 
+      # guide here https://nixos.wiki/wiki/Yubikey
       services = {
         sudo.u2fAuth = true;
         sudo.yubicoAuth = true;
@@ -197,7 +198,7 @@
         cue = true;
         debug = false;
         interactive = true;
-        control = "sufficient";       
+        control = "sufficient";
       };
     };
 
@@ -216,7 +217,7 @@
       enable = true;
       settings = {
         passwordAuthentication = true;
-        PermitRootLogin = "yes";
+        PermitRootLogin = "no";
       };
     };
     #yubikey smartcard stuff
@@ -227,8 +228,15 @@
       packages = with pkgs;[ yubikey-personalization ];
     };
   };
-  # services.openssh.enable = true;
+  virtualisation = {
+  docker = {
+    enable = true;
 
+  };
+  libvirtd = {
+  enable = true;
+  };
+  };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
