@@ -31,6 +31,8 @@
 
   #opengl stuff
   hardware.opengl = {
+    driSupport32Bit = true;
+    driSupport = true;
     enable = true;
   };
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

@@ -69,6 +69,11 @@
       extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
       packages = with pkgs; [
         virt-manager
+	lutris
+	vulkan-tools
+	steam-tui
+	steamcmd
+	steam-run
       ];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDMqnUtVfxGgzVD/rsHOhZphgSTztDjTxCdZ4yJkr4zQ r3b@eldnmac.resource.campus.njit.edu"
@@ -103,6 +108,7 @@
     binwalk
     yubikey-personalization
     usbutils
+    glxinfo
     pciutils
   ];
 
@@ -155,12 +161,16 @@
   environment.sessionVariables = {
 
     MOZ_ENABLE_WAYLAND = "1";
-    XDG_CURRENT_DESKTOP = "sway";
+    #XDG_CURRENT_DESKTOP = "sway";
+    SDL_VIDEODRIVER="wayland";
     WLR_NO_HARDWARE_CURSORS = "1";
+    XDG_SESSION_TYPE="wayland";
+    __GLX_VENDSOR_LIBRARY_NAME="nvidia";
+    LIBVA_DRIVER_NAME="nvidia";
+    GBM_BACKEND="nvida-drm";
     GTK_THEME = "Dracula:dark";
     #WLR_RENDERER = "vulkan";
     #install vulkan
-    EDITOR = "hx";
   };
   security = {
     doas = {
