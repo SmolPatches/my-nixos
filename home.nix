@@ -11,6 +11,7 @@
       zls
       nixpkgs-fmt
       moar
+      htop
       wofi
     ];
     programs = {

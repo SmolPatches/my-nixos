@@ -68,7 +68,7 @@
       isNormalUser = true;
       extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
       packages = with pkgs; [
-      virt-manager
+        virt-manager
       ];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDMqnUtVfxGgzVD/rsHOhZphgSTztDjTxCdZ4yJkr4zQ r3b@eldnmac.resource.campus.njit.edu"
@@ -126,7 +126,7 @@
       dedicatedServer.openFirewall = true;
     };
     dconf = {
-    enable = true;
+      enable = true;
     };
   };
   services = {
@@ -229,13 +229,13 @@
     };
   };
   virtualisation = {
-  docker = {
-    enable = true;
+    docker = {
+      enable = true;
 
-  };
-  libvirtd = {
-  enable = true;
-  };
+    };
+    libvirtd = {
+      enable = true;
+    };
   };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
