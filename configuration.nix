@@ -66,14 +66,11 @@
       shell = pkgs.zsh;
       hashedPassword = "$y$j9T$/9B9a0OrsQpd5BAniXssM.$kuA1aZ4odb8738jr/TGzBlYIvPQXV7l5C5dmdIWseJ7";
       isNormalUser = true;
-      extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
+      extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "libvirtd" "wireshark" ]; # Enable ‘sudo’ for the user.
       packages = with pkgs; [
         virt-manager
-	lutris
-	vulkan-tools
-	steam-tui
-	steamcmd
-	steam-run
+        lutris
+        vulkan-tools
       ];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDMqnUtVfxGgzVD/rsHOhZphgSTztDjTxCdZ4yJkr4zQ r3b@eldnmac.resource.campus.njit.edu"
@@ -110,6 +107,9 @@
     usbutils
     glxinfo
     pciutils
+    ( steam.override {
+    	extraPkgs = pkgs: [ steamPackages.steam-runtime ];
+    }).run
   ];
 
   programs = {
@@ -128,11 +128,13 @@
     };
     steam = {
       enable = true;
-      remotePlay.openFirewall = true;
-      dedicatedServer.openFirewall = true;
     };
     dconf = {
       enable = true;
+    };
+    wireshark = {
+      enable = true;
+      package = pkgs.wireshark-qt;
     };
   };
   services = {
@@ -162,12 +164,12 @@
 
     MOZ_ENABLE_WAYLAND = "1";
     #XDG_CURRENT_DESKTOP = "sway";
-    SDL_VIDEODRIVER="wayland";
+    SDL_VIDEODRIVER = "wayland";
     WLR_NO_HARDWARE_CURSORS = "1";
-    XDG_SESSION_TYPE="wayland";
-    __GLX_VENDSOR_LIBRARY_NAME="nvidia";
-    LIBVA_DRIVER_NAME="nvidia";
-    GBM_BACKEND="nvida-drm";
+    XDG_SESSION_TYPE = "wayland";
+    __GLX_VENDSOR_LIBRARY_NAME = "nvidia";
+    LIBVA_DRIVER_NAME = "nvidia";
+    GBM_BACKEND = "nvida-drm";
     GTK_THEME = "Dracula:dark";
     #WLR_RENDERER = "vulkan";
     #install vulkan

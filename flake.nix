@@ -45,7 +45,8 @@ inputs = {
               programs.hyprland = {
                 enable = true;
                 xwayland = {
-                  enable = false;
+		  hidpi = false;
+                  enable = true;
                 };
                 nvidiaPatches = true;#if builtins.currentSystem == "x86_64-linux" then true else false;
                 recommendedEnvironment = true;

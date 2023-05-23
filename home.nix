@@ -13,6 +13,8 @@
       moar
       htop
       wofi
+      thunderbird
+      tor-browser-bundle-bin
     ];
     programs = {
       git = {
