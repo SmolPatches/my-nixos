@@ -107,8 +107,8 @@
     usbutils
     glxinfo
     pciutils
-    ( steam.override {
-    	extraPkgs = pkgs: [ steamPackages.steam-runtime ];
+    (steam.override {
+      extraPkgs = pkgs: [ steamPackages.steam-runtime ];
     }).run
   ];
 
@@ -148,7 +148,7 @@
       package = pkgs.deluge-gtk;
     };
     flatpak = {
-      enable = true;
+      enable = false;
     };
     blueman = {
       enable = true;
