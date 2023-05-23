@@ -15,6 +15,7 @@
       wofi
       thunderbird
       tor-browser-bundle-bin
+      keepassxc 
     ];
     programs = {
       git = {
