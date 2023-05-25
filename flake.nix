@@ -47,7 +47,7 @@
             enable = true;
             xwayland = {
               hidpi = false;
-              enable = true;
+              enable = false;
             };
             nvidiaPatches = true; #if builtins.currentSystem == "x86_64-linux" then true else false;
             recommendedEnvironment = true;
