@@ -18,6 +18,7 @@
     tor-browser-bundle-bin
     keepassxc
     rpcs3
+    spotify-tui
   ];
   programs = {
     git = {
@@ -114,6 +115,12 @@
     };
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = true;
+    };
+  };
+  services = {
+    spotifyd = {
+      enable = true;
+
     };
   };
   # xdg entries for home manager

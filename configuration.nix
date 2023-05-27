@@ -200,25 +200,26 @@
       # and 
       # guide here https://nixos.wiki/wiki/Yubikey
       services = {
-        sudo.u2fAuth = true;
+        #sudo.u2fAuth = true;
         sudo.yubicoAuth = true;
         doas.yubicoAuth = true;
-        doas.u2fAuth = true;
+        #doas.u2fAuth = true;
         login.yubicoAuth = true;
-        login.u2fAuth = true;
+        #login.u2fAuth = true;
       };
       yubico = {
         enable = true;
         mode = "challenge-response";
         control = "sufficient";
+	id = "2278752";
       };
-      u2f = {
-        enable = true;
-        cue = true;
-        debug = false;
-        interactive = true;
-        control = "sufficient";
-      };
+#      u2f = {
+#        enable = true;
+#        cue = true;
+#        debug = false;
+#        interactive = true;
+#        control = "sufficient";
+#      };
     };
 
   };
