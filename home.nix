@@ -15,7 +15,7 @@
     htop
     wofi
     thunderbird
-    tor-browser-bundle-bin
+    pcmanfm
     keepassxc
     rpcs3
     spotify-tui
