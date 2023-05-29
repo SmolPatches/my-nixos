@@ -76,7 +76,6 @@
       extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "libvirtd" "wireshark" ]; # Enable ‘sudo’ for the user.
       packages = with pkgs; [
         virt-manager
-        lutris
         vulkan-tools
       ];
       openssh.authorizedKeys.keys = [
@@ -199,6 +198,13 @@
       # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/security/pam.nix
       # and 
       # guide here https://nixos.wiki/wiki/Yubikey
+      security.pam.yubico = {
+        enable = true;
+        mode = "challenge-response";
+        id = [ "22728752" ]; # follow yubico-pam guide here, https://nixos.wiki/wiki/Yubikey
+        debug = true;
+        control = "sufficient";
+      };
       services = {
         #sudo.u2fAuth = true;
         sudo.yubicoAuth = true;
@@ -207,22 +213,17 @@
         login.yubicoAuth = true;
         #login.u2fAuth = true;
       };
-      yubico = {
-        enable = true;
-        mode = "challenge-response";
-        control = "sufficient";
-	id = "2278752";
-      };
-#      u2f = {
-#        enable = true;
-#        cue = true;
-#        debug = false;
-#        interactive = true;
-#        control = "sufficient";
-#      };
+      #      u2f = {
+      #        enable = true;
+      #        cue = true;
+      #        debug = false;
+      #        interactive = true;
+      #        control = "sufficient";
+      #      };
     };
 
   };
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
