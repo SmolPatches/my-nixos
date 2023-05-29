@@ -40,22 +40,7 @@
       withNodeJs = true;
       withPython3 = true;
       defaultEditor = true;
-      extraLuaConfig = ''
-        	vim.g.mapleader = ' '
-        	vim.g.maplocalleader = ' '
-        	vim.g.editorconfig = true;
-        	vim.wo.relativenumber = true;
-        	vim.cmd("colorscheme gruvbox");
-        	require('gitsigns').setup {
-        	signs = {
-        	  add = { text = '+' },
-        	  change = { text = '~' },
-        	   delete = { text = '_' },
-                   topdelete = { text = '‾' },
-        	   changedelete = { text = '~' },
-        	  }
-        	}
-      '';
+      extraLuaConfig = builtins.readFile ./neovim/init.lua;
       plugins = with pkgs.vimPlugins; [
         zig-vim
         trouble-nvim
