@@ -12,12 +12,12 @@
     zls
     nixpkgs-fmt
     moar
+    yacreader
     htop
     wofi
     thunderbird
     pcmanfm
     keepassxc
-    rpcs3
     spotify-tui
   ];
   programs = {

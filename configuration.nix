@@ -198,7 +198,7 @@
       # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/security/pam.nix
       # and 
       # guide here https://nixos.wiki/wiki/Yubikey
-      security.pam.yubico = {
+      yubico = {
         enable = true;
         mode = "challenge-response";
         id = [ "22728752" ]; # follow yubico-pam guide here, https://nixos.wiki/wiki/Yubikey
@@ -206,20 +206,10 @@
         control = "sufficient";
       };
       services = {
-        #sudo.u2fAuth = true;
         sudo.yubicoAuth = true;
         doas.yubicoAuth = true;
-        #doas.u2fAuth = true;
         login.yubicoAuth = true;
-        #login.u2fAuth = true;
       };
-      #      u2f = {
-      #        enable = true;
-      #        cue = true;
-      #        debug = false;
-      #        interactive = true;
-      #        control = "sufficient";
-      #      };
     };
 
   };
@@ -236,8 +226,10 @@
     # Enable the OpenSSH daemon. 
     openssh = {
       enable = true;
+      allowSFTP = true; # also allows sshfs
       settings = {
-        passwordAuthentication = true;
+        PasswordAuthentication = false;
+	AuthenticationMethods = "publickey";
         PermitRootLogin = "no";
       };
     };
