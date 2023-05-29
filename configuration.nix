@@ -229,7 +229,7 @@
       allowSFTP = true; # also allows sshfs
       settings = {
         PasswordAuthentication = false;
-	AuthenticationMethods = "publickey";
+        AuthenticationMethods = "publickey";
         PermitRootLogin = "no";
       };
     };
