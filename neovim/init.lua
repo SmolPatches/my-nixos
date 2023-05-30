@@ -13,6 +13,8 @@ vim.g.editorconfig = true;
 -- relative line number 
 vim.wo.relativenumber = true;
 vim.cmd("colorscheme gruvbox");
+--autosave zig fmt
+vim.g.zig_fmt_autosave = 1
 require('gitsigns').setup {
 signs = {
 add = { text = '+' },

@@ -41,17 +41,25 @@
       withPython3 = true;
       defaultEditor = true;
       extraLuaConfig = builtins.readFile ./neovim/init.lua;
+      extraPackages = with pkgs; [
+        zls
+        zig
+		llvmPackages_9.libclang
+        rust-analyzer
+      ];
       plugins = with pkgs.vimPlugins; [
         zig-vim
         trouble-nvim
         telescope-nvim
-        coc-clangd
+        coc-nvim
+		coc-clangd
         coc-rust-analyzer
         coc-python
         coc-docker
         gitsigns-nvim
         gruvbox-nvim
-      	nvim-treesitter
+        nvim-treesitter
+		nvim-tree-lua
       ];
     };
     kitty = {
