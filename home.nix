@@ -44,18 +44,20 @@
       extraPackages = with pkgs; [
         zls
         zig
-		llvmPackages_9.libclang
-        rust-analyzer
+		rust-analyzer
+		rustc
+		cargo
       ];
       plugins = with pkgs.vimPlugins; [
         zig-vim
         trouble-nvim
         telescope-nvim
-        coc-nvim
-		coc-clangd
-        coc-rust-analyzer
-        coc-python
-        coc-docker
+		nvim-lspconfig
+		nvim-cmp
+		cmp-buffer
+		cmp-path
+		cmp-nvim-lsp
+		cmp-nvim-lua
         gitsigns-nvim
         gruvbox-nvim
         nvim-treesitter
@@ -84,6 +86,10 @@
       enableSyntaxHighlighting = true;
       defaultKeymap = "vicmd";
     };
+	zoxide = {
+	  enable = true;
+	  enableZshIntegration = true;
+	};
     fzf = {
       enable = true;
       enableZshIntegration = true;
