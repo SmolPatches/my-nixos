@@ -44,32 +44,32 @@
       extraPackages = with pkgs; [
         zls
         zig
-		rust-analyzer
-		rustc
-		cargo
+        rust-analyzer
+        rustc
+        cargo
       ];
       plugins = with pkgs.vimPlugins; [
         zig-vim
         trouble-nvim
         telescope-nvim
-		nvim-lspconfig
-		nvim-cmp
-		cmp-buffer
-		cmp-path
-		cmp-nvim-lsp
-		cmp-nvim-lua
+        nvim-lspconfig
+        nvim-cmp
+        cmp-buffer
+        cmp-path
+        cmp-nvim-lsp
+        cmp-nvim-lua
         gitsigns-nvim
         gruvbox-nvim
         nvim-treesitter
-		nvim-tree-lua
+        nvim-tree-lua
       ];
     };
     kitty = {
       enable = true;
     };
-	tmux = {
-		enable = true;
-	};
+    tmux = {
+      enable = true;
+    };
     vscode = {
       package = pkgs.vscodium;
       enable = true;
@@ -89,10 +89,10 @@
       enableSyntaxHighlighting = true;
       defaultKeymap = "vicmd";
     };
-	zoxide = {
-	  enable = true;
-	  enableZshIntegration = true;
-	};
+    zoxide = {
+      enable = true;
+      enableZshIntegration = true;
+    };
     fzf = {
       enable = true;
       enableZshIntegration = true;
@@ -154,6 +154,14 @@
       gtk-application-prefer-dark-theme = true;
     };
   };
+  #  qt = {
+  #    enable = true;
+  #    platformTheme = "gtk";
+  #	style = {
+  #	  #name = "Dracula";
+  #	  package = pkgs.adwaita-qt;
+  #	};
+  #  };
   services = {
     spotifyd = {
       enable = true;

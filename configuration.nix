@@ -250,6 +250,11 @@
       enable = true;
     };
   };
+  qt = {
+    enable = true;
+    platformTheme = pkgs.lib.mkForce "qt5ct";
+    style = "adwaita-dark";
+  };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
