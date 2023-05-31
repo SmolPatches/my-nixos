@@ -67,6 +67,9 @@
     kitty = {
       enable = true;
     };
+	tmux = {
+		enable = true;
+	};
     vscode = {
       package = pkgs.vscodium;
       enable = true;

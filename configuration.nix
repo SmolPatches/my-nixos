@@ -202,7 +202,7 @@
         enable = true;
         mode = "challenge-response";
         id = [ "22728752" ]; # follow yubico-pam guide here, https://nixos.wiki/wiki/Yubikey
-        debug = true;
+        debug = false; # enable passwordless not working
         control = "sufficient";
       };
       services = {
