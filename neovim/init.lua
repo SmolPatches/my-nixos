@@ -10,7 +10,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 -- use editorconfig
 vim.g.editorconfig = true;
--- relative line number 
+-- relative line number
 vim.wo.relativenumber = true;
 vim.cmd("colorscheme gruvbox");
 --autosave zig fmt
@@ -31,6 +31,7 @@ changedelete = { text = '~' },
 local lspconfig = require('lspconfig')
 lspconfig.pyright.setup {}
 lspconfig.tsserver.setup {}
+lspconfig.rnix.setup {}
 lspconfig.rust_analyzer.setup {
   -- Server-specific settings. See `:help lspconfig-setup`
   settings = {

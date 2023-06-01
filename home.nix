@@ -43,6 +43,7 @@
       extraLuaConfig = builtins.readFile ./neovim/init.lua;
       extraPackages = with pkgs; [
         zls
+        rnix-lsp
         zig
         rust-analyzer
         rustc
@@ -158,18 +159,9 @@
       gtk-application-prefer-dark-theme = true;
     };
   };
-  #  qt = {
-  #    enable = true;
-  #    platformTheme = "gtk";
-  #	style = {
-  #	  #name = "Dracula";
-  #	  package = pkgs.adwaita-qt;
-  #	};
-  #  };
   services = {
     spotifyd = {
       enable = true;
-
     };
   };
   # xdg entries for home manager
