@@ -90,7 +90,6 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     helix
     swaybg
@@ -119,6 +118,14 @@
   ];
 
   programs = {
+    hyprland = {
+      enable = true;
+      xwayland = {
+        hidpi = false;
+        enable = false;
+      };
+      nvidiaPatches = true;
+    };
     sway = {
       enable = true;
       extraOptions = [ "--unsupported-gpu" "--verbose" ];
@@ -196,7 +203,7 @@
     pam = {
       # based on configuration options below
       # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/security/pam.nix
-      # and 
+      # and
       # guide here https://nixos.wiki/wiki/Yubikey
       yubico = {
         enable = true;
@@ -223,7 +230,7 @@
   };
 
   services = {
-    # Enable the OpenSSH daemon. 
+    # Enable the OpenSSH daemon.
     openssh = {
       enable = true;
       allowSFTP = true; # also allows sshfs
@@ -267,6 +274,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "22.11"; # Did you read the comment?
+  system.stateVersion = "23.05"; # Did you read the comment?
 
 }

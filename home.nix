@@ -88,10 +88,10 @@
       enableAutosuggestions = true;
       enableSyntaxHighlighting = true;
       defaultKeymap = "vicmd";
-	  shellAliases = {
-		ll = "exa -la";
-		ls = "exa";
-	  };
+      shellAliases = {
+        ll = "exa -la";
+        ls = "exa";
+      };
     };
     zoxide = {
       enable = true;
