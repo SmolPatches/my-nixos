@@ -6,6 +6,10 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
+  # add sops.nix
+  # and refactor flake for multiple machines
+  # including nix-darwin
+  # inspired by https://gitlab.com/rprospero/dotfiles/-/blob/master/flake.nix
   outputs = { self, nixpkgs, flake-utils, home-manager }: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       # ...
