@@ -17,6 +17,7 @@
     wofi
     thunderbird
     pcmanfm
+    qbittorrent
     keepassxc
     spotify-tui
   ];
@@ -156,15 +157,7 @@
       enable = true;
     };
   };
-  qt = {
-    enable = true;
-    platformTheme = "gtk";
-    style = {
-      name = "adwaita-dark";
-    };
-  };
-  # xdg entries for home manager
-  xdg.desktopEntries = {
+ xdg.desktopEntries = {
     steam = {
       name = "Steam";
       exec = "steam -w 2160 -h 1440 %U";
