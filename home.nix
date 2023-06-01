@@ -128,17 +128,9 @@
     rofi = {
       enable = true;
     };
-    helix = {
+    eww = {
       enable = true;
-      settings = {
-        editor = {
-          mouse = false;
-          auto-format = true;
-          line-number = "relative";
-          lsp.display-messages = true;
-        };
-      };
-      themes = { };
+      configDir = ./eww-bar;
     };
   };
   home.sessionVariables = {
@@ -162,6 +154,13 @@
   services = {
     spotifyd = {
       enable = true;
+    };
+  };
+  qt = {
+    enable = true;
+    platformTheme = "gtk";
+    style = {
+      name = "adwaita-dark";
     };
   };
   # xdg entries for home manager
