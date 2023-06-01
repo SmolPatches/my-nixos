@@ -7,26 +7,6 @@
   };
 
   outputs = { self, nixpkgs, flake-utils, home-manager }: {
-    /*let
-      systems = [ "aarch64-linux" ];
-      in
-      #        flake-utils.lib.eachSystem systems (system:
-        flake-utils.lib.eachDefaultSystem (system:
-        let
-            pkgs = import nixpkgs {
-              inherit system;
-              config.allowUnfree = true;
-            };
-        in
-        {
-
-        });*/
-    #nixos configuration
-    /*
-        let
-            user = if builtins.currentSystem == "x86_64-linux" then "watashi" else "rob";
-        in
-        */
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       # ...
       system = "x86_64-linux"; #builtins.currentSystem;
