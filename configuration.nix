@@ -77,6 +77,8 @@
       packages = with pkgs; [
         virt-manager
         vulkan-tools
+        qt5ct
+        adwaita-qt
       ];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDMqnUtVfxGgzVD/rsHOhZphgSTztDjTxCdZ4yJkr4zQ r3b@eldnmac.resource.campus.njit.edu"
@@ -91,16 +93,13 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
-    helix
     swaybg
     swaylock
     swayidle
     xdg-utils
     mpv
     bat
-    zoxide
     exa
-    yacreader
     ripgrep
     firefox-wayland
     pavucontrol
@@ -184,6 +183,7 @@
     LIBVA_DRIVER_NAME = "nvidia";
     GBM_BACKEND = "nvida-drm";
     GTK_THEME = "Dracula:dark";
+    QT_QPA_PLATFORMTHEME="qt5ct";
     #WLR_RENDERER = "vulkan";
     #install vulkan
   };
