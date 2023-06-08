@@ -16,9 +16,14 @@
     htop
     wofi
     thunderbird
+    xfce.thunar
     pcmanfm
     qbittorrent
     keepassxc
+    rpcs3
+    pcsx2
+    duckstation
+    retroarchFull
     spotify-tui
   ];
   programs = {
@@ -91,8 +96,8 @@
       enableSyntaxHighlighting = true;
       defaultKeymap = "vicmd";
       shellAliases = {
-        ll = "exa -la";
-        ls = "exa";
+        ll = "exa -Fxl --icons";
+        ls = "exa --icons";
       };
     };
     zoxide = {
@@ -113,9 +118,9 @@
     };
     emacs = {
       enable = true;
-      package = pkgs.emacs-gtk;
+      package = pkgs.emacs29-pgtk;
       #package = pkgs.emacs-nox;
-      extraPackages = epkgs: (with epkgs; [ evil nix-mode nixos-options editorconfig tao-theme yaml-mode flycheck rustic treemacs-evil lsp-ui company ]);
+      extraPackages = epkgs: (with epkgs; [ evil nix-mode nixos-options editorconfig rustic treemacs-evil lsp-ui company darkokai-theme adwaita-dark-theme ]);
     };
     zathura = {
       enable = true;
@@ -155,6 +160,11 @@
   services = {
     spotifyd = {
       enable = true;
+    };
+    emacs = {
+      enable = true;
+      package = pkgs.emacs29-pgtk;
+      startWithUserSession = true;
     };
   };
  xdg.desktopEntries = {
