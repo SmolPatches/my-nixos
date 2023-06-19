@@ -4,18 +4,20 @@
     flake-utils.url = github:numtide/flake-utils;
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 
   # add sops.nix
   # and refactor flake for multiple machines
   # including nix-darwin
   # inspired by https://gitlab.com/rprospero/dotfiles/-/blob/master/flake.nix
-  outputs = { self, nixpkgs, flake-utils, home-manager }: {
+  outputs = { self, nixpkgs, flake-utils, home-manager, sops-nix }: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       # ...
       system = "x86_64-linux"; #builtins.currentSystem;
       modules = [
         ./configuration.nix
+        sops-nix.nixosModules.sops
         #stolen from https://rycee.gitlab.io/home-manager/index.html#sec-flakes-nixos-module
         home-manager.nixosModules.home-manager
         {
@@ -27,4 +29,3 @@
     };
   };
 }
-

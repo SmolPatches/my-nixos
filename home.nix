@@ -3,8 +3,7 @@
 
   # home-manager.users.rob = {
   /* The home.stateVersion option does not have a default and must be set */
-  home.stateVersion = "23.05";
-  #home.stateVersion = "18.09";
+  home.stateVersion = "18.09";
   home.packages = with pkgs; [
     neofetch
     rnix-lsp
@@ -24,6 +23,7 @@
     pcsx2
     duckstation
     retroarchFull
+    libreoffice
     spotify-tui
   ];
   programs = {
@@ -100,10 +100,15 @@
         ls = "exa --icons";
       };
     };
+    nushell = {
+      enable = true;
+    };
     zoxide = {
       enable = true;
       enableZshIntegration = true;
+      enableNushellIntegration = true;
     };
+
     fzf = {
       enable = true;
       enableZshIntegration = true;
@@ -135,8 +140,10 @@
       enable = true;
     };
     eww = {
+      enable = false;
+    };
+    waybar = {
       enable = true;
-      configDir = ./eww-bar;
     };
   };
   home.sessionVariables = {
