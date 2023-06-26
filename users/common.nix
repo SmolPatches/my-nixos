@@ -6,6 +6,7 @@
     rnix-lsp
     yaml-language-server
     zls
+    tree
     exa
     ripgrep
     wofi
