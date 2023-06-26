@@ -27,5 +27,21 @@
         }
       ];
     };
+    homeConfigurations = {
+      "g0vib@m1" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages."aarch64-linux";
+        modules = [
+          ./users/g0vib.nix
+          ./users/common.nix
+          {
+            home = {
+              username = "g0vib";
+              homeDirectory = "/home/g0vib";
+              stateVersion = "23.05";
+            };
+          }
+        ];
+      };
+    };
   };
 }

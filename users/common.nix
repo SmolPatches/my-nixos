@@ -1,32 +1,27 @@
-{ config, pkgs, ... }: {
+{ pkgs, lib, ... }:
 
-
-  # home-manager.users.rob = {
-  /* The home.stateVersion option does not have a default and must be set */
-  home.stateVersion = "23.05";
+{
   home.packages = with pkgs; [
     neofetch
     rnix-lsp
     yaml-language-server
     zls
+    exa
+    ripgrep
+    wofi
     nixpkgs-fmt
     moar
     yacreader
     htop
-    wofi
     thunderbird
-    xfce.thunar
     pcmanfm
     qbittorrent
     keepassxc
     rpcs3
-    pcsx2
-    duckstation
-    retroarchFull
-    libreoffice
     spotify-tui
   ];
   programs = {
+    home-manager.enable = true;
     git = {
       enable = true;
       ignores = [ "*.*~" "#*#" ];
@@ -45,8 +40,6 @@
       vimAlias = true;
       withNodeJs = true;
       withPython3 = true;
-      defaultEditor = true;
-      extraLuaConfig = builtins.readFile ./neovim/init.lua;
       extraPackages = with pkgs; [
         zls
         rnix-lsp
@@ -76,19 +69,6 @@
     };
     tmux = {
       enable = true;
-    };
-    vscode = {
-      package = pkgs.vscodium;
-      enable = true;
-      userSettings = {
-        "editor.fontFamily" = "'Caskaydia Nerd Font Mono'";
-        "editor.fontSize" = 14;
-      };
-      extensions = with pkgs.vscode-extensions;[
-        vscodevim.vim
-        matklad.rust-analyzer
-        tiehuis.zig
-      ];
     };
     zsh = {
       enable = true;
@@ -124,7 +104,6 @@
     emacs = {
       enable = true;
       package = pkgs.emacs29-pgtk;
-      #package = pkgs.emacs-nox;
       extraPackages = epkgs: (with epkgs; [ evil nix-mode nixos-options editorconfig rustic treemacs-evil lsp-ui company darkokai-theme adwaita-dark-theme ]);
     };
     zathura = {
@@ -136,18 +115,12 @@
     librewolf = {
       enable = true;
     };
-    rofi = {
-      enable = true;
-    };
-    eww = {
-      enable = false;
-    };
     waybar = {
       enable = true;
     };
   };
   home.sessionVariables = {
-    EDITOR = "nvim";
+    EDITOR = "emacs";
   };
   gtk = {
     enable = true;
@@ -174,15 +147,6 @@
       startWithUserSession = true;
     };
   };
- xdg.desktopEntries = {
-    steam = {
-      name = "Steam";
-      exec = "steam -w 2160 -h 1440 %U";
-      type = "Application";
-      categories = [ "Game" ];
-      terminal = false;
-      mimeType = [ "x-scheme-handler/steam" "x-scheme-handler/steamlink" ];
-      prefersNonDefaultGPU = true;
-    };
-  };
 }
+
+
