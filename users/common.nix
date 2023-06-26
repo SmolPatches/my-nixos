@@ -7,6 +7,7 @@
     yaml-language-server
     zls
     tree
+    glxinfo
     exa
     ripgrep
     wofi
@@ -122,6 +123,7 @@
   };
   home.sessionVariables = {
     EDITOR = "emacs";
+    GDK_BACKEND="wayland";
   };
   gtk = {
     enable = true;
