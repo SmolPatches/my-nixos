@@ -5,13 +5,15 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
+    #for use in home-manager
+    hyprland.url = "github:hyprwm/Hyprland";
   };
 
   # add sops.nix
   # and refactor flake for multiple machines
   # including nix-darwin
   # inspired by https://gitlab.com/rprospero/dotfiles/-/blob/master/flake.nix
-  outputs = { self, nixpkgs, flake-utils, home-manager, sops-nix }: {
+  outputs = { self, nixpkgs, flake-utils, home-manager, sops-nix, hyprland }: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       # ...
       system = "x86_64-linux"; #builtins.currentSystem;
@@ -38,6 +40,16 @@
               username = "g0vib";
               homeDirectory = "/home/g0vib";
               stateVersion = "23.05";
+            };
+          }
+          # install hyprland
+          hyprland.homeManagerModules.default
+          {
+            wayland.windowManager.hyprland = {
+              enable = true;
+              xwayland = {
+                enable = false;
+              };
             };
           }
         ];

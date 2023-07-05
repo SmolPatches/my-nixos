@@ -4,6 +4,7 @@
   home.packages = with pkgs; [
     neofetch
     rnix-lsp
+    pavucontrol
     yaml-language-server
     zls
     tree
@@ -75,7 +76,7 @@
     zsh = {
       enable = true;
       enableAutosuggestions = true;
-      enableSyntaxHighlighting = true;
+      syntaxHighlighting.enable = true;
       defaultKeymap = "vicmd";
       shellAliases = {
         ll = "exa -Fxl --icons";
