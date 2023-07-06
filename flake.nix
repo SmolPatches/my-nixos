@@ -1,6 +1,13 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+# allow nvim-qt to use nvim packages
+# https://discourse.nixos.org/t/plugins-for-neovim-are-not-installed-for-neovim-qt/29712/5
+#    nixpkgs.config = {
+#      packageOverrides = pkgs: {
+#      neovim-qt = pkgs.neovim-qt.override { inherit (myPackages) neovim; };
+#      };
+#    };
     flake-utils.url = github:numtide/flake-utils;
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";

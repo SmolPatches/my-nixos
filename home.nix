@@ -6,6 +6,7 @@
   home.stateVersion = "23.05";
   home.packages = with pkgs; [
     neofetch
+    neovide
     rnix-lsp
     yaml-language-server
     zls
