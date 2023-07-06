@@ -75,7 +75,7 @@
       shell = pkgs.zsh;
       hashedPassword = "$y$j9T$/9B9a0OrsQpd5BAniXssM.$kuA1aZ4odb8738jr/TGzBlYIvPQXV7l5C5dmdIWseJ7";
       isNormalUser = true;
-      extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "libvirtd" "wireshark" ]; # Enable ‘sudo’ for the user.
+      extraGroups = [ "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd"  ]; # Enable ‘sudo’ for the user.
       packages = with pkgs; [
         virt-manager
         vulkan-tools
@@ -253,7 +253,7 @@
   };
   virtualisation = {
     docker = {
-      enable = false;
+      enable = true;
     };
     libvirtd = {
       enable = true;
