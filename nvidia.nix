@@ -5,5 +5,11 @@
     nvidiaSettings = true;
   };
   services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.opengl.enable = true;
+  hardware.opengl = {
+    enable = true;
+    extraPackages = (with pkgs; [
+      vaapiVdpau
+      libvdpau-va-gl
+    ]);
+  };
 }
