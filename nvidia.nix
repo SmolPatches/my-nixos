@@ -1,3 +1,4 @@
+{ config, lib, pkgs, modulesPath, ... }:
 {
   hardware.nvidia = {
     open = false;
@@ -7,9 +8,9 @@
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.opengl = {
     enable = true;
-    extraPackages = (with pkgs; [
+    extraPackages = with pkgs; [
       vaapiVdpau
       libvdpau-va-gl
-    ]);
+    ];
   };
 }
