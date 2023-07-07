@@ -186,4 +186,14 @@
       prefersNonDefaultGPU = true;
     };
   };
+  # this was a test idek what this does
+  nixpkgs.overlays = [
+    (final: prev: {
+      openssh = prev.openssh.override {
+        hpnSupport = true;
+        withKerberos = true;
+        kerberos = final.libkrb5;
+      };
+    })
+  ];
 }
