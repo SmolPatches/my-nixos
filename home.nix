@@ -6,9 +6,9 @@
   home.stateVersion = "23.05";
   home.packages = with pkgs; [
     neofetch
-    neovide
     rnix-lsp
     yaml-language-server
+    xdg-desktop-portal-hyprland # for screen sharing
     zls
     nixpkgs-fmt
     moar
@@ -57,6 +57,7 @@
       plugins = with pkgs.vimPlugins; [
         zig-vim
         trouble-nvim
+        plenary-nvim
         telescope-nvim
         nvim-lspconfig
         nvim-cmp
