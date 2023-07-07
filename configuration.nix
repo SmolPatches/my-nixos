@@ -80,7 +80,7 @@
         virt-manager
         vulkan-tools
         qt5ct
-        neovide
+        xdg-desktop-portal-hyprland
         adwaita-qt
       ];
       openssh.authorizedKeys.keys = [
@@ -173,6 +173,8 @@
   xdg = {
     portal = {
       xdgOpenUsePortal = true;
+      wlr.enable = true;
+      extraPortals = [pkgs.xdg-desktop-portal-hyprland];
       enable = true;
     };
   };
@@ -186,7 +188,6 @@
     XDG_SESSION_TYPE = "wayland";
     __GLX_VENDSOR_LIBRARY_NAME = "nvidia";
     GDK_BACKEND="wayland";
-    LIBVA_DRIVER_NAME = "nvidia";
     GBM_BACKEND = "nvida-drm";
     GTK_THEME = "Dracula:dark";
     QT_QPA_PLATFORMTHEME="qt5ct";
