@@ -7,7 +7,10 @@
 {
   #enable flakes
   # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    allowBroken = false;
+  };
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   imports =
     [
@@ -80,6 +83,7 @@
         virt-manager
         vulkan-tools
         qt5ct
+        age
         xdg-desktop-portal-hyprland
         adwaita-qt
       ];
@@ -96,7 +100,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
-    age
     swaybg
     swaylock
     swayidle
