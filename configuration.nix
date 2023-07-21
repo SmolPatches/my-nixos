@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ inputs, config, pkgs, ... }:
 
 {
   #enable flakes
@@ -116,15 +116,16 @@
     binwalk
     yubikey-personalization
     usbutils
-    glxinfo
     pciutils
-    (steam.override {
-      extraPkgs = pkgs: [ steamPackages.steam-runtime ];
-    }).run
-  ];
+
+  ] ++
+  # install glxinfo if xwayland is enabled
+  (if config.programs.hyprland.xwayland.enable then [ glxinfo ] else []);
 
   programs = {
     hyprland = {
+      # use hyprland from flake
+      package = inputs.hyprland.packages.${pkgs.system}.hyprland;
       enable = true;
       xwayland = {
         hidpi = false;
@@ -133,7 +134,7 @@
       nvidiaPatches = true;
     };
     sway = {
-      enable = true;
+      enable = false;
       extraOptions = [ "--unsupported-gpu" "--verbose" ];
     };
     git = {
@@ -173,14 +174,14 @@
       enable = true;
     };
   };
-  xdg = {
-    portal = {
-      xdgOpenUsePortal = true;
-      wlr.enable = true;
-      extraPortals = [pkgs.xdg-desktop-portal-hyprland];
-      enable = true;
-    };
-  };
+  #xdg = {
+  #  portal = {
+  #    xdgOpenUsePortal = true;
+  #    wlr.enable = false;
+  #    extraPortals = [pkgs.xdg-desktop-portal-hyprland];
+  #    enable = true;
+  #  };
+  # };
   environment.sessionVariables = {
 
     MOZ_ENABLE_WAYLAND = "1";

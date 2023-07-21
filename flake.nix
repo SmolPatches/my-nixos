@@ -1,17 +1,11 @@
+# how to add an overlay to a flake in here
+# https://nixos.wiki/wiki/Overlays#In_a_Nix_flake
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-# allow nvim-qt to use nvim packages
-# https://discourse.nixos.org/t/plugins-for-neovim-are-not-installed-for-neovim-qt/29712/5
-#    nixpkgs.config = {
-#      packageOverrides = pkgs: {
-#      neovim-qt = pkgs.neovim-qt.override { inherit (myPackages) neovim; };
-#      };
-#    };
     flake-utils.url = github:numtide/flake-utils;
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    sops-nix.url = "github:Mic92/sops-nix";
     #for use in home-manager
     hyprland.url = "github:hyprwm/Hyprland";
   };
@@ -20,15 +14,16 @@
   # and refactor flake for multiple machines
   # including nix-darwin
   # inspired by https://gitlab.com/rprospero/dotfiles/-/blob/master/flake.nix
-  outputs = { self, nixpkgs, flake-utils, home-manager, sops-nix, hyprland }: {
+  #outputs = { self, nixpkgs, flake-utils, home-manager, sops-nix, hyprland }: {
+  outputs = { nixpkgs, ... } @inputs : {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       # ...
       system = "x86_64-linux"; #builtins.currentSystem;
+      specialArgs = { inherit inputs; };
       modules = [
         ./configuration.nix
-        sops-nix.nixosModules.sops
         #stolen from https://rycee.gitlab.io/home-manager/index.html#sec-flakes-nixos-module
-        home-manager.nixosModules.home-manager
+        inputs.home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
@@ -37,7 +32,7 @@
       ];
     };
     homeConfigurations = {
-      "g0vib@m1" = home-manager.lib.homeManagerConfiguration {
+      "g0vib@m1" = inputs.home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages."aarch64-linux";
         modules = [
           ./users/g0vib.nix
@@ -50,7 +45,7 @@
             };
           }
           # install hyprland
-          hyprland.homeManagerModules.default
+          inputs.hyprland.homeManagerModules.default
           {
             wayland.windowManager.hyprland = {
               enable = true;
