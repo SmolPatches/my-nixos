@@ -187,6 +187,7 @@
     };
   };
   # this was a test idek what this does
+  # https://rycee.gitlab.io/home-manager/options.html#opt-nixpkgs.overlays
   nixpkgs.overlays = [
     (final: prev: {
       openssh = prev.openssh.override {
