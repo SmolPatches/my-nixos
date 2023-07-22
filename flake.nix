@@ -27,6 +27,10 @@
         inputs.home-manager.nixosModules.home-manager
         {
           nixpkgs.overlays = [
+            (final: prev: { neovim = prev.neovim.overrideAttrs (finalAttrs: previousAttrs: {
+                separateDebugInfo = false;
+              });
+            })
             (final: prev: { wezterm = prev.wezterm.override {
               libX11 = "";
               libxcb = "";
