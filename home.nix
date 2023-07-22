@@ -20,6 +20,7 @@
     pcmanfm
     qbittorrent
     keepassxc
+    neovim
     rpcs3
     pcsx2
     duckstation
@@ -44,37 +45,38 @@
         background = "dark";
       };
     };
-    neovim = {
-      enable = true;
-      vimAlias = true;
-      withNodeJs = true;
-      withPython3 = true;
-      defaultEditor = true;
-      extraLuaConfig = builtins.readFile ./neovim/init.lua;
-      extraPackages = with pkgs; [
-      # extra packages neovim would need
-      # like lsps and things
-      # i chose not to install these but instead have dev flakes install them
-      # this means lsp must conditionally check to see if the required commands are present on system before attaching
-      ];
-      plugins = with pkgs.vimPlugins; [
-        zig-vim
-        trouble-nvim
-        plenary-nvim
-        telescope-nvim
-        nvim-lspconfig
-        nvim-cmp
-        lualine-nvim
-        cmp-buffer
-        cmp-path
-        cmp-nvim-lsp
-        cmp-nvim-lua
-        gitsigns-nvim
-        gruvbox-nvim
-        nvim-treesitter
-        nvim-tree-lua
-      ];
-    };
+# disabled for testing override
+#    neovim = {
+#      enable = true;
+#      vimAlias = true;
+#      withNodeJs = true;
+#      withPython3 = true;
+#      defaultEditor = true;
+#      extraLuaConfig = builtins.readFile ./neovim/init.lua;
+#      extraPackages = with pkgs; [
+#      # extra packages neovim would need
+#      # like lsps and things
+#      # i chose not to install these but instead have dev flakes install them
+#      # this means lsp must conditionally check to see if the required commands are present on system before attaching
+#      ];
+#      plugins = with pkgs.vimPlugins; [
+#        zig-vim
+#        trouble-nvim
+#        plenary-nvim
+#        telescope-nvim
+#        nvim-lspconfig
+#        nvim-cmp
+#        lualine-nvim
+#        cmp-buffer
+#        cmp-path
+#        cmp-nvim-lsp
+#        cmp-nvim-lua
+#        gitsigns-nvim
+#        gruvbox-nvim
+#        nvim-treesitter
+#        nvim-tree-lua
+#      ];
+#    };
     kitty = {
       enable = true;
     };

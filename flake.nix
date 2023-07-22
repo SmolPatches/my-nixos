@@ -15,7 +15,7 @@
   # including nix-darwin
   # inspired by https://gitlab.com/rprospero/dotfiles/-/blob/master/flake.nix
   #outputs = { self, nixpkgs, flake-utils, home-manager, sops-nix, hyprland }: {
-  outputs = { nixpkgs, ... } @inputs : {
+  outputs = { nixpkgs, ... } @inputs: {
 
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       # ...
@@ -27,9 +27,16 @@
         inputs.home-manager.nixosModules.home-manager
         {
           nixpkgs.overlays = [
-            (final: prev: { neovim = prev.neovim.overrideAttrs (finalAttrs: previousAttrs: {
+            (final: prev: {
+              neovim = prev.neovim.overrideAttrs (finalAttrs: previousAttrs: {
                 separateDebugInfo = false;
-              });
+              }).override
+                {
+                  prev.neovimUtils.makeNeovimConfig = {
+                    withPython3 = false;
+                    withNodejs = false;
+                  };
+                };
             })
           ];
           home-manager.useGlobalPkgs = true;
