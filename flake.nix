@@ -31,15 +31,6 @@
                 separateDebugInfo = false;
               });
             })
-            (final: prev: { wezterm = prev.wezterm.override {
-              libX11 = "";
-              libxcb = "";
-              libxkbcommon = "";
-              xcbutil = "";
-              xcbutilimage = "";
-              xcbutilkeysyms = "";
-              xcbutilwm = "";
-            }; })
           ];
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
