@@ -16,6 +16,7 @@
   # inspired by https://gitlab.com/rprospero/dotfiles/-/blob/master/flake.nix
   #outputs = { self, nixpkgs, flake-utils, home-manager, sops-nix, hyprland }: {
   outputs = { nixpkgs, ... } @inputs : {
+
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       # ...
       system = "x86_64-linux"; #builtins.currentSystem;
@@ -25,6 +26,17 @@
         #stolen from https://rycee.gitlab.io/home-manager/index.html#sec-flakes-nixos-module
         inputs.home-manager.nixosModules.home-manager
         {
+          nixpkgs.overlays = [
+            (final: prev: { wezterm = prev.wezterm.override {
+              libX11 = "";
+              libxcb = "";
+              libxkbcommon = "";
+              xcbutil = "";
+              xcbutilimage = "";
+              xcbutilkeysyms = "";
+              xcbutilwm = "";
+            }; })
+          ];
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.watashi = import ./home.nix;
