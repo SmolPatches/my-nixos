@@ -28,6 +28,9 @@
     spotify-tui
   ];
   programs = {
+    wezterm = {
+      enable = true;
+    };
     git = {
       enable = true;
       ignores = [ "*.*~" "#*#" ];
