@@ -88,7 +88,6 @@
       };
       themes = { };
     };
-  };
     tmux = {
       enable = true;
     };
