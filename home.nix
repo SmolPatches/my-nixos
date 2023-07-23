@@ -84,6 +84,7 @@
           auto-format = true;
           line-number = "relative";
           lsp.display-messages = true;
+          lsp.display-inlay-hints = true;
         };
       };
       themes = { };
