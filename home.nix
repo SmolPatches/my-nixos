@@ -76,6 +76,19 @@
         nvim-tree-lua
       ];
     };
+    helix = {
+      enable = true;
+      settings = {
+        editor = {
+          mouse = false;
+          auto-format = true;
+          line-number = "relative";
+          lsp.display-messages = true;
+        };
+      };
+      themes = { };
+    };
+  };
     tmux = {
       enable = true;
     };
