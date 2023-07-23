@@ -79,6 +79,9 @@
     helix = {
       enable = true;
       settings = {
+        # TODO make theme be loaded from file like attempted below
+        theme = "kanabox"; # must manually copy file from helix dir into ~/.config/helix/themes/kanabox.toml
+
         editor = {
           mouse = false;
           auto-format = true;
@@ -87,7 +90,10 @@
           lsp.display-inlay-hints = true;
         };
       };
-      themes = { };
+      themes = {
+        # error processing toml file
+        #kanabox = (builtins.readFile ./helix/themes/kanabox/theme.toml);
+      };
     };
     tmux = {
       enable = true;
