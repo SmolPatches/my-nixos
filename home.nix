@@ -11,6 +11,7 @@
     xdg-desktop-portal-hyprland # for screen sharing
     zls
     nixpkgs-fmt
+    pijul
     moar
     yacreader
     htop
@@ -74,9 +75,6 @@
         nvim-treesitter
         nvim-tree-lua
       ];
-    };
-    kitty = {
-      enable = true;
     };
     tmux = {
       enable = true;
