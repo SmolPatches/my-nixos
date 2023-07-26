@@ -6,9 +6,10 @@
   home.stateVersion = "23.05";
   home.packages = with pkgs; [
     neofetch
+    obsidian
+    brave
     rnix-lsp
     yaml-language-server
-    xdg-desktop-portal-hyprland # for screen sharing
     zls
     nixpkgs-fmt
     pijul
@@ -17,7 +18,6 @@
     htop
     wofi
     thunderbird
-    xfce.thunar
     pcmanfm
     qbittorrent
     keepassxc
