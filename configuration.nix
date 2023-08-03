@@ -22,19 +22,20 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  # test
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # use latest linux
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  networking = {
-    hostName = "nixos"; # Define your hostname.
-  };
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  # downgrade kernel to test wifi changes
+  boot.kernelPackages = pkgs.linuxPackages_6_1;
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
   networking.networkmanager.enable = true;
+  networking = {
+    hostName = "nixos"; # Define your hostname.
+  };
   # Set your time zone.
   time.timeZone = "America/New_York";
 
@@ -78,7 +79,7 @@
       shell = pkgs.zsh;
       hashedPassword = "$y$j9T$/9B9a0OrsQpd5BAniXssM.$kuA1aZ4odb8738jr/TGzBlYIvPQXV7l5C5dmdIWseJ7";
       isNormalUser = true;
-      extraGroups = [ "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd"  ]; # Enable ‘sudo’ for the user.
+      extraGroups = [ "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
       packages = with pkgs; [
         virt-manager
         vulkan-tools
@@ -120,7 +121,7 @@
 
   ] ++
   # install glxinfo if xwayland is enabled
-  (if config.programs.hyprland.xwayland.enable then [ glxinfo ] else []);
+  (if config.programs.hyprland.xwayland.enable then [ glxinfo ] else [ ]);
 
   programs = {
     hyprland = {
@@ -191,11 +192,11 @@
     XDG_SESSION_DESKTOP = "Hyprland";
     XDG_SESSION_TYPE = "wayland";
     __GLX_VENDSOR_LIBRARY_NAME = "nvidia";
-    GDK_BACKEND="wayland";
+    GDK_BACKEND = "wayland";
     GBM_BACKEND = "nvida-drm";
     GTK_THEME = "Dracula:dark";
-    QT_QPA_PLATFORMTHEME="qt5ct";
-    LIBVA_DRIVER_NAME="nvidia";
+    QT_QPA_PLATFORMTHEME = "qt5ct";
+    LIBVA_DRIVER_NAME = "nvidia";
     #install vulkan
   };
   security = {
