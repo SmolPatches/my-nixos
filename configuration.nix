@@ -37,7 +37,8 @@
     hostName = "nixos"; # Define your hostname.
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 22 5900 3090 ];
+      # ssh and searxng docker and whoogle
+      allowedTCPPorts = [ 22 8080 8081 ];
     };
   };
   # Set your time zone.
@@ -268,6 +269,23 @@
   virtualisation = {
     docker = {
       enable = true;
+    };
+    oci-containers = {
+      backend = "docker";
+      containers = {
+        searxng = {
+          image = "searxng/searxng";
+          autoStart = true;
+          # forward 8080 to main host
+          ports = ["8080:8080"];
+        };
+        whoogle = {
+          image = "benbusby/whoogle-search";
+          autoStart = true;
+          # forward 8081 to main host
+          ports = ["8081:5000"];
+        };
+      };
     };
     libvirtd = {
       enable = true;
