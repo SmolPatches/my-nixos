@@ -5,6 +5,7 @@
   /* The home.stateVersion option does not have a default and must be set */
   home.stateVersion = "23.05";
   home.packages = with pkgs; [
+    wayvnc
     neofetch
     obsidian
     brave
@@ -53,10 +54,10 @@
       defaultEditor = true;
       extraLuaConfig = builtins.readFile ./neovim/init.lua;
       extraPackages = with pkgs; [
-      # extra packages neovim would need
-      # like lsps and things
-      # i chose not to install these but instead have dev flakes install them
-      # this means lsp must conditionally check to see if the required commands are present on system before attaching
+        # extra packages neovim would need
+        # like lsps and things
+        # i chose not to install these but instead have dev flakes install them
+        # this means lsp must conditionally check to see if the required commands are present on system before attaching
       ];
       plugins = with pkgs.vimPlugins; [
         zig-vim
@@ -195,7 +196,7 @@
       startWithUserSession = true;
     };
   };
- xdg.desktopEntries = {
+  xdg.desktopEntries = {
     steam = {
       name = "Steam";
       exec = "steam -w 2160 -h 1440 %U";
