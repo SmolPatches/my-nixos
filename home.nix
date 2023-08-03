@@ -8,7 +8,6 @@
     wayvnc
     neofetch
     obsidian
-    brave
     rnix-lsp
     yaml-language-server
     zls

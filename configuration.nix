@@ -35,6 +35,10 @@
   networking.networkmanager.enable = true;
   networking = {
     hostName = "nixos"; # Define your hostname.
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 22 5900 3090 ];
+    };
   };
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -94,13 +98,14 @@
     };
   };
 
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     (nerdfonts.override { fonts = [ "FiraCode" "CascadiaCode" ]; })
   ];
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
+    lsof
     swaybg
     swaylock
     swayidle
