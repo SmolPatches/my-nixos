@@ -15,7 +15,7 @@
   # including nix-darwin
   # inspired by https://gitlab.com/rprospero/dotfiles/-/blob/master/flake.nix
   #outputs = { self, nixpkgs, flake-utils, home-manager, sops-nix, hyprland }: {
-  outputs = { nixpkgs, ... } @inputs : {
+  outputs = { nixpkgs, ... } @inputs: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       # ...
       system = "x86_64-linux"; #builtins.currentSystem;
