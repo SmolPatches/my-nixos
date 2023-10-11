@@ -29,8 +29,13 @@
     spotify-tui
   ];
   programs = {
-    wezterm = {
+    kitty = {
       enable = true;
+      font = {
+        name = "3270NerdFontMono";
+        package =  (pkgs.nerdfonts.override { fonts = [ "3270" ]; });
+        size = 13;
+      };
     };
     git = {
       enable = true;
@@ -75,25 +80,6 @@
         nvim-treesitter
         nvim-tree-lua
       ];
-    };
-    helix = {
-      enable = true;
-      settings = {
-        # TODO make theme be loaded from file like attempted below
-        theme = "kanabox"; # must manually copy file from helix dir into ~/.config/helix/themes/kanabox.toml
-
-        editor = {
-          mouse = false;
-          auto-format = true;
-          line-number = "relative";
-          lsp.display-messages = true;
-          lsp.display-inlay-hints = true;
-        };
-      };
-      themes = {
-        # error processing toml file
-        #kanabox = (builtins.readFile ./helix/themes/kanabox/theme.toml);
-      };
     };
     tmux = {
       enable = true;
@@ -191,21 +177,25 @@
     };
     emacs = {
       enable = true;
-      package = pkgs.emacs29-pgtk;
       startWithUserSession = true;
     };
   };
-  xdg.desktopEntries = {
-    steam = {
-      name = "Steam";
-      exec = "steam -w 2160 -h 1440 %U";
-      type = "Application";
-      categories = [ "Game" ];
-      terminal = false;
-      mimeType = [ "x-scheme-handler/steam" "x-scheme-handler/steamlink" ];
-      prefersNonDefaultGPU = true;
+  xdg = {
+    configFile = {
+      "hypr" = {source = ./hypr;};
     };
   };
+  # desktopEntries = {
+    # steam = {
+      # name = "Steam";
+      # exec = "steam -w 2160 -h 1440 %U";
+      # type = "Application";
+      # categories = [ "Game" ];
+      # terminal = false;
+      # mimeType = [ "x-scheme-handler/steam" "x-scheme-handler/steamlink" ];
+      # prefersNonDefaultGPU = true;
+    # };
+  # };
   # this was a test idek what this does
   # https://rycee.gitlab.io/home-manager/options.html#opt-nixpkgs.overlays
   nixpkgs.overlays = [

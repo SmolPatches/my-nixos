@@ -165,11 +165,11 @@
       package = pkgs.wireshark-qt;
     };
   };
- services = {
-#   nginx = {
-#     enable = true;
-#     config  = (builtins.readFile ./nginx.conf);
-#   };
+  services = {
+    #   nginx = {
+    #     enable = true;
+    #     config  = (builtins.readFile ./nginx.conf);
+    #   };
     pipewire = {
       enable = true;
       alsa.enable = true;
