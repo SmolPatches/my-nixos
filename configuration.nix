@@ -75,6 +75,7 @@
    #     enable = true;
    #   };
    desktopManager.xfce.enable = true;
+   #displayManager.startx.enable = true;
    displayManager.defaultSession = "xfce";
   };
   # bluetooth support
@@ -202,19 +203,6 @@
   # };
   environment.sessionVariables = {
 
-    MOZ_ENABLE_WAYLAND = "1";
-    SDL_VIDEODRIVER = "wayland";
-    WLR_NO_HARDWARE_CURSORS = "1";
-    XDG_CURRENT_DESKTOP = "Hyprland";
-    XDG_SESSION_DESKTOP = "Hyprland";
-    XDG_SESSION_TYPE = "wayland";
-    __GLX_VENDSOR_LIBRARY_NAME = "nvidia";
-    GDK_BACKEND = "wayland";
-    GBM_BACKEND = "nvida-drm";
-    GTK_THEME = "Dracula:dark";
-    QT_QPA_PLATFORMTHEME = "qt5ct";
-    LIBVA_DRIVER_NAME = "nvidia";
-    #install vulkan
   };
   security = {
     doas = {
