@@ -75,7 +75,7 @@
    #     enable = true;
    #   };
    desktopManager.xfce.enable = true;
-   displayManager.xfce.enable = true;
+   displayManager.defaultSession = "xfce";
   };
   # bluetooth support
   hardware.bluetooth = {
