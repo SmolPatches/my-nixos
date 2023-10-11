@@ -71,12 +71,15 @@
     layout = "us";
     enable = true;
     xkbVariant = "";
-   # windowManager.bspwm = {
-   #     enable = true;
-   #   };
-   desktopManager.xfce.enable = true;
-   #displayManager.startx.enable = true;
-   displayManager.defaultSession = "xfce";
+    windowManager = {
+      bspwm = {
+        enable = true;
+      };
+      cwm = {
+        enable = true;
+      };
+    };
+   displayManager.defaultSession = "none+cwm";
   };
   # bluetooth support
   hardware.bluetooth = {
@@ -98,6 +101,7 @@
         qt5ct
         age
         feh
+        xorg.xrandr
         adwaita-qt
       ];
       openssh.authorizedKeys.keys = [
@@ -162,7 +166,7 @@
       enable = false;
     };
     steam = {
-      enable = true;
+      enable = false;
     };
     dconf = {
       enable = true;
@@ -187,7 +191,7 @@
       package = pkgs.deluge-gtk;
     };
     flatpak = {
-      enable = false;
+      enable = true;
     };
     blueman = {
       enable = true;
