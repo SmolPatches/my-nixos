@@ -26,6 +26,7 @@
         inputs.home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
+          nixpkgs.overlays = [(self: super: { local-everforest = super.callPackage ./themes/everforest-gtk-theme.nix {}; })];
           home-manager.useUserPackages = true;
           home-manager.users.watashi = import ./home.nix;
         }

@@ -38,7 +38,7 @@
     firewall = {
       enable = true;
       # ssh and searxng docker and whoogle
-      allowedTCPPorts = [ 22 8080 8081 ];
+      allowedTCPPorts = [ 22 80 8080 8081 ];
     };
   };
   # Set your time zone.
@@ -107,6 +107,7 @@
   environment.systemPackages = with pkgs; [
     wget
     lsof
+    screen
     swaybg
     swaylock
     swayidle
@@ -164,7 +165,11 @@
       package = pkgs.wireshark-qt;
     };
   };
-  services = {
+ services = {
+#   nginx = {
+#     enable = true;
+#     config  = (builtins.readFile ./nginx.conf);
+#   };
     pipewire = {
       enable = true;
       alsa.enable = true;
@@ -201,7 +206,7 @@
     GDK_BACKEND = "wayland";
     GBM_BACKEND = "nvida-drm";
     GTK_THEME = "Dracula:dark";
-    QT_QPA_PLATFORMTHEME = "qt5ct";
+    QT_QPA_PLATFORMTHEME = "gtk2";
     LIBVA_DRIVER_NAME = "nvidia";
     #install vulkan
   };
@@ -293,8 +298,9 @@
   };
   qt = {
     enable = true;
-    platformTheme = pkgs.lib.mkForce "qt5ct";
-    style = "adwaita-dark";
+    platformTheme = "gtk2";
+    #style = "adwaita-dark";
+    style = pkgs.lib.mkForce "gtk2";
   };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
