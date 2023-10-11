@@ -206,7 +206,7 @@
     GDK_BACKEND = "wayland";
     GBM_BACKEND = "nvida-drm";
     GTK_THEME = "Dracula:dark";
-    QT_QPA_PLATFORMTHEME = "gtk2";
+    QT_QPA_PLATFORMTHEME = "qt5ct";
     LIBVA_DRIVER_NAME = "nvidia";
     #install vulkan
   };
@@ -277,20 +277,6 @@
     };
     oci-containers = {
       backend = "docker";
-      containers = {
-        searxng = {
-          image = "searxng/searxng";
-          autoStart = true;
-          # forward 8080 to main host
-          ports = ["8080:8080"];
-        };
-        whoogle = {
-          image = "benbusby/whoogle-search";
-          autoStart = true;
-          # forward 8081 to main host
-          ports = ["8081:5000"];
-        };
-      };
     };
     libvirtd = {
       enable = true;
@@ -298,9 +284,9 @@
   };
   qt = {
     enable = true;
-    platformTheme = "gtk2";
+    platformTheme = "qt5ct";
     #style = "adwaita-dark";
-    style = pkgs.lib.mkForce "gtk2";
+    style = pkgs.lib.mkForce "bb10dark";
   };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
