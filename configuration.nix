@@ -69,7 +69,13 @@
   # Configure keymap in X11
   services.xserver = {
     layout = "us";
+    enable = true;
     xkbVariant = "";
+   # windowManager.bspwm = {
+   #     enable = true;
+   #   };
+   desktopManager.xfce.enable = true;
+   displayManager.xfce.enable = true;
   };
   # bluetooth support
   hardware.bluetooth = {
@@ -90,7 +96,7 @@
         vulkan-tools
         qt5ct
         age
-        xdg-desktop-portal-hyprland
+        feh
         adwaita-qt
       ];
       openssh.authorizedKeys.keys = [
