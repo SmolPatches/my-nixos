@@ -1,4 +1,6 @@
 sticky yes
-command term "kitty"
+fontname "3270NerdFontMono:pixelsize=14"
+command kitty "kitty"
 command kill-cwm "killall cwm"
-bind-key CM-Return
+bind-key 4-Return "kitty"
+bind-key 4-b "firefox"

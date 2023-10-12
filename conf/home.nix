@@ -1,32 +1,34 @@
 { config, pkgs, ... }: {
 
+  # TODO
+  # configure wofi/rofi
+  # eww
 
   # home-manager.users.rob = {
   /* The home.stateVersion option does not have a default and must be set */
   home.stateVersion = "23.05";
   home.packages = with pkgs; [
-    wayvnc
     neofetch
     obsidian
     rnix-lsp
-    feh
     yaml-language-server
     zls
     nixpkgs-fmt
     moar
     yacreader
     htop
-    wofi
     thunderbird
     pcmanfm
     qbittorrent
     keepassxc
     rpcs3
     pcsx2
-    duckstation
-    retroarchFull
     libreoffice
-    spotify-tui
+    #x org packages
+    feh
+    rofi
+    #wayland packages
+    wofi
   ];
   home.file = {
     # cwmrc
