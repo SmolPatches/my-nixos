@@ -1,0 +1,2 @@
+feh --bg-scale ~/.config/wallpapers/sunmoon.jpg &
+exec cwm

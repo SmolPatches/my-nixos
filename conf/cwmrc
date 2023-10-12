@@ -1,0 +1,4 @@
+sticky yes
+command term "kitty"
+command kill-cwm "killall cwm"
+bind-key CM-Return

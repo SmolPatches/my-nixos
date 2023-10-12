@@ -16,7 +16,7 @@
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./nvidia.nix
+      ./conf/nvidia.nix
     ];
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -70,6 +70,13 @@
   services.xserver = {
     layout = "us";
     xkbVariant = "";
+    enable = true;
+    windowManager = {
+      cwm.enable = true;
+    };
+    displayManager = {
+      startx.enable = true;
+    };
   };
   # bluetooth support
   hardware.bluetooth = {
@@ -88,6 +95,7 @@
       packages = with pkgs; [
         virt-manager
         vulkan-tools
+        killall
         qt5ct
         age
         xdg-desktop-portal-hyprland
@@ -141,10 +149,6 @@
       };
       nvidiaPatches = true;
     };
-    sway = {
-      enable = false;
-      extraOptions = [ "--unsupported-gpu" "--verbose" ];
-    };
     git = {
       enable = true;
     };
@@ -153,9 +157,6 @@
     };
     xwayland = {
       enable = false;
-    };
-    steam = {
-      enable = true;
     };
     dconf = {
       enable = true;
@@ -166,10 +167,6 @@
     };
   };
   services = {
-    #   nginx = {
-    #     enable = true;
-    #     config  = (builtins.readFile ./nginx.conf);
-    #   };
     pipewire = {
       enable = true;
       alsa.enable = true;
@@ -180,35 +177,14 @@
       package = pkgs.deluge-gtk;
     };
     flatpak = {
-      enable = false;
+      enable = true;
     };
     blueman = {
       enable = true;
     };
   };
-  #xdg = {
-  #  portal = {
-  #    xdgOpenUsePortal = true;
-  #    wlr.enable = false;
-  #    extraPortals = [pkgs.xdg-desktop-portal-hyprland];
-  #    enable = true;
-  #  };
-  # };
   environment.sessionVariables = {
 
-    MOZ_ENABLE_WAYLAND = "1";
-    SDL_VIDEODRIVER = "wayland";
-    WLR_NO_HARDWARE_CURSORS = "1";
-    XDG_CURRENT_DESKTOP = "Hyprland";
-    XDG_SESSION_DESKTOP = "Hyprland";
-    XDG_SESSION_TYPE = "wayland";
-    __GLX_VENDSOR_LIBRARY_NAME = "nvidia";
-    GDK_BACKEND = "wayland";
-    GBM_BACKEND = "nvida-drm";
-    GTK_THEME = "Dracula:dark";
-    QT_QPA_PLATFORMTHEME = "qt5ct";
-    LIBVA_DRIVER_NAME = "nvidia";
-    #install vulkan
   };
   security = {
     doas = {
@@ -285,7 +261,6 @@
   qt = {
     enable = true;
     platformTheme = "qt5ct";
-    #style = "adwaita-dark";
     style = pkgs.lib.mkForce "bb10dark";
   };
   # Open ports in the firewall.

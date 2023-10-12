@@ -9,10 +9,10 @@
     neofetch
     obsidian
     rnix-lsp
+    feh
     yaml-language-server
     zls
     nixpkgs-fmt
-    pijul
     moar
     yacreader
     htop
@@ -28,13 +28,24 @@
     libreoffice
     spotify-tui
   ];
+  home.file = {
+    # cwmrc
+    ".cwmrc" = {
+      enable = true;
+      source = ./cwmrc;
+    };
+    ".xinitrc" = {
+      enable = true;
+      source = ./xinitrc;
+    };
+  };
   programs = {
     kitty = {
       enable = true;
       font = {
         name = "3270NerdFontMono";
         package =  (pkgs.nerdfonts.override { fonts = [ "3270" ]; });
-        size = 13;
+        size = 16;
       };
     };
     git = {
@@ -55,7 +66,7 @@
       vimAlias = true;
       withNodeJs = true;
       withPython3 = true;
-      defaultEditor = true;
+      defaultEditor = false;
       extraLuaConfig = builtins.readFile ./neovim/init.lua;
       extraPackages = with pkgs; [
         # extra packages neovim would need
@@ -122,8 +133,8 @@
       defaultOptions = [ "--exact" ];
     };
     starship = {
-      enable = true;
-      enableZshIntegration = true;
+      enable = false;
+      enableZshIntegration = false;
     };
     alacritty = {
       enable = true;
@@ -154,18 +165,23 @@
     };
   };
   home.sessionVariables = {
-    EDITOR = "nvim";
+    EDITOR = "emacslient";
   };
   gtk = {
     enable = true;
     font = {
-      package = (pkgs.nerdfonts.override { fonts = [ "CascadiaCode" ]; });
-      name = " CaskaydiaCove Nerd Font Mono";
-      size = 14;
+      name = "3270NerdFontMono";
+      package =  (pkgs.nerdfonts.override { fonts = [ "3270" ]; });
+      size = 16;
     };
+    #font = {
+      #package = (pkgs.nerdfonts.override { fonts = [ "CascadiaCode" ]; });
+      #name = " CaskaydiaCove Nerd Font Mono";
+      #size = 14;
+    #};
     theme = {
-      name = "Dracula";
-      package = pkgs.dracula-theme;
+      name = "Everforest";
+      package = pkgs.local-everforest;
     };
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = true;
@@ -183,6 +199,7 @@
   xdg = {
     configFile = {
       "hypr" = {source = ./hypr;};
+      "wallpapers" = {source = ./wallpapers;};
     };
   };
   # desktopEntries = {
