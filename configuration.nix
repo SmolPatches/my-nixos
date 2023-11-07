@@ -19,9 +19,20 @@
       ./conf/nvidia.nix
     ];
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.loader = {
+    timeout = 15;
+    systemd-boot.enable = true;
+    systemd-boot.consoleMode = "keep";
+    efi.canTouchEfiVariables = true;
+    efi.efiSysMountPoint = "/boot/efi";
+    systemd-boot.extraEntries = {
+      "windows.conf" = ''
+        title Windows Boot Manager
+        efi /EFI/MICROSOFT/BOOT/BOOTMGFW.EFI
+      '';
+
+    };
+  };
   # use latest linux
   #boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -167,6 +178,21 @@
     };
   };
   services = {
+    greetd = {
+      enable = true;
+      restart = false;
+      settings = {
+        default_session = {
+          command = "{pkgs.greetd.tuigreet}/bin/tuigreet Hyprland";
+          user = "watashi";
+        };
+        initial_session = {
+          command = "Hyprland";
+          user = "watashi";
+        };
+      };
+
+    };
     pipewire = {
       enable = true;
       alsa.enable = true;
@@ -183,9 +209,7 @@
       enable = true;
     };
   };
-  environment.sessionVariables = {
-
-  };
+  environment.sessionVariables = { };
   security = {
     doas = {
       enable = true;
@@ -279,4 +303,9 @@
   #nix channel to use
   system.autoUpgrade.channel = "https://channels.nixos.org/nixos-23.05";
 
+  #  system.activationScripts = {
+  #    auto-windows-systemd-boot = ''
+  #      cat /boot/efi/loader/loader.conf | ${pkgs.gnused}/bin/sed "s/nixos-generation-.*.conf/auto-windows/" > /boot/efi/loader/loader.conf
+  #    '';
+  #  };
 }
