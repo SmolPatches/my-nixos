@@ -285,7 +285,7 @@
   qt = {
     enable = true;
     platformTheme = "qt5ct";
-    style = pkgs.lib.mkForce "bb10dark";
+    style = pkgs.lib.mkForce "adwaita-dark";
   };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -302,10 +302,4 @@
   system.stateVersion = "23.05"; # Did you read the comment?
   #nix channel to use
   system.autoUpgrade.channel = "https://channels.nixos.org/nixos-23.05";
-
-  #  system.activationScripts = {
-  #    auto-windows-systemd-boot = ''
-  #      cat /boot/efi/loader/loader.conf | ${pkgs.gnused}/bin/sed "s/nixos-generation-.*.conf/auto-windows/" > /boot/efi/loader/loader.conf
-  #    '';
-  #  };
 }
