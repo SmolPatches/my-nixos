@@ -37,7 +37,7 @@
   #boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # downgrade kernel to test wifi changes
-  boot.kernelPackages = pkgs.linuxPackages_6_1;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
@@ -126,6 +126,7 @@
   environment.systemPackages = with pkgs; [
     wget
     lsof
+    hwinfo
     screen
     swaybg
     swaylock
@@ -133,7 +134,6 @@
     xdg-utils
     mpv
     bat
-    exa
     ripgrep
     firefox-wayland
     pavucontrol
@@ -150,15 +150,15 @@
   (if config.programs.hyprland.xwayland.enable then [ glxinfo ] else [ ]);
 
   programs = {
+    thunar.enable = true;
     hyprland = {
       # use hyprland from flake
       package = inputs.hyprland.packages.${pkgs.system}.hyprland;
       enable = true;
       xwayland = {
-        hidpi = false;
         enable = false;
       };
-      nvidiaPatches = true;
+      enableNvidiaPatches = true;
     };
     git = {
       enable = true;
@@ -178,6 +178,7 @@
     };
   };
   services = {
+    dbus.enable = true;
     greetd = {
       enable = true;
       restart = false;
@@ -191,7 +192,6 @@
           user = "watashi";
         };
       };
-
     };
     pipewire = {
       enable = true;

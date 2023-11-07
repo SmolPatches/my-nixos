@@ -9,7 +9,7 @@
   home.stateVersion = "23.05";
   home.packages = with pkgs; [
     neofetch
-    obsidian
+    eza
     rnix-lsp
     yaml-language-server
     zls
@@ -18,7 +18,6 @@
     yacreader
     htop
     thunderbird
-    pcmanfm
     qbittorrent
     keepassxc
     rpcs3
@@ -116,8 +115,8 @@
       syntaxHighlighting.enable = true;
       defaultKeymap = "vicmd";
       shellAliases = {
-        ll = "exa -Fxl --icons";
-        ls = "exa --icons";
+        ll = "eza -Fxl --icons";
+        ls = "eza --icons";
       };
     };
     nushell = {

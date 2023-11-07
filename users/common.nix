@@ -9,7 +9,7 @@
     zls
     tree
     glxinfo
-    exa
+    eza
     ripgrep
     wofi
     nixpkgs-fmt
@@ -79,8 +79,8 @@
       syntaxHighlighting.enable = true;
       defaultKeymap = "vicmd";
       shellAliases = {
-        ll = "exa -Fxl --icons";
-        ls = "exa --icons";
+        ll = "eza -Fxl --icons";
+        ls = "eza --icons";
       };
     };
     nushell = {
@@ -152,5 +152,3 @@
     };
   };
 }
-
-
