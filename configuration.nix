@@ -19,6 +19,7 @@
       ./conf/nvidia.nix
     ];
   # Bootloader.
+  boot.supportedFilesystems = ["nfs"];
   boot.loader = {
     timeout = 15;
     systemd-boot.enable = true;
@@ -124,6 +125,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    nfs-utils
     wget
     lsof
     hwinfo
@@ -178,6 +180,7 @@
     };
   };
   services = {
+    rpcbind.enable = true;
     dbus.enable = true;
     greetd = {
       enable = true;

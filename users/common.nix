@@ -124,7 +124,7 @@
   };
   home.sessionVariables = {
     EDITOR = "emacs";
-    GDK_BACKEND="wayland";
+    GDK_BACKEND = "wayland";
   };
   gtk = {
     enable = true;

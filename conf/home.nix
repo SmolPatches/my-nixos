@@ -11,6 +11,7 @@
     neofetch
     eza
     rnix-lsp
+    localsend
     yaml-language-server
     zls
     nixpkgs-fmt
@@ -29,6 +30,17 @@
     #wayland packages
     wofi
   ];
+  #environment.etc = {
+    #"xdg/gtk-3.0/settings.ini".text = ''
+      #[Settings]
+      #gtk-application-prefer-dark-theme = true
+    #'';
+#
+    #"xdg/gtk-4.0/settings.ini".text = ''
+      #[Settings]
+      #gtk-application-prefer-dark-theme = true
+    #'';
+  #};
   home.file = {
     # cwmrc
     ".cwmrc" = {
@@ -45,7 +57,7 @@
       enable = true;
       font = {
         name = "3270NerdFontMono";
-        package =  (pkgs.nerdfonts.override { fonts = [ "3270" ]; });
+        package = (pkgs.nerdfonts.override { fonts = [ "3270" ]; });
         size = 16;
       };
     };
@@ -172,17 +184,17 @@
     enable = true;
     font = {
       name = "3270NerdFontMono";
-      package =  (pkgs.nerdfonts.override { fonts = [ "3270" ]; });
+      package = (pkgs.nerdfonts.override { fonts = [ "3270" ]; });
       size = 16;
     };
     #font = {
-      #package = (pkgs.nerdfonts.override { fonts = [ "CascadiaCode" ]; });
-      #name = " CaskaydiaCove Nerd Font Mono";
-      #size = 14;
+    #package = (pkgs.nerdfonts.override { fonts = [ "CascadiaCode" ]; });
+    #name = " CaskaydiaCove Nerd Font Mono";
+    #size = 14;
     #};
     theme = {
-      name = "Everforest";
-      package = pkgs.local-everforest;
+      name = "Breeze-Dark";
+      package = pkgs.libsForQt5.breeze-gtk;
     };
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = true;
@@ -199,20 +211,20 @@
   };
   xdg = {
     configFile = {
-      "hypr" = {source = ./hypr;};
-      "wallpapers" = {source = ./wallpapers;};
+      "hypr" = { source = ./hypr; };
+      "wallpapers" = { source = ./wallpapers; };
     };
   };
   # desktopEntries = {
-    # steam = {
-      # name = "Steam";
-      # exec = "steam -w 2160 -h 1440 %U";
-      # type = "Application";
-      # categories = [ "Game" ];
-      # terminal = false;
-      # mimeType = [ "x-scheme-handler/steam" "x-scheme-handler/steamlink" ];
-      # prefersNonDefaultGPU = true;
-    # };
+  # steam = {
+  # name = "Steam";
+  # exec = "steam -w 2160 -h 1440 %U";
+  # type = "Application";
+  # categories = [ "Game" ];
+  # terminal = false;
+  # mimeType = [ "x-scheme-handler/steam" "x-scheme-handler/steamlink" ];
+  # prefersNonDefaultGPU = true;
+  # };
   # };
   # this was a test idek what this does
   # https://rycee.gitlab.io/home-manager/options.html#opt-nixpkgs.overlays
