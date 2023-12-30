@@ -30,17 +30,6 @@
     #wayland packages
     wofi
   ];
-  #environment.etc = {
-    #"xdg/gtk-3.0/settings.ini".text = ''
-      #[Settings]
-      #gtk-application-prefer-dark-theme = true
-    #'';
-#
-    #"xdg/gtk-4.0/settings.ini".text = ''
-      #[Settings]
-      #gtk-application-prefer-dark-theme = true
-    #'';
-  #};
   home.file = {
     # cwmrc
     ".cwmrc" = {
@@ -74,37 +63,37 @@
         background = "dark";
       };
     };
-    neovim = {
-      enable = true;
-      vimAlias = true;
-      withNodeJs = true;
-      withPython3 = true;
-      defaultEditor = false;
-      extraLuaConfig = builtins.readFile ./neovim/init.lua;
-      extraPackages = with pkgs; [
-        # extra packages neovim would need
-        # like lsps and things
-        # i chose not to install these but instead have dev flakes install them
-        # this means lsp must conditionally check to see if the required commands are present on system before attaching
-      ];
-      plugins = with pkgs.vimPlugins; [
-        zig-vim
-        trouble-nvim
-        plenary-nvim
-        telescope-nvim
-        nvim-lspconfig
-        nvim-cmp
-        lualine-nvim
-        cmp-buffer
-        cmp-path
-        cmp-nvim-lsp
-        cmp-nvim-lua
-        gitsigns-nvim
-        gruvbox-nvim
-        nvim-treesitter
-        nvim-tree-lua
-      ];
-    };
+    #neovim = {
+    #  enable = true;
+    #  vimAlias = true;
+    #  withNodeJs = true;
+    #  withPython3 = true;
+    #  defaultEditor = false;
+    #  extraLuaConfig = builtins.readFile ./neovim/init.lua;
+    #  extraPackages = with pkgs; [
+    #    # extra packages neovim would need
+    #    # like lsps and things
+    #    # i chose not to install these but instead have dev flakes install them
+    #    # this means lsp must conditionally check to see if the required commands are present on system before attaching
+    #  ];
+    #  plugins = with pkgs.vimPlugins; [
+    #    zig-vim
+    #    trouble-nvim
+    #    plenary-nvim
+    #    telescope-nvim
+    #    nvim-lspconfig
+    #    nvim-cmp
+    #    lualine-nvim
+    #    cmp-buffer
+    #    cmp-path
+    #    cmp-nvim-lsp
+    #    cmp-nvim-lua
+    #    gitsigns-nvim
+    #    gruvbox-nvim
+    #    nvim-treesitter
+    #    nvim-tree-lua
+    #  ];
+    #};
     tmux = {
       enable = true;
     };
