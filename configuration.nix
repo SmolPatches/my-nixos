@@ -93,7 +93,7 @@
     mutableUsers = false;
     users.watashi = {
       shell = pkgs.zsh;
-      hashedPassword = "$y$j9T$/9B9a0OrsQpd5BAniXssM.$kuA1aZ4odb8738jr/TGzBlYIvPQXV7l5C5dmdIWseJ7";
+      hashedPassword = "$y$j9T$gFWKGAHrfLFiiB9e4S5sk0$JzIpzQgMJ.CQyS0rKxumSBTEuhIVmtXui5iWx3lZdA3";
       isNormalUser = true;
       extraGroups = [ "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
       packages = with pkgs; [
