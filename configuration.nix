@@ -19,21 +19,21 @@
       ./conf/nvidia.nix
     ];
   # Bootloader.
-  boot.supportedFilesystems = [ "nfs" ];
-  boot.loader = {
-    timeout = 15;
-    systemd-boot.enable = true;
-    systemd-boot.consoleMode = "keep";
-    efi.canTouchEfiVariables = true;
-    efi.efiSysMountPoint = "/boot/efi";
-    systemd-boot.extraEntries = {
-      "windows.conf" = ''
-        title Windows Boot Manager
-        efi /EFI/MICROSOFT/BOOT/BOOTMGFW.EFI
-      '';
-
-    };
-  };
+  #boot.supportedFilesystems = [ "nfs" ];
+  #boot.loader = {
+    #timeout = 15;
+    #systemd-boot.enable = true;
+    #systemd-boot.consoleMode = "keep";
+    #efi.canTouchEfiVariables = true;
+    #efi.efiSysMountPoint = "/boot/efi";
+    #systemd-boot.extraEntries = {
+      #"windows.conf" = ''
+        #title Windows Boot Manager
+        #efi /EFI/MICROSOFT/BOOT/BOOTMGFW.EFI
+      #'';
+#
+    #};
+  #};
   # use latest linux
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
