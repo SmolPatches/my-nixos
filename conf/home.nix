@@ -42,14 +42,6 @@
     };
   };
   programs = {
-    kitty = {
-      enable = true;
-      font = {
-        name = "3270NerdFontMono";
-        package = (pkgs.nerdfonts.override { fonts = [ "3270" ]; });
-        size = 16;
-      };
-    };
     git = {
       enable = true;
       ignores = [ "*.*~" "#*#" ];
@@ -98,7 +90,7 @@
       enable = true;
     };
     vscode = {
-      package = pkgs.vscodium;
+      package = pkgs.vscodium.fhs;
       enable = true;
       userSettings = {
         "editor.fontFamily" = "'Caskaydia Nerd Font Mono'";
@@ -172,27 +164,15 @@
   gtk = {
     enable = true;
     font = {
-      name = "3270NerdFontMono";
-      package = (pkgs.nerdfonts.override { fonts = [ "3270" ]; });
-      size = 16;
-    };
-    #font = {
-    #package = (pkgs.nerdfonts.override { fonts = [ "CascadiaCode" ]; });
-    #name = " CaskaydiaCove Nerd Font Mono";
-    #size = 14;
-    #};
-    theme = {
-      name = "Breeze-Dark";
-      package = pkgs.libsForQt5.breeze-gtk;
+    package = (pkgs.nerdfonts.override { fonts = [ "CascadiaCode" ]; });
+    name = " CaskaydiaCove Nerd Font Mono";
+    size = 14;
     };
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = true;
     };
   };
   services = {
-    spotifyd = {
-      enable = true;
-    };
     emacs = {
       enable = true;
       startWithUserSession = true;

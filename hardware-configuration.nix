@@ -9,41 +9,34 @@
       (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" "mt7921e" ];
+  boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
     {
-      device = "/dev/disk/by-uuid/19d02f7b-c055-43e1-ac98-2051c7d9e921";
-      fsType = "ext4";
+      device = "/dev/disk/by-uuid/ab7aa4e1-c45c-4267-be12-181ebccabfa1";
+      fsType = "btrfs";
+      options = [ "subvol=@" ];
     };
 
-  fileSystems."/boot/efi" =
+  fileSystems."/boot" =
     {
-      device = "/dev/disk/by-uuid/0A7C-5D27";
+      device = "/dev/disk/by-uuid/760E-DB56";
       fsType = "vfat";
     };
 
-  swapDevices =
-    [{ device = "/dev/disk/by-uuid/ddf76d6b-ca73-489a-b169-7f9c57c6ea1d"; }];
+  swapDevices = [ ];
 
-  #opengl stuff
-  hardware.opengl = {
-    driSupport32Bit = true;
-    driSupport = true;
-    enable = true;
-  };
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp4s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp42s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  # high-resolution display
-  #hardware.video.hidpi.enable = lib.mkDefault true;
 }
