@@ -19,17 +19,57 @@
       ./conf/nvidia.nix
     ];
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  # use latest linux
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.supportedFilesystems = [ "nfs" ];
+  #boot.loader = {
+  #timeout = 15;
+  #systemd-boot.enable = true;
+  #systemd-boot.consoleMode = "keep";
+  #efi.canTouchEfiVariables = true;
+  #efi.efiSysMountPoint = "/boot/efi";
+  #systemd-boot.extraEntries = {
+  #"windows.conf" = ''
+  #title Windows Boot Manager
+  #efi /EFI/MICROSOFT/BOOT/BOOTMGFW.EFI
+  #'';
+  #
+  #};
+  #};
 
-  # downgrade kernel to test wifi changes
-  boot.kernelPackages = pkgs.linuxPackages_6_1;
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  # working boot
+  #boot.loader.systemd-boot.enable = true;
+  #boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader = {
+    timeout = 15;
+    efi = {
+      canTouchEfiVariables = true;
+      # assuming /boot is the mount point of the  EFI partition in NixOS (as the installation section recommends).
+      efiSysMountPoint = "/boot";
+    };
+    grub = {
+      # despite what the configuration.nix manpage seems to indicate,
+      # as of release 17.09, setting device to "nodev" will still call
+      # `grub-install` if efiSupport is true
+      # (the devices list is not used by the EFI grub install,
+      # but must be set to some value in order to pass an assert in grub.nix)
+      devices = [ "nodev" ];
+      efiSupport = true;
+      enable = true;
+      # set $FS_UUID to the UUID of the EFI partition
+      extraEntries = ''
+        menuentry "Windows" {
+          insmod part_gpt
+          insmod fat
+          insmod search_fs_uuid
+          insmod chain
+          search --fs-uuid --set=root $FS_UUID
+          chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+        }
+      '';
+      version = 2;
+    };
+  };
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -68,16 +108,14 @@
   };
   # Configure keymap in X11
   services.xserver = {
+    enable = true;
     layout = "us";
     xkbVariant = "";
-    enable = true;
-    windowManager = {
-      cwm.enable = true;
-    };
-    displayManager = {
-      startx.enable = true;
-    };
+    #displayManager.defaultSession = "plasmawayland";
+    displayManager.sddm.enable = true;
+    desktopManager.plasma5.enable = true;
   };
+  hardware.pulseaudio.enable = false;
   # bluetooth support
   hardware.bluetooth = {
     enable = true;
@@ -89,18 +127,15 @@
     mutableUsers = false;
     users.watashi = {
       shell = pkgs.zsh;
-      #hashedPassword = "$y$j9T$gFWKGAHrfLFiiB9e4S5sk0$JzIpzQgMJ.CQyS0rKxumSBTEuhIVmtXui5iWx3lZdA3";
-	  password = "testpass";
+      password = "infamous2";
       isNormalUser = true;
       extraGroups = [ "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
       packages = with pkgs; [
         virt-manager
         vulkan-tools
         killall
-        qt5ct
         age
         xdg-desktop-portal-hyprland
-        adwaita-qt
       ];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDMqnUtVfxGgzVD/rsHOhZphgSTztDjTxCdZ4yJkr4zQ r3b@eldnmac.resource.campus.njit.edu"
@@ -114,8 +149,10 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    nfs-utils
     wget
     lsof
+    hwinfo
     screen
     swaybg
     swaylock
@@ -123,7 +160,6 @@
     xdg-utils
     mpv
     bat
-    exa
     ripgrep
     firefox-wayland
     pavucontrol
@@ -131,13 +167,10 @@
     tree
     file
     binwalk
-    yubikey-personalization
     usbutils
     pciutils
 
-  ] ++
-  # install glxinfo if xwayland is enabled
-  (if config.programs.hyprland.xwayland.enable then [ glxinfo ] else [ ]);
+  ];
 
   programs = {
     hyprland = {
@@ -145,10 +178,15 @@
       package = inputs.hyprland.packages.${pkgs.system}.hyprland;
       enable = true;
       xwayland = {
-        hidpi = false;
         enable = false;
       };
-      nvidiaPatches = true;
+      enableNvidiaPatches = true;
+    };
+    steam = {
+      enable = true;
+    };
+    direnv = {
+      enable = true;
     };
     git = {
       enable = true;
@@ -167,11 +205,42 @@
       package = pkgs.wireshark-qt;
     };
   };
+  environment.plasma5.excludePackages = with pkgs.libsForQt5; [
+    elisa
+    gwenview
+    okular
+    oxygen
+    khelpcenter
+    konsole
+    plasma-browser-integration
+    print-manager
+  ];
+  environment.gnome.excludePackages = (with pkgs; [
+    gnome-photos
+    gnome-tour
+  ]) ++ (with pkgs.gnome; [
+    cheese # webcam tool
+    gnome-music
+    gnome-terminal
+    gedit # text editor
+    epiphany # web browser
+    geary # email reader
+    evince # document viewer
+    gnome-characters
+    totem # video player
+    tali # poker game
+    iagno # go game
+    hitori # sudoku game
+    atomix # puzzle game
+  ]);
+
   services = {
+    rpcbind.enable = true;
+    dbus.enable = true;
     pipewire = {
       enable = true;
       alsa.enable = true;
-      pulse.enable = true;
+      pulse.enable = false;
     };
     deluge = {
       enable = true;
@@ -184,50 +253,45 @@
       enable = true;
     };
   };
-  environment.sessionVariables = {
-
+  environment = {
+    #noXlibs = true;
   };
-  security = {
-    doas = {
-      enable = true;
-      wheelNeedsPassword = false;
-      extraRules = [{
-        users = [ "watashi" ];
-        keepEnv = true;
-        setEnv = [ "HOME" "PATH" ];
-        #persist useless if passwords are disabled
-        #		persist = true;
-        noPass = true;
-      }];
-    };
-    pam = {
-      # based on configuration options below
-      # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/security/pam.nix
-      # and
-      # guide here https://nixos.wiki/wiki/Yubikey
-      yubico = {
-        enable = true;
-        mode = "challenge-response";
-        id = [ "22728752" ]; # follow yubico-pam guide here, https://nixos.wiki/wiki/Yubikey
-        debug = false; # enable passwordless not working
-        control = "sufficient";
-      };
-      services = {
-        sudo.yubicoAuth = true;
-        doas.yubicoAuth = true;
-        login.yubicoAuth = true;
-      };
-    };
-
-  };
+  #  security = {
+  #    doas = {
+  #      enable = true;
+  #      wheelNeedsPassword = false;
+  #      extraRules = [{
+  #        users = [ "watashi" ];
+  #        keepEnv = true;
+  #        setEnv = [ "HOME" "PATH" ];
+  #        #persist useless if passwords are disabled
+  #        #		persist = true;
+  #        noPass = true;
+  #      }];
+  #    };
+  #    pam = {
+  #      # based on configuration options below
+  #      # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/security/pam.nix
+  #      # and
+  #      # guide here https://nixos.wiki/wiki/Yubikey
+  #      yubico = {
+  #        enable = true;
+  #        mode = "challenge-response";
+  #        id = [ "22728752" ]; # follow yubico-pam guide here, https://nixos.wiki/wiki/Yubikey
+  #        debug = false; # enable passwordless not working
+  #        control = "sufficient";
+  #      };
+  #      services = {
+  #        sudo.yubicoAuth = true;
+  #        doas.yubicoAuth = true;
+  #        login.yubicoAuth = true;
+  #      };
+  #    };
+  #  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
 
   services = {
     # Enable the OpenSSH daemon.
@@ -239,13 +303,6 @@
         AuthenticationMethods = "publickey";
         PermitRootLogin = "no";
       };
-    };
-    #yubikey smartcard stuff
-    pcscd = {
-      enable = true;
-    };
-    udev = {
-      packages = with pkgs;[ yubikey-personalization ];
     };
   };
   virtualisation = {
@@ -261,8 +318,8 @@
   };
   qt = {
     enable = true;
-    platformTheme = "qt5ct";
-    style = pkgs.lib.mkForce "bb10dark";
+    platformTheme = "gnome";
+    style = "adwaita-dark";
   };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -279,5 +336,4 @@
   system.stateVersion = "23.05"; # Did you read the comment?
   #nix channel to use
   system.autoUpgrade.channel = "https://channels.nixos.org/nixos-23.05";
-
 }

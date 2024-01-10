@@ -5,7 +5,7 @@
 , gtk-engine-murrine
 , fetchzip
 }:
-stdenvNoCC.mkDerivation  {
+stdenvNoCC.mkDerivation {
   pname = "dark-abyss";
   version = "2.3.0";
 

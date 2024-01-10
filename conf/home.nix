@@ -9,8 +9,10 @@
   home.stateVersion = "23.05";
   home.packages = with pkgs; [
     neofetch
-    obsidian
+    discord
+    eza
     rnix-lsp
+    localsend
     yaml-language-server
     zls
     nixpkgs-fmt
@@ -18,7 +20,6 @@
     yacreader
     htop
     thunderbird
-    pcmanfm
     qbittorrent
     keepassxc
     rpcs3
@@ -36,20 +37,8 @@
       enable = true;
       source = ./cwmrc;
     };
-    ".xinitrc" = {
-      enable = true;
-      source = ./xinitrc;
-    };
   };
   programs = {
-    kitty = {
-      enable = true;
-      font = {
-        name = "3270NerdFontMono";
-        package =  (pkgs.nerdfonts.override { fonts = [ "3270" ]; });
-        size = 16;
-      };
-    };
     git = {
       enable = true;
       ignores = [ "*.*~" "#*#" ];
@@ -71,34 +60,34 @@
       defaultEditor = false;
       extraLuaConfig = builtins.readFile ./neovim/init.lua;
       extraPackages = with pkgs; [
-        # extra packages neovim would need
-        # like lsps and things
-        # i chose not to install these but instead have dev flakes install them
-        # this means lsp must conditionally check to see if the required commands are present on system before attaching
+    #    # extra packages neovim would need
+    #    # like lsps and things
+    #    # i chose not to install these but instead have dev flakes install them
+    #    # this means lsp must conditionally check to see if the required commands are present on system before attaching
       ];
-      plugins = with pkgs.vimPlugins; [
-        zig-vim
-        trouble-nvim
+    #  plugins = with pkgs.vimPlugins; [
+    #    zig-vim
+    #    trouble-nvim
         plenary-nvim
         telescope-nvim
         nvim-lspconfig
         nvim-cmp
         lualine-nvim
-        cmp-buffer
-        cmp-path
-        cmp-nvim-lsp
-        cmp-nvim-lua
-        gitsigns-nvim
-        gruvbox-nvim
+    #    cmp-buffer
+    #    cmp-path
+    #    cmp-nvim-lsp
+    #    cmp-nvim-lua
+    #    gitsigns-nvim
+    #    gruvbox-nvim
         nvim-treesitter
-        nvim-tree-lua
-      ];
-    };
+    #    nvim-tree-lua
+    #  ];
+    #};
     tmux = {
       enable = true;
     };
     vscode = {
-      package = pkgs.vscodium;
+      package = pkgs.vscodium.fhs;
       enable = true;
       userSettings = {
         "editor.fontFamily" = "'Caskaydia Nerd Font Mono'";
@@ -106,6 +95,7 @@
       };
       extensions = with pkgs.vscode-extensions;[
         vscodevim.vim
+        mkhl.direnv
         matklad.rust-analyzer
         tiehuis.zig
       ];
@@ -116,8 +106,8 @@
       syntaxHighlighting.enable = true;
       defaultKeymap = "vicmd";
       shellAliases = {
-        ll = "exa -Fxl --icons";
-        ls = "exa --icons";
+        ll = "eza -Fxl --icons";
+        ls = "eza --icons";
       };
     };
     nushell = {
@@ -170,29 +160,17 @@
     EDITOR = "emacslient";
   };
   gtk = {
-    enable = true;
-    font = {
-      name = "3270NerdFontMono";
-      package =  (pkgs.nerdfonts.override { fonts = [ "3270" ]; });
-      size = 16;
+    enable = pkgs.lib.mkForce true;
+    font = pkgs.lib.mkForce {
+      package = (pkgs.nerdfonts.override { fonts = [ "CascadiaCode" ]; });
+      name = " CaskaydiaCove Nerd Font Mono";
+      size = 14;
     };
-    #font = {
-      #package = (pkgs.nerdfonts.override { fonts = [ "CascadiaCode" ]; });
-      #name = " CaskaydiaCove Nerd Font Mono";
-      #size = 14;
-    #};
-    theme = {
-      name = "Everforest";
-      package = pkgs.local-everforest;
-    };
-    gtk3.extraConfig = {
+    gtk3.extraConfig = pkgs.lib.mkForce {
       gtk-application-prefer-dark-theme = true;
     };
   };
   services = {
-    spotifyd = {
-      enable = true;
-    };
     emacs = {
       enable = true;
       startWithUserSession = true;
@@ -200,20 +178,20 @@
   };
   xdg = {
     configFile = {
-      "hypr" = {source = ./hypr;};
-      "wallpapers" = {source = ./wallpapers;};
+      "hypr" = { source = ./hypr; };
+      "wallpapers" = { source = ./wallpapers; };
     };
   };
   # desktopEntries = {
-    # steam = {
-      # name = "Steam";
-      # exec = "steam -w 2160 -h 1440 %U";
-      # type = "Application";
-      # categories = [ "Game" ];
-      # terminal = false;
-      # mimeType = [ "x-scheme-handler/steam" "x-scheme-handler/steamlink" ];
-      # prefersNonDefaultGPU = true;
-    # };
+  # steam = {
+  # name = "Steam";
+  # exec = "steam -w 2160 -h 1440 %U";
+  # type = "Application";
+  # categories = [ "Game" ];
+  # terminal = false;
+  # mimeType = [ "x-scheme-handler/steam" "x-scheme-handler/steamlink" ];
+  # prefersNonDefaultGPU = true;
+  # };
   # };
   # this was a test idek what this does
   # https://rycee.gitlab.io/home-manager/options.html#opt-nixpkgs.overlays
