@@ -9,6 +9,7 @@
   home.stateVersion = "23.05";
   home.packages = with pkgs; [
     neofetch
+    discord
     eza
     rnix-lsp
     localsend
@@ -36,10 +37,6 @@
       enable = true;
       source = ./cwmrc;
     };
-    ".xinitrc" = {
-      enable = true;
-      source = ./xinitrc;
-    };
   };
   programs = {
     git = {
@@ -55,34 +52,34 @@
         background = "dark";
       };
     };
-    #neovim = {
-    #  enable = true;
-    #  vimAlias = true;
-    #  withNodeJs = true;
-    #  withPython3 = true;
-    #  defaultEditor = false;
-    #  extraLuaConfig = builtins.readFile ./neovim/init.lua;
-    #  extraPackages = with pkgs; [
+    neovim = {
+      enable = true;
+      vimAlias = true;
+      withNodeJs = true;
+      withPython3 = true;
+      defaultEditor = false;
+      extraLuaConfig = builtins.readFile ./neovim/init.lua;
+      extraPackages = with pkgs; [
     #    # extra packages neovim would need
     #    # like lsps and things
     #    # i chose not to install these but instead have dev flakes install them
     #    # this means lsp must conditionally check to see if the required commands are present on system before attaching
-    #  ];
+      ];
     #  plugins = with pkgs.vimPlugins; [
     #    zig-vim
     #    trouble-nvim
-    #    plenary-nvim
-    #    telescope-nvim
-    #    nvim-lspconfig
-    #    nvim-cmp
-    #    lualine-nvim
+        plenary-nvim
+        telescope-nvim
+        nvim-lspconfig
+        nvim-cmp
+        lualine-nvim
     #    cmp-buffer
     #    cmp-path
     #    cmp-nvim-lsp
     #    cmp-nvim-lua
     #    gitsigns-nvim
     #    gruvbox-nvim
-    #    nvim-treesitter
+        nvim-treesitter
     #    nvim-tree-lua
     #  ];
     #};
@@ -98,6 +95,7 @@
       };
       extensions = with pkgs.vscode-extensions;[
         vscodevim.vim
+        mkhl.direnv
         matklad.rust-analyzer
         tiehuis.zig
       ];
@@ -162,13 +160,13 @@
     EDITOR = "emacslient";
   };
   gtk = {
-    enable = true;
-    font = {
-    package = (pkgs.nerdfonts.override { fonts = [ "CascadiaCode" ]; });
-    name = " CaskaydiaCove Nerd Font Mono";
-    size = 14;
+    enable = pkgs.lib.mkForce true;
+    font = pkgs.lib.mkForce {
+      package = (pkgs.nerdfonts.override { fonts = [ "CascadiaCode" ]; });
+      name = " CaskaydiaCove Nerd Font Mono";
+      size = 14;
     };
-    gtk3.extraConfig = {
+    gtk3.extraConfig = pkgs.lib.mkForce {
       gtk-application-prefer-dark-theme = true;
     };
   };
