@@ -9,6 +9,7 @@
   home.stateVersion = "24.05";
   home.packages = with pkgs; [
     irssi
+    signal-desktop
     neofetch
     nheko
     discord
