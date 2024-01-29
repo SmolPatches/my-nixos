@@ -6,9 +6,11 @@
 
   # home-manager.users.rob = {
   /* The home.stateVersion option does not have a default and must be set */
-  home.stateVersion = "23.05";
+  home.stateVersion = "24.05";
   home.packages = with pkgs; [
+    irssi
     neofetch
+    nheko
     discord
     eza
     rnix-lsp
@@ -22,6 +24,7 @@
     thunderbird
     qbittorrent
     keepassxc
+    (neovim-qt.override {neovim = config.programs.neovim.finalPackage; })
     rpcs3
     pcsx2
     libreoffice
@@ -32,9 +35,8 @@
     wofi
   ];
   home.file = {
-    # cwmrc
-    ".cwmrc" = {
-      enable = true;
+    ".cwmrc" = { # use cwm
+      enable = false;
       source = ./cwmrc;
     };
   };
@@ -58,31 +60,10 @@
       withNodeJs = true;
       withPython3 = true;
       defaultEditor = false;
-      extraLuaConfig = builtins.readFile ./neovim/init.lua;
-      extraPackages = with pkgs; [
-    #    # extra packages neovim would need
-    #    # like lsps and things
-    #    # i chose not to install these but instead have dev flakes install them
-    #    # this means lsp must conditionally check to see if the required commands are present on system before attaching
+      plugins = [
+        pkgs.vimPlugins.nvim-treesitter.withAllGrammars
       ];
-    #  plugins = with pkgs.vimPlugins; [
-    #    zig-vim
-    #    trouble-nvim
-        plenary-nvim
-        telescope-nvim
-        nvim-lspconfig
-        nvim-cmp
-        lualine-nvim
-    #    cmp-buffer
-    #    cmp-path
-    #    cmp-nvim-lsp
-    #    cmp-nvim-lua
-    #    gitsigns-nvim
-    #    gruvbox-nvim
-        nvim-treesitter
-    #    nvim-tree-lua
-    #  ];
-    #};
+    };
     tmux = {
       enable = true;
     };
@@ -133,9 +114,9 @@
     };
     emacs = {
       enable = true;
-      package = pkgs.emacs29-pgtk;
+      #package = pkgs.emacs29-pgtk;
       #package = pkgs.emacs-nox;
-      extraPackages = epkgs: (with epkgs; [ evil nix-mode nixos-options editorconfig rustic treemacs-evil lsp-ui company darkokai-theme adwaita-dark-theme ]);
+      #extraPackages = epkgs: (with epkgs; [ evil nix-mode nixos-options editorconfig rustic treemacs-evil lsp-ui company darkokai-theme adwaita-dark-theme ]);
     };
     zathura = {
       enable = true;
@@ -180,6 +161,7 @@
     configFile = {
       "hypr" = { source = ./hypr; };
       "wallpapers" = { source = ./wallpapers; };
+      "nvim" = {source = ./neovim; };
     };
   };
   # desktopEntries = {

@@ -113,7 +113,9 @@
     xkbVariant = "";
     #displayManager.defaultSession = "plasmawayland";
     displayManager.sddm.enable = true;
-    desktopManager.plasma5.enable = true;
+    desktopManager.plasma5 = {
+     enable = true;
+     };
   };
   hardware.pulseaudio.enable = false;
   # bluetooth support
@@ -180,7 +182,6 @@
       xwayland = {
         enable = false;
       };
-      enableNvidiaPatches = true;
     };
     steam = {
       enable = true;
