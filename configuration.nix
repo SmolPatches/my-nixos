@@ -5,12 +5,12 @@
 { inputs, config, pkgs, ... }:
 
 {
-  #enable flakes
   # Allow unfree packages
   nixpkgs.config = {
     allowUnfree = true;
     allowBroken = false;
   };
+  #enable flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   imports =
     [
@@ -18,6 +18,13 @@
       ./hardware-configuration.nix
       ./conf/nvidia.nix
     ];
+  # include age secrets
+  age = {
+    secrets.test = {
+      file = ./secrets/secret1.age;
+      path = "/home/watashi/test.txt";
+    };
+  };
   # Bootloader.
   #boot.supportedFilesystems = [ "nfs" ];
   #boot.loader = {
@@ -143,6 +150,10 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDMqnUtVfxGgzVD/rsHOhZphgSTztDjTxCdZ4yJkr4zQ r3b@eldnmac.resource.campus.njit.edu"
       ];
     };
+   #users.amade = {
+   # isNormalUser = true;
+   # passwordFile = config.age.secrets.secret1.path;
+   #};
   };
 
   fonts.packages = with pkgs; [
@@ -152,6 +163,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     nfs-utils
+    inputs.agenix.packages.${system}.default
     wget
     lsof
     hwinfo

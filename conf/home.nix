@@ -27,7 +27,6 @@
     keepassxc
     (neovim-qt.override {neovim = config.programs.neovim.finalPackage; })
     rpcs3
-    pcsx2
     libreoffice
     #x org packages
     feh
@@ -60,7 +59,7 @@
       vimAlias = true;
       withNodeJs = true;
       withPython3 = true;
-      defaultEditor = false;
+      defaultEditor = true;
       plugins = [
         pkgs.vimPlugins.nvim-treesitter.withAllGrammars
       ];

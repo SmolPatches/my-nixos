@@ -8,6 +8,8 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     #for use in home-manager
     hyprland.url = "github:hyprwm/Hyprland";
+    #secrets
+    agenix.url = github:ryantm/agenix;
   };
 
   # add sops.nix
@@ -21,6 +23,7 @@
       system = "x86_64-linux"; #builtins.currentSystem;
       specialArgs = { inherit inputs; };
       modules = [
+        inputs.agenix.nixosModules.default
         ./configuration.nix
         #stolen from https://rycee.gitlab.io/home-manager/index.html#sec-flakes-nixos-module
         inputs.home-manager.nixosModules.home-manager
