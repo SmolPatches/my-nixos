@@ -20,9 +20,14 @@
     ];
   # include age secrets
   age = {
-    secrets.test = {
-      file = ./secrets/secret1.age;
-      path = "/home/watashi/test.txt";
+    secrets = {
+      test = {
+       file = ./secrets/secret1.age;
+       path = "/home/watashi/test.txt";
+      };
+      watashi_pass = {
+        file = ./secrets/watashi_pass.age;
+      };
     };
   };
   # Bootloader.
@@ -150,10 +155,10 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDMqnUtVfxGgzVD/rsHOhZphgSTztDjTxCdZ4yJkr4zQ r3b@eldnmac.resource.campus.njit.edu"
       ];
     };
-   #users.amade = {
-   # isNormalUser = true;
-   # passwordFile = config.age.secrets.secret1.path;
-   #};
+   users.amade = {
+    isNormalUser = true;
+    passwordFile = config.age.secrets.watashi_pass.path;
+   };
   };
 
   fonts.packages = with pkgs; [

@@ -14,4 +14,5 @@ let
  systems = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMw76fx3baf2vr3hhjRhKy+DJmTcbB+YOuPwyTmd4PNO root@nixos" ];
 in {
   "secret1.age".publicKeys = users ++ systems;
+  "watashi_pass.age".publicKeys = users ++ systems;
 }
