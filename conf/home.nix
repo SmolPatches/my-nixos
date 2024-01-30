@@ -139,7 +139,7 @@
     };
   };
   home.sessionVariables = {
-    EDITOR = "emacslient";
+    EDITOR = "nvim";
   };
   gtk = {
     enable = pkgs.lib.mkForce true;

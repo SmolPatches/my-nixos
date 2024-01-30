@@ -123,8 +123,9 @@
     };
   };
   home.sessionVariables = {
-    EDITOR = "emacs";
-    GDK_BACKEND = "wayland";
+    EDITOR = "neovim";
+    # wayland session variables are all set in my hyprland config
+    #GDK_BACKEND = "wayland";
   };
   gtk = {
     enable = true;
