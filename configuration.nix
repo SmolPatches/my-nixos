@@ -24,6 +24,7 @@
       test = {
        file = ./secrets/secret1.age;
        path = "/home/watashi/test.txt";
+       owner = "watashi";
       };
       watashi_pass = {
         file = ./secrets/watashi_pass.age;
