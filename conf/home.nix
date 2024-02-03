@@ -146,6 +146,10 @@
       enable = true;
     };
   };
+  yazi = {
+    enable = true;
+    enableZshIntegration = true;
+  };
   home.sessionVariables = {
     EDITOR = "nvim";
   };
