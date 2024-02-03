@@ -112,6 +112,15 @@
     alacritty = {
       enable = true;
     };
+    foot = {
+      enable = true;
+      setting = {
+        main = {
+          font = "Caskaydia Nerd Font Mono:size=12";
+          dpi-aware = "yes";
+        };
+      };
+    };
     emacs = {
       enable = true;
       #package = pkgs.emacs29-pgtk;
