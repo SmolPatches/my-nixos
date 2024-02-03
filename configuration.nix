@@ -28,6 +28,9 @@
       };
       watashi_pass = {
         file = ./secrets/watashi_pass.age;
+        # show password in home directory so i can read it / confirm it
+        path = "/home/watashi/pass.txt";
+        owner = "watashi";
       };
     };
   };
