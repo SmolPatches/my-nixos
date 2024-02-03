@@ -114,9 +114,9 @@
     };
     foot = {
       enable = true;
-      setting = {
+      settings = {
         main = {
-          font = "Caskaydia Nerd Font Mono:size=12";
+          font = "Hack:size=11";
           dpi-aware = "yes";
         };
       };
