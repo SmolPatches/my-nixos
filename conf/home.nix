@@ -83,6 +83,9 @@
         ll = "eza -Fxl --icons";
         ls = "eza --icons";
       };
+      initExtra = ''
+        PATH=$PATH:~/.local/bin/
+      '';
     };
     nushell = {
       enable = true;
