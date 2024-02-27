@@ -9,6 +9,8 @@
   home.stateVersion = "24.05";
   home.packages = with pkgs; [
     irssi
+    xclip
+    yazi
     signal-desktop
     neofetch
     nheko
@@ -25,7 +27,7 @@
     thunderbird
     qbittorrent
     keepassxc
-    (neovim-qt.override {neovim = config.programs.neovim.finalPackage; })
+    (neovim-qt.override { neovim = config.programs.neovim.finalPackage; })
     rpcs3
     libreoffice
     #x org packages
@@ -35,7 +37,8 @@
     wofi
   ];
   home.file = {
-    ".cwmrc" = { # use cwm
+    ".cwmrc" = {
+      # use cwm
       enable = false;
       source = ./cwmrc;
     };
@@ -68,18 +71,8 @@
       enable = true;
     };
     vscode = {
-      package = pkgs.vscodium.fhs;
       enable = true;
-      userSettings = {
-        "editor.fontFamily" = "'Caskaydia Nerd Font Mono'";
-        "editor.fontSize" = 14;
-      };
-      extensions = with pkgs.vscode-extensions;[
-        vscodevim.vim
-        mkhl.direnv
-        matklad.rust-analyzer
-        tiehuis.zig
-      ];
+      package = pkgs.vscode.fhs;
     };
     zsh = {
       enable = true;
@@ -124,8 +117,6 @@
     emacs = {
       enable = true;
       #package = pkgs.emacs29-pgtk;
-      #package = pkgs.emacs-nox;
-      #extraPackages = epkgs: (with epkgs; [ evil nix-mode nixos-options editorconfig rustic treemacs-evil lsp-ui company darkokai-theme adwaita-dark-theme ]);
     };
     zathura = {
       enable = true;
@@ -146,23 +137,16 @@
       enable = true;
     };
   };
-  yazi = {
-    enable = true;
-    enableZshIntegration = true;
+  dconf = {
+    settings = {
+      "org/virt-manager/virt-manager/connections" = {
+        autoconnect = [ "qemu:///system" ];
+        uris = [ "qemu:///system" ];
+      };
+    };
   };
   home.sessionVariables = {
     EDITOR = "nvim";
-  };
-  gtk = {
-    enable = pkgs.lib.mkForce true;
-    font = pkgs.lib.mkForce {
-      package = (pkgs.nerdfonts.override { fonts = [ "CascadiaCode" ]; });
-      name = " CaskaydiaCove Nerd Font Mono";
-      size = 14;
-    };
-    gtk3.extraConfig = pkgs.lib.mkForce {
-      gtk-application-prefer-dark-theme = true;
-    };
   };
   services = {
     emacs = {
@@ -174,7 +158,7 @@
     configFile = {
       "hypr" = { source = ./hypr; };
       "wallpapers" = { source = ./wallpapers; };
-      "nvim" = {source = ./neovim; };
+      "nvim" = { source = ./neovim; };
     };
   };
   # desktopEntries = {

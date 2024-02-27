@@ -22,9 +22,9 @@
   age = {
     secrets = {
       test = {
-       file = ./secrets/secret1.age;
-       path = "/home/watashi/test.txt";
-       owner = "watashi";
+        file = ./secrets/secret1.age;
+        path = "/home/watashi/test.txt";
+        owner = "watashi";
       };
       watashi_pass = {
         file = ./secrets/watashi_pass.age;
@@ -130,8 +130,8 @@
     #displayManager.defaultSession = "plasmawayland";
     displayManager.sddm.enable = true;
     desktopManager.plasma5 = {
-     enable = true;
-     };
+      enable = true;
+    };
   };
   hardware.pulseaudio.enable = false;
   # bluetooth support
@@ -149,7 +149,6 @@
       isNormalUser = true;
       extraGroups = [ "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
       packages = with pkgs; [
-        virt-manager
         vulkan-tools
         killall
         age
@@ -159,10 +158,10 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDMqnUtVfxGgzVD/rsHOhZphgSTztDjTxCdZ4yJkr4zQ r3b@eldnmac.resource.campus.njit.edu"
       ];
     };
-   users.amade = {
-    isNormalUser = true;
-    passwordFile = config.age.secrets.watashi_pass.path;
-   };
+    users.amade = {
+      isNormalUser = true;
+      passwordFile = config.age.secrets.watashi_pass.path;
+    };
   };
 
   fonts.packages = with pkgs; [
@@ -173,6 +172,7 @@
   environment.systemPackages = with pkgs; [
     nfs-utils
     inputs.agenix.packages.${system}.default
+    distrobox
     wget
     lsof
     hwinfo
@@ -196,6 +196,7 @@
   ];
 
   programs = {
+    virt-manager.enable = true;
     hyprland = {
       # use hyprland from flake
       package = inputs.hyprland.packages.${pkgs.system}.hyprland;
@@ -337,11 +338,6 @@
     libvirtd = {
       enable = true;
     };
-  };
-  qt = {
-    enable = true;
-    platformTheme = "gnome";
-    style = "adwaita-dark";
   };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
