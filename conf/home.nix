@@ -85,6 +85,7 @@
       };
       initExtra = ''
         PATH=$PATH:~/.local/bin/
+        PATH=$PATH:~/.config/emacs/bin/
       '';
     };
     nushell = {
@@ -116,10 +117,6 @@
           dpi-aware = "yes";
         };
       };
-    };
-    emacs = {
-      enable = true;
-      #package = pkgs.emacs29-pgtk;
     };
     zathura = {
       enable = true;

@@ -125,11 +125,13 @@
   # Configure keymap in X11
   services.xserver = {
     enable = true;
-    layout = "us";
-    xkbVariant = "";
+    xkb = {
+      layout = "us";
+      variant = "";
+    };
     #displayManager.defaultSession = "plasmawayland";
     displayManager.sddm.enable = true;
-    desktopManager.plasma5 = {
+    desktopManager.plasma6 = {
       enable = true;
     };
   };
@@ -149,6 +151,7 @@
       isNormalUser = true;
       extraGroups = [ "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
       packages = with pkgs; [
+        emacs
         vulkan-tools
         killall
         age
