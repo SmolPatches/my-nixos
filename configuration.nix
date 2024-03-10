@@ -259,14 +259,16 @@
     hitori # sudoku game
     atomix # puzzle game
   ]);
-
+  security.rtkit.enable = true;
   services = {
     rpcbind.enable = true;
     dbus.enable = true;
     pipewire = {
       enable = true;
       alsa.enable = true;
-      pulse.enable = false;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      jack.enable = true;
     };
     deluge = {
       enable = true;
