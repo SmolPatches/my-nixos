@@ -74,6 +74,11 @@
       enable = true;
       package = pkgs.vscode.fhs;
     };
+    emacs = {
+      enable = true;
+      package = pkgs.emacs29-pgtk;
+      extraPackages = epkgs: with epkgs; [ tsc tree-sitter-langs tree-sitter vterm ];
+    };
     zsh = {
       enable = true;
       enableAutosuggestions = true;
