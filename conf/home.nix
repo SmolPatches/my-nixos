@@ -13,10 +13,9 @@
     yazi
     signal-desktop
     neofetch
-    nheko
-    discord
+    discord-canary # experimental discord
+    mako # notifications for wayland
     eza
-    rnix-lsp
     localsend
     yaml-language-server
     zls
@@ -81,7 +80,7 @@
     };
     zsh = {
       enable = true;
-      enableAutosuggestions = true;
+      autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
       defaultKeymap = "vicmd";
       shellAliases = {
@@ -139,7 +138,7 @@
       enable = false;
     };
     waybar = {
-      enable = true;
+      enable = false;
     };
   };
   dconf = {

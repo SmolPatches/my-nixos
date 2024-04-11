@@ -18,22 +18,6 @@
       ./hardware-configuration.nix
       ./conf/nvidia.nix
     ];
-  # include age secrets
-  age = {
-    secrets = {
-      test = {
-        file = ./secrets/secret1.age;
-        path = "/home/watashi/test.txt";
-        owner = "watashi";
-      };
-      watashi_pass = {
-        file = ./secrets/watashi_pass.age;
-        # show password in home directory so i can read it / confirm it
-        path = "/home/watashi/pass.txt";
-        owner = "watashi";
-      };
-    };
-  };
   # Bootloader.
   #boot.supportedFilesystems = [ "nfs" ];
   #boot.loader = {
@@ -131,9 +115,6 @@
     };
     #displayManager.defaultSession = "plasmawayland";
     displayManager.sddm.enable = true;
-    desktopManager.plasma6 = {
-      enable = true;
-    };
   };
   hardware.pulseaudio.enable = false;
   # bluetooth support
@@ -149,21 +130,18 @@
       shell = pkgs.zsh;
       password = "infamous2";
       isNormalUser = true;
-      extraGroups = [ "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
+      extraGroups = [ "lxd" "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
       packages = with pkgs; [
         emacs
         vulkan-tools
         killall
         age
+        lutris
         xdg-desktop-portal-hyprland
       ];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDMqnUtVfxGgzVD/rsHOhZphgSTztDjTxCdZ4yJkr4zQ r3b@eldnmac.resource.campus.njit.edu"
       ];
-    };
-    users.amade = {
-      isNormalUser = true;
-      passwordFile = config.age.secrets.watashi_pass.path;
     };
   };
 
@@ -174,29 +152,22 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     nfs-utils
-    inputs.agenix.packages.${system}.default
     distrobox
     wget
     lsof
     hwinfo
-    screen
     swaybg
     swaylock
     swayidle
     xdg-utils
     mpv
-    bat
-    ripgrep
     firefox-wayland
     pavucontrol
     wl-clipboard
-    tree
-    file
-    binwalk
     usbutils
     pciutils
 
-  ];
+  ] ++ [ripgrep fd tree file binwalk bat];
 
   programs = {
     virt-manager.enable = true;
@@ -231,7 +202,7 @@
       package = pkgs.wireshark-qt;
     };
   };
-  environment.plasma5.excludePackages = with pkgs.libsForQt5; [
+  environment.plasma6.excludePackages = with pkgs.libsForQt5; [
     elisa
     gwenview
     okular
@@ -261,6 +232,9 @@
   ]);
   security.rtkit.enable = true;
   services = {
+    desktopManager.plasma6 = {
+      enable = true;
+    };
     rpcbind.enable = true;
     dbus.enable = true;
     pipewire = {
@@ -341,6 +315,9 @@
       backend = "docker";
     };
     libvirtd = {
+      enable = true;
+    };
+    lxd = {
       enable = true;
     };
   };
