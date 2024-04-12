@@ -1,7 +1,6 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { inputs, config, pkgs, ... }:
 
 {
@@ -14,6 +13,15 @@
     # use ungoogled chromium
     (final: prev: {chromium = prev.ungoogled-chromium.override { enableWideVine = true; };})
   ];
+  # secrets
+  # wip
+  sops = {
+    defaultSopsFile = ./secrets/install2.yaml;
+    age = {
+      sshKeyPaths = [ "/home/watashi/.ssh/nixpc-git" ];
+      keyFile = "/home/watashi/.config/sops/keys.txt";
+    };
+  };
   #enable flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   imports =
@@ -135,17 +143,19 @@
       password = "infamous2";
       isNormalUser = true;
       extraGroups = [ "lxd" "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
-      packages = with pkgs; [
+      packages = [  ] ++ (with pkgs; [
         emacs
         vulkan-tools
         killall
+        sops
+        ungoogled-chromium
         age
         lutris
         xdg-desktop-portal-hyprland
-      ];
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDMqnUtVfxGgzVD/rsHOhZphgSTztDjTxCdZ4yJkr4zQ r3b@eldnmac.resource.campus.njit.edu"
-      ];
+      ]);
+      # authorized_keys and github keys use same format
+      openssh.authorizedKeys.keyFiles = let ssh_keys = (builtins.fetchurl {url = "https://github.com/SmolPatches.keys";sha256="1qwlx2yxp8ir7ygayn5jlldnb9pbxlkayl44n80ndn2q64lgywv2";}); in [ssh_keys]; # point key files to the thing in nix_store
+
     };
   };
 
