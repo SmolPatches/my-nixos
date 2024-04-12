@@ -31,6 +31,12 @@
       ./hardware-configuration.nix
       ./conf/nvidia.nix
       /run/agenix/nix-code # run code from agenix that is encrypted
+      # use firewall with defaults
+      (import ./utils/firewall.nix ({
+        config = config;
+        pkgs = pkgs;
+        enable_localsend = true;
+      }))
     ];
   # Bootloader.
   #boot.supportedFilesystems = [ "nfs" ];
