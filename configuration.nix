@@ -15,11 +15,12 @@
   ];
   # secrets
   # wip
-  sops = {
-    defaultSopsFile = ./secrets/install2.yaml;
-    age = {
-      sshKeyPaths = [ "/home/watashi/.ssh/nixpc-git" ];
-      keyFile = "/home/watashi/.config/sops/keys.txt";
+  age.secrets = {
+    # secret nix code that you don't want anyone to see
+    nix-code = {
+      file = /home/watashi/my-nixos/secrets/nix-code.age;
+      owner = "watashi";
+      mode = "600";
     };
   };
   #enable flakes
@@ -29,6 +30,7 @@
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./conf/nvidia.nix
+      /run/agenix/nix-code # run code from agenix that is encrypted
     ];
   # Bootloader.
   #boot.supportedFilesystems = [ "nfs" ];
@@ -77,7 +79,6 @@
           chainloader /EFI/Microsoft/Boot/bootmgfw.efi
         }
       '';
-      version = 2;
     };
   };
   boot.kernelPackages = pkgs.linuxPackages_latest;

@@ -10,14 +10,15 @@
     #for use in home-manager
     hyprland.url = "github:hyprwm/Hyprland";
     #secrets
+    sops-nix.url = "github:Mic92/sops-nix";
+    agenix.url = "github:ryantm/agenix";
   };
 
-  # add sops.nix
   # and refactor flake for multiple machines
   # including nix-darwin
   # inspired by https://gitlab.com/rprospero/dotfiles/-/blob/master/flake.nix
   #outputs = { self, nixpkgs, flake-utils, home-manager, sops-nix, hyprland }: {
-  outputs = { nixpkgs, niri, ... } @inputs: {
+  outputs = { nixpkgs, agenix, ... } @inputs: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       # ...
       system = "x86_64-linux"; #builtins.currentSystem;
@@ -25,14 +26,15 @@
       modules = [
         ./configuration.nix
         #stolen from https://rycee.gitlab.io/home-manager/index.html#sec-flakes-nixos-module
-        niri.nixosModules.niri {
-          programs.niri.enable = true;
-        }
         inputs.home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.watashi = import ./conf/home.nix;
+        }
+        agenix.nixosModules.default
+        {
+          environment.systemPackages = [ agenix.packages.x86_64-linux.default ];
         }
       ];
     };
