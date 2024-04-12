@@ -10,6 +10,10 @@
     allowUnfree = true;
     allowBroken = false;
   };
+  nixpkgs.overlays = [
+    # use ungoogled chromium
+    (final: prev: {chromium = prev.ungoogled-chromium.override { enableWideVine = true; };})
+  ];
   #enable flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   imports =
