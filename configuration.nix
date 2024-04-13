@@ -11,7 +11,7 @@
   };
   nixpkgs.overlays = [
     # use ungoogled chromium
-    (final: prev: {chromium = prev.ungoogled-chromium.override { enableWideVine = true; };})
+    (final: prev: { chromium = prev.ungoogled-chromium.override { enableWideVine = true; }; })
   ];
   # secrets
   # wip
@@ -94,11 +94,6 @@
   networking.networkmanager.enable = true;
   networking = {
     hostName = "nixos"; # Define your hostname.
-    firewall = {
-      enable = true;
-      # ssh and searxng docker and whoogle
-      allowedTCPPorts = [ 22 80 8080 8081 ];
-    };
   };
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -133,7 +128,6 @@
       variant = "";
     };
     #displayManager.defaultSession = "plasmawayland";
-    displayManager.sddm.enable = true;
   };
   hardware.pulseaudio.enable = false;
   # bluetooth support
@@ -150,7 +144,7 @@
       password = "infamous2";
       isNormalUser = true;
       extraGroups = [ "lxd" "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
-      packages = [  ] ++ (with pkgs; [
+      packages = [ ] ++ (with pkgs; [
         emacs
         vulkan-tools
         killall
@@ -161,7 +155,7 @@
         xdg-desktop-portal-hyprland
       ]);
       # authorized_keys and github keys use same format
-      openssh.authorizedKeys.keyFiles = let ssh_keys = (builtins.fetchurl {url = "https://github.com/SmolPatches.keys";sha256="1qwlx2yxp8ir7ygayn5jlldnb9pbxlkayl44n80ndn2q64lgywv2";}); in [ssh_keys]; # point key files to the thing in nix_store
+      openssh.authorizedKeys.keyFiles = let ssh_keys = (builtins.fetchurl { url = "https://github.com/SmolPatches.keys"; sha256 = "1qwlx2yxp8ir7ygayn5jlldnb9pbxlkayl44n80ndn2q64lgywv2"; }); in [ ssh_keys ]; # point key files to the thing in nix_store
 
     };
   };
@@ -188,7 +182,7 @@
     usbutils
     pciutils
 
-  ] ++ [ripgrep fd tree file binwalk bat];
+  ] ++ [ ripgrep fd tree file binwalk bat ];
 
   programs = {
     virt-manager.enable = true;
@@ -253,6 +247,9 @@
   ]);
   security.rtkit.enable = true;
   services = {
+    displayManager = {
+      sddm.enable = true;
+    };
     desktopManager.plasma6 = {
       enable = true;
     };
@@ -264,6 +261,16 @@
       alsa.support32Bit = true;
       pulse.enable = true;
       jack.enable = true;
+      extraConfig.pipewire = {
+        context.properties = {
+          default.clock.rate = 192000;
+          #defautlt.allowed-rates = [ 192000 48000 44100 ];
+          defautlt.allowed-rates = [ 192000 ];
+          default.clock.quantum = 32;
+          default.clock.min-quantum = 32;
+          default.clock.max-quantum = 32;
+        };
+      };
     };
     deluge = {
       enable = true;
