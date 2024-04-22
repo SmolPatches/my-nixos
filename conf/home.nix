@@ -163,6 +163,7 @@
       "hypr" = { source = ./hypr; };
       "wallpapers" = { source = ./wallpapers; };
       "nvim" = { source = ./neovim; };
+      "zathura" = { source = ./zathura; };
     };
   };
   # desktopEntries = {
