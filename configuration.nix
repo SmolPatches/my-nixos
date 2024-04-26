@@ -145,8 +145,7 @@
       isNormalUser = true;
       extraGroups = [ "lxd" "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
       packages = [ ] ++ (with pkgs; [
-        wootility
-        wooting-udev-rules
+        wev
         emacs
         vulkan-tools
         killall

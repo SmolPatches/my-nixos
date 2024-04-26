@@ -13,7 +13,7 @@
     yazi
     signal-desktop
     neofetch
-    discord-canary # experimental discord
+    discord
     mako # notifications for wayland
     eza
     localsend

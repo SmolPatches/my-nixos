@@ -10,7 +10,6 @@
     #for use in home-manager
     hyprland.url = "github:hyprwm/Hyprland";
     #secrets
-    sops-nix.url = "github:Mic92/sops-nix";
     agenix.url = "github:ryantm/agenix";
   };
 
