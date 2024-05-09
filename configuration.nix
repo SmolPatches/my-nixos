@@ -195,8 +195,12 @@
         enable = false;
       };
     };
-    steam = {
+    sway = {
       enable = true;
+      wrapperFeatures.gtk = true;
+    };
+    steam = {
+      enable = false;
     };
     direnv = {
       enable = true;

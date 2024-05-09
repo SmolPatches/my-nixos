@@ -84,12 +84,16 @@
       syntaxHighlighting.enable = true;
       defaultKeymap = "vicmd";
       shellAliases = {
-        ll = "eza -Fxl --icons";
+        ll = "eza -l --icons";
         ls = "eza --icons";
       };
       initExtra = ''
         PATH=$PATH:~/.local/bin/
         PATH=$PATH:~/.config/emacs/bin/
+        ${builtins.readFile ./extras.zsh}
+      '';
+      profileExtra = ''
+      "${builtins.readFile ./extras.zsh}"
       '';
     };
     nushell = {
