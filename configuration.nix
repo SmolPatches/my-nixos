@@ -145,6 +145,7 @@
       isNormalUser = true;
       extraGroups = [ "lxd" "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
       packages = [ ] ++ (with pkgs; [
+        #minecraft
         wev
         emacs
         vulkan-tools
@@ -195,12 +196,8 @@
         enable = false;
       };
     };
-    sway = {
-      enable = true;
-      wrapperFeatures.gtk = true;
-    };
     steam = {
-      enable = false;
+      enable = true;
     };
     direnv = {
       enable = true;
