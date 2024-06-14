@@ -144,18 +144,20 @@
       password = "infamous2";
       isNormalUser = true;
       extraGroups = [ "lxd" "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
-      packages = [ ] ++ (with pkgs; [
+      packages = (with pkgs; [
         #minecraft
+        fm
+        pulsemixer
         wev
         emacs
         vulkan-tools
         killall
-        sops
         ungoogled-chromium
         age
-        lutris
         xdg-desktop-portal-hyprland
-      ]);
+        binutils
+      ] ++ [ lutris protonup-qt ] # gaming
+      ++ [ qutebrowser w3m lynx] ); # web browsers
       # authorized_keys and github keys use same format
       openssh.authorizedKeys.keyFiles = let ssh_keys = (builtins.fetchurl { url = "https://github.com/SmolPatches.keys"; sha256 = "1qwlx2yxp8ir7ygayn5jlldnb9pbxlkayl44n80ndn2q64lgywv2"; }); in [ ssh_keys ]; # point key files to the thing in nix_store
 
@@ -171,7 +173,6 @@
     nfs-utils
     distrobox
     wget
-    lsof
     hwinfo
     swaybg
     swaylock
@@ -184,7 +185,8 @@
     usbutils
     pciutils
 
-  ] ++ [ ripgrep fd tree file binwalk bat ];
+  ] ++ [ ripgrep fd tree file binwalk bat ] ++
+  [ tcpdump nmap netcat-openbsd lsof ] ; # network monitoring
 
   programs = {
     virt-manager.enable = true;
@@ -195,6 +197,16 @@
       xwayland = {
         enable = false;
       };
+    };
+    sway = {
+      enable = true;
+      xwayland.enable = false;
+      wrapperFeatures = {
+        gtk = true;
+      };
+      extraOptions = [
+        "--unsupported-gpu"
+      ];
     };
     steam = {
       enable = true;
@@ -255,7 +267,11 @@
     desktopManager.plasma6 = {
       enable = true;
     };
-    rpcbind.enable = true;
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+    };
+    rpcbind.enable = true; # for nfs i think
     dbus.enable = true;
     pipewire = {
       enable = true;
@@ -280,6 +296,12 @@
     };
     blueman = {
       enable = true;
+    };
+    syncthing = {
+      enable = true;
+      user = "watashi";
+      dataDir = "/home/watashi/sink/";
+      configDir = "/home/watashi/sink/.config/syncthing";
     };
   };
   environment = {
@@ -353,7 +375,8 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
-
+  # xdg stuff
+  xdg.portal.wlr.enable = pkgs.lib.mkForce true;
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
