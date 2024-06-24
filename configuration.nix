@@ -97,7 +97,7 @@
   };
   # Set your time zone.
   time.timeZone = "America/New_York";
-
+  sound.enable = false; # stupid alsa stuff https://github.com/NixOS/nixpkgs/issues/319809
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
@@ -113,13 +113,6 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  documentation = {
-    enable = true;
-    man = {
-      enable = true;
-      generateCaches = true;
-    };
-  };
   # Configure keymap in X11
   services.xserver = {
     enable = true;
@@ -147,12 +140,13 @@
       packages = (with pkgs; [
         #minecraft
         fm
+        browsh
         pulsemixer
         wev
         emacs
         vulkan-tools
         killall
-        ungoogled-chromium
+        #ungoogled-chromium # failing to build rn
         age
         xdg-desktop-portal-hyprland
         binutils
@@ -184,9 +178,10 @@
     wl-clipboard
     usbutils
     pciutils
-
+    man-pages
+    man-pages-posix
   ] ++ [ ripgrep fd tree file binwalk bat ] ++
-  [ tcpdump nmap netcat-openbsd lsof ] ; # network monitoring
+  [ tcpdump nmap netcat-openbsd lsof dig ] ; # network monitoring
 
   programs = {
     virt-manager.enable = true;
@@ -275,17 +270,10 @@
     dbus.enable = true;
     pipewire = {
       enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
+      #alsa.enable = true;
+      #alsa.support32Bit = true;
       pulse.enable = true;
-      jack.enable = true;
-      extraConfig.pipewire = {
-        context.properties = {
-          default.clock.rate = 192000;
-          #defautlt.allowed-rates = [ 192000 48000 44100 ];
-          defautlt.allowed-rates = [ 192000 ];
-        };
-      };
+      jack.enable = false;
     };
     deluge = {
       enable = true;
@@ -375,6 +363,15 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+  #
+  documentation = {
+    enable = true;
+    man = {
+      enable = true;
+      generateCaches = true;
+    };
+  };
+
   # xdg stuff
   xdg.portal.wlr.enable = pkgs.lib.mkForce true;
   # This value determines the NixOS release from which the default
@@ -385,5 +382,7 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.05"; # Did you read the comment?
   #nix channel to use
-  system.autoUpgrade.channel = "https://channels.nixos.org/nixos-23.05";
+  system.autoUpgrade.channel.enable = true;
+  system.autoUpgrade.channel.allowReboot = true;
+  #system.autoUpgrade.channel = "https://channels.nixos.org/nixos-23.05";
 }
