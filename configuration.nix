@@ -12,6 +12,7 @@
   nixpkgs.overlays = [
     # use ungoogled chromium
     (final: prev: { chromium = prev.ungoogled-chromium.override { enableWideVine = true; }; })
+    #(final: prev: { hyprland =  prev.hyprland.override { nvidiaPatches = true; enableNvidiaPatches = true; }; })
   ];
   # secrets
   # wip
@@ -87,7 +88,7 @@
       '';
     };
   };
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
 
 
   # Enable networking
@@ -151,7 +152,7 @@
         xdg-desktop-portal-hyprland
         binutils
       ] ++ [ lutris protonup-qt ] # gaming
-      ++ [ qutebrowser w3m lynx] ); # web browsers
+      ++ [ qutebrowser w3m lynx ]); # web browsers
       # authorized_keys and github keys use same format
       openssh.authorizedKeys.keyFiles = let ssh_keys = (builtins.fetchurl { url = "https://github.com/SmolPatches.keys"; sha256 = "1qwlx2yxp8ir7ygayn5jlldnb9pbxlkayl44n80ndn2q64lgywv2"; }); in [ ssh_keys ]; # point key files to the thing in nix_store
 
@@ -164,6 +165,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    dracula-theme
+    dracula-icon-theme
     nfs-utils
     distrobox
     wget
@@ -181,13 +184,14 @@
     man-pages
     man-pages-posix
   ] ++ [ ripgrep fd tree file binwalk bat ] ++
-  [ tcpdump nmap netcat-openbsd lsof dig ] ; # network monitoring
+  [ tcpdump nmap netcat-openbsd lsof dig ]; # network monitoring
 
   programs = {
     virt-manager.enable = true;
     hyprland = {
       # use hyprland from flake
-      package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+      #package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+      package = inputs.nixstable.legacyPackages."x86_64-linux".hyprland;
       enable = true;
       xwayland = {
         enable = false;
@@ -294,6 +298,15 @@
   };
   environment = {
     #noXlibs = true;
+    variables = {
+      GTK_THEME = "Dracula:dark";
+    };
+  };
+  qt = {
+    enable = true;
+    platformTheme = "gnome";
+    style = "adwaita-dark";
+    #style = "adwaita-dark";
   };
   #  security = {
   #    doas = {

@@ -93,7 +93,7 @@
         ${builtins.readFile ./extras.zsh}
       '';
       profileExtra = ''
-      "${builtins.readFile ./extras.zsh}"
+        "${builtins.readFile ./extras.zsh}"
       '';
     };
     nushell = {
@@ -146,11 +146,13 @@
     };
   };
   dconf = {
+    enable = true;
     settings = {
       "org/virt-manager/virt-manager/connections" = {
         autoconnect = [ "qemu:///system" ];
         uris = [ "qemu:///system" ];
       };
+      "org/gnome/desktop/interface".color-scheme = "prefer-dark";
     };
   };
   home.sessionVariables = {
@@ -166,7 +168,7 @@
     configFile = {
       "hypr" = { source = ./hypr; };
       "wallpapers" = { source = ./wallpapers; };
-      "nvim" = { source = ./neovim; };
+      #"nvim" = { source = ./neovim; };
       "zathura" = { source = ./zathura; };
     };
   };
