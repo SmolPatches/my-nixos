@@ -74,6 +74,7 @@
       # but must be set to some value in order to pass an assert in grub.nix)
       devices = [ "nodev" ];
       efiSupport = true;
+      splashImage = ./assets/lain.png;
       enable = true;
       # set $FS_UUID to the UUID of the EFI partition
       extraEntries = ''
@@ -88,7 +89,8 @@
       '';
     };
   };
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
+  # newer version breaks hyprland
+ boot.kernelPackages = pkgs.linuxPackages_6_9;
 
 
   # Enable networking
@@ -395,7 +397,7 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.05"; # Did you read the comment?
   #nix channel to use
-  system.autoUpgrade.channel.enable = true;
-  system.autoUpgrade.channel.allowReboot = true;
+  #system.autoUpgrade.channel.enable = true;
+  #system.autoUpgrade.channel.allowReboot = true;
   #system.autoUpgrade.channel = "https://channels.nixos.org/nixos-23.05";
 }
