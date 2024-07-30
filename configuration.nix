@@ -226,6 +226,10 @@
       enable = true;
       package = pkgs.wireshark-qt;
     };
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
   };
   environment.plasma6.excludePackages = with pkgs.libsForQt5; [
     elisa
@@ -308,7 +312,7 @@
   security = {
     pam.yubico = {
       enable = true;
-      debug = true;
+      debug = false;
       mode = "challenge-response";
       #nix-shell --command 'ykinfo -s' -p yubikey-personalization
       id = [
