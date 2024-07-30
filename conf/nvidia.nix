@@ -17,12 +17,12 @@
     package = config.boot.kernelPackages.nvidiaPackages.beta; #config.boot.kernelPackages.nvidiaPackages.beta;
   };
   boot.kernelParams = [
-#    "nvidia-drm.modeset=1"
+    #    "nvidia-drm.modeset=1"
     "nvidia-drm.fbdev=1"
   ];
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.graphics = {
-  #hardware.opengl = {
+    #hardware.opengl = {
     enable = true;
     #    driSupport = true;
     #   driSupport32Bit = true;

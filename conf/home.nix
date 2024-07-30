@@ -11,19 +11,21 @@
     irssi
     xclip
     yazi
+    lua-language-server # for neovim config
     signal-desktop
     neofetch
+    rust-analyzer
     discord
     mako # notifications for wayland
     eza
     localsend
     yaml-language-server
     zls
+    nil
     nixpkgs-fmt
     moar
     yacreader
     htop
-    thunderbird
     qbittorrent
     keepassxc
     (neovim-qt.override { neovim = config.programs.neovim.finalPackage; })
@@ -64,6 +66,7 @@
       defaultEditor = true;
       plugins = [
         pkgs.vimPlugins.nvim-treesitter.withAllGrammars
+        pkgs.vimPlugins.lsp-zero-nvim
       ];
     };
     tmux = {

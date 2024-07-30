@@ -90,7 +90,7 @@
     };
   };
   # newer version breaks hyprland
- boot.kernelPackages = pkgs.linuxPackages_6_9;
+  boot.kernelPackages = pkgs.linuxPackages_6_9;
 
 
   # Enable networking
@@ -123,6 +123,10 @@
       layout = "us";
       variant = "";
     };
+    desktopManager = {
+      xterm.enable = true;
+      xfce.enable = true;
+    };
     #displayManager.defaultSession = "plasmawayland";
   };
   hardware.pulseaudio.enable = false;
@@ -142,8 +146,8 @@
       extraGroups = [ "lxd" "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
       packages = (with pkgs; [
         #minecraft
-        fm
-        browsh
+        #browsh
+        postman
         pulsemixer
         wev
         emacs
@@ -183,10 +187,11 @@
     wl-clipboard
     usbutils
     pciutils
+    gnumake
     man-pages
     man-pages-posix
   ] ++ [ ripgrep fd tree file binwalk bat ] ++
-  [ tcpdump nmap netcat-openbsd lsof dig ]; # network monitoring
+  [ tcpdump nmap netcat-openbsd lsof dig tshark ]; # network monitoring
 
   programs = {
     virt-manager.enable = true;
@@ -196,18 +201,8 @@
       package = inputs.nixstable.legacyPackages."x86_64-linux".hyprland;
       enable = true;
       xwayland = {
-        enable = false;
+        enable = true;
       };
-    };
-    sway = {
-      enable = true;
-      xwayland.enable = false;
-      wrapperFeatures = {
-        gtk = true;
-      };
-      extraOptions = [
-        "--unsupported-gpu"
-      ];
     };
     steam = {
       enable = true;
@@ -266,7 +261,7 @@
       sddm.enable = true;
     };
     desktopManager.plasma6 = {
-      enable = true;
+      enable = false;
     };
     avahi = {
       enable = true;
@@ -310,38 +305,20 @@
     style = "adwaita-dark";
     #style = "adwaita-dark";
   };
-  #  security = {
-  #    doas = {
-  #      enable = true;
-  #      wheelNeedsPassword = false;
-  #      extraRules = [{
-  #        users = [ "watashi" ];
-  #        keepEnv = true;
-  #        setEnv = [ "HOME" "PATH" ];
-  #        #persist useless if passwords are disabled
-  #        #		persist = true;
-  #        noPass = true;
-  #      }];
-  #    };
-  #    pam = {
-  #      # based on configuration options below
-  #      # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/security/pam.nix
-  #      # and
-  #      # guide here https://nixos.wiki/wiki/Yubikey
-  #      yubico = {
-  #        enable = true;
-  #        mode = "challenge-response";
-  #        id = [ "22728752" ]; # follow yubico-pam guide here, https://nixos.wiki/wiki/Yubikey
-  #        debug = false; # enable passwordless not working
-  #        control = "sufficient";
-  #      };
-  #      services = {
-  #        sudo.yubicoAuth = true;
-  #        doas.yubicoAuth = true;
-  #        login.yubicoAuth = true;
-  #      };
-  #    };
-  #  };
+  security = {
+    pam.yubico = {
+      enable = true;
+      debug = true;
+      mode = "challenge-response";
+      #nix-shell --command 'ykinfo -s' -p yubikey-personalization
+      id = [
+        "22728752"
+      ];
+    };
+    # nix-shell -p yubico-pam -p yubikey-manager
+    # ykman otp chalresp --touch --generate 2 # remove --touch for no interaction
+    # ykpamcfg -2 -v
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
