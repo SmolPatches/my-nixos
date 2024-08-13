@@ -100,7 +100,7 @@
   };
   # Set your time zone.
   time.timeZone = "America/New_York";
-  sound.enable = false; # stupid alsa stuff https://github.com/NixOS/nixpkgs/issues/319809
+  #sound.enable = false; # stupid alsa stuff https://github.com/NixOS/nixpkgs/issues/319809
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
@@ -148,6 +148,7 @@
         #minecraft
         #browsh
         postman
+        tradingview
         pulsemixer
         wev
         emacs
@@ -353,6 +354,7 @@
     lxd = {
       enable = true;
     };
+    virtualbox.guest.enable = true;
   };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
