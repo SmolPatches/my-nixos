@@ -11,7 +11,8 @@
   };
   nixpkgs.overlays = [
     # use ungoogled chromium
-    (final: prev: { chromium = prev.ungoogled-chromium.override { enableWideVine = true; }; })
+    #(final: prev: { chromium = prev.ungoogled-chromium.override { enableWideVine = true; }; })
+    (final: prev: { logseq = prev.logseq.override { electron = pkgs.electron_30; }; })
     #(final: prev: { hyprland =  prev.hyprland.override { nvidiaPatches = true; enableNvidiaPatches = true; }; })
   ];
   # secrets
@@ -147,6 +148,8 @@
       packages = (with pkgs; [
         #minecraft
         #browsh
+        obsidian
+        logseq
         postman
         tradingview
         pulsemixer
@@ -196,6 +199,7 @@
 
   programs = {
     virt-manager.enable = true;
+    waybar.enable = true;
     hyprland = {
       # use hyprland from flake
       #package = inputs.hyprland.packages.${pkgs.system}.hyprland;
@@ -354,7 +358,7 @@
     lxd = {
       enable = true;
     };
-    virtualbox.guest.enable = true;
+    virtualbox.guest.enable = false;
   };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
