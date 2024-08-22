@@ -36,7 +36,7 @@
     rofi
     #wayland packages
     wofi
-  ] ++ (with nodePackages; [ bash-language-server vscode-json-languageserver ]);
+  ] ++ (with nodePackages; [ bash-language-server vscode-langservers-extracted ]);
   home.file = {
     ".cwmrc" = {
       # use cwm
@@ -93,6 +93,9 @@
       initExtra = ''
         PATH=$PATH:~/.local/bin/
         PATH=$PATH:~/.config/emacs/bin/
+        function killwb {
+          ps aux | grep waybar$ | awk '{print $2}' | xargs kill
+        }
         ${builtins.readFile ./extras.zsh}
       '';
       profileExtra = ''
