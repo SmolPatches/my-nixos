@@ -149,7 +149,6 @@
         #minecraft
         #browsh
         obsidian
-        logseq
         postman
         tradingview
         pulsemixer
