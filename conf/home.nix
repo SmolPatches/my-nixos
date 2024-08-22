@@ -36,7 +36,7 @@
     rofi
     #wayland packages
     wofi
-  ];
+  ] ++ (with nodePackages; [ bash-language-server vscode-json-languageserver ]);
   home.file = {
     ".cwmrc" = {
       # use cwm
