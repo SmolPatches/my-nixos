@@ -1,4 +1,9 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }: let
+  useEmacs = true;
+  useNvim = !useEmacs;
+  defaultEditor = if useEmacs then "emacsclient" else "nvim";
+  in
+    {
 
   # TODO
   # configure wofi/rofi
@@ -28,6 +33,7 @@
     htop
     qbittorrent
     keepassxc
+    tmux
     (neovim-qt.override { neovim = config.programs.neovim.finalPackage; })
     rpcs3
     libreoffice
@@ -51,7 +57,10 @@
       userEmail = "rob73hall@gmail.com";
       userName = "mdnlss";
       extraConfig = {
-        core = { defaultBranch = "trunk"; };
+        core = {
+          defaultBranch = "trunk";
+          editor = defaultEditor;
+        };
       };
       difftastic = {
         enable = true;
@@ -63,14 +72,14 @@
       vimAlias = true;
       withNodeJs = true;
       withPython3 = true;
-      defaultEditor = true;
+      defaultEditor = useNvim;
       plugins = [
         pkgs.vimPlugins.nvim-treesitter.withAllGrammars
         pkgs.vimPlugins.lsp-zero-nvim
       ];
     };
-    tmux = {
-      enable = true;
+    tmux = { # comes with preset binding, i don't want it.
+      enable = false;
     };
     vscode = {
       enable = true;
@@ -162,7 +171,7 @@
     };
   };
   home.sessionVariables = {
-    EDITOR = "nvim";
+    EDITOR = defaultEditor;
   };
   services = {
     emacs = {
@@ -176,6 +185,7 @@
       "wallpapers" = { source = ./wallpapers; };
       #"nvim" = { source = ./neovim; };
       "zathura" = { source = ./zathura; };
+      "tmux" =  { source = ./tmux; };
     };
   };
   # desktopEntries = {

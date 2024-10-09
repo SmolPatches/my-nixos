@@ -101,7 +101,6 @@
   };
   # Set your time zone.
   time.timeZone = "America/New_York";
-  #sound.enable = false; # stupid alsa stuff https://github.com/NixOS/nixpkgs/issues/319809
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
@@ -150,16 +149,17 @@
         #browsh
         obsidian
         postman
+        moar
         tradingview
         pulsemixer
         wev
-        emacs
         vulkan-tools
         killall
         #ungoogled-chromium # failing to build rn
         age
         xdg-desktop-portal-hyprland
         binutils
+        simplex-chat-desktop
       ] ++ [ lutris protonup-qt ] # gaming
       ++ [ qutebrowser w3m lynx ]); # web browsers
       # authorized_keys and github keys use same format
@@ -279,10 +279,18 @@
     dbus.enable = true;
     pipewire = {
       enable = true;
-      #alsa.enable = true;
-      #alsa.support32Bit = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
       pulse.enable = true;
       jack.enable = false;
+      wireplumber.extraConfig.bluetoothEnhancements = {
+        "monitor.bluez.properties" = {
+          "bluez5.enable-sbc-xq" = true;
+          "bluez5.enable-msbc" = true;
+          "bluez5.enable-hw-volume" = true;
+          "bluez5.roles" = [ "hsp_hs" "hsp_ag" "hfp_hf" "hfp_ag" ];
+        };
+      };
     };
     deluge = {
       enable = true;
