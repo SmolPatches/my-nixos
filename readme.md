@@ -2,7 +2,7 @@
 use agenix to install packages without people knowing what (or other nixos setups)
 # How to Use
 - Install on NixOS
-  > ```sudo nixos-rebuild switch - -flake.--show-trace - -option eval-cache no - -impure```
+  > ```nixos-rebuild switch --flake . --impure --use-remote-sudo```
   Impure
   Because
   Agenix
