@@ -147,6 +147,8 @@
       packages = (with pkgs; [
         #minecraft
         #browsh
+        grub2
+        helix
         obsidian
         postman
         moar

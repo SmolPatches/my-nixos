@@ -1,7 +1,7 @@
 { config, pkgs, ... }: let
-  useEmacs = true;
-  useNvim = !useEmacs;
-  defaultEditor = if useEmacs then "emacsclient" else "nvim";
+  useEmacs = false;
+  useNvim = false;
+  defaultEditor = if useEmacs then "emacsclient" else if useNvim then "nvim" else "helix";
   in
     {
 
@@ -183,9 +183,11 @@
     configFile = {
       "hypr" = { source = ./hypr; };
       "wallpapers" = { source = ./wallpapers; };
-      #"nvim" = { source = ./neovim; };
+      #"nvim" = { source = ./neovim; }; # i use a separate repo
       "zathura" = { source = ./zathura; };
       "tmux" =  { source = ./tmux; };
+      "helix" =  { source = ./helix; };
+      "alacritty" =  { source = ./alacritty; };
     };
   };
   # desktopEntries = {
