@@ -10,10 +10,7 @@
     allowBroken = false;
   };
   nixpkgs.overlays = [
-    # use ungoogled chromium
-    #(final: prev: { chromium = prev.ungoogled-chromium.override { enableWideVine = true; }; })
-    (final: prev: { logseq = prev.logseq.override { electron = pkgs.electron_30; }; })
-    #(final: prev: { hyprland =  prev.hyprland.override { nvidiaPatches = true; enableNvidiaPatches = true; }; })
+
   ];
   # secrets
   # wip
@@ -41,25 +38,7 @@
       }))
     ];
   # Bootloader.
-  #boot.supportedFilesystems = [ "nfs" ];
-  #boot.loader = {
-  #timeout = 15;
-  #systemd-boot.enable = true;
-  #systemd-boot.consoleMode = "keep";
-  #efi.canTouchEfiVariables = true;
-  #efi.efiSysMountPoint = "/boot/efi";
-  #systemd-boot.extraEntries = {
-  #"windows.conf" = ''
-  #title Windows Boot Manager
-  #efi /EFI/MICROSOFT/BOOT/BOOTMGFW.EFI
-  #'';
-  #
-  #};
-  #};
-
-  # working boot
-  #boot.loader.systemd-boot.enable = true;
-  #boot.loader.efi.canTouchEfiVariables = true;
+  boot.supportedFilesystems = [ "nfs" ];
   boot.loader = {
     timeout = 15;
     efi = {
@@ -162,11 +141,9 @@
         xdg-desktop-portal-hyprland
         binutils
         simplex-chat-desktop
-      ] ++ [ lutris protonup-qt ] # gaming
-      ++ [ qutebrowser w3m lynx ]); # web browsers
+      ] ++ [ lutris protonup-qt ]); # gaming;
       # authorized_keys and github keys use same format
       openssh.authorizedKeys.keyFiles = let ssh_keys = (builtins.fetchurl { url = "https://github.com/SmolPatches.keys"; sha256 = "1qwlx2yxp8ir7ygayn5jlldnb9pbxlkayl44n80ndn2q64lgywv2"; }); in [ ssh_keys ]; # point key files to the thing in nix_store
-
     };
   };
 
@@ -176,6 +153,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    mkvtoolnix-cli
     dracula-theme
     dracula-icon-theme
     nfs-utils
@@ -223,7 +201,7 @@
       enable = true;
     };
     xwayland = {
-      enable = false;
+      enable = true;
     };
     dconf = {
       enable = true;
@@ -384,7 +362,7 @@
   };
 
   # xdg stuff
-  xdg.portal.wlr.enable = pkgs.lib.mkForce true;
+  #xdg.portal.wlr.enable = pkgs.lib.mkForce true;
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
