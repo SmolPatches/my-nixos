@@ -7,7 +7,8 @@
     flake-utils.url = github:numtide/flake-utils;
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    #for use in home-manager
+    # use hyprland flake input so i can lock it
+    # dont want to update unless something isn't working
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     #secrets
     agenix.url = "github:ryantm/agenix";
@@ -19,11 +20,11 @@
   #outputs = { self, nixpkgs, flake-utils, home-manager, sops-nix, hyprland }: {
   outputs = { nixpkgs, agenix, ... } @inputs: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-      # ...
-      system = "x86_64-linux"; #builtins.currentSystem;
+      # use flake-input here? to add aarch64 support
+      system = "x86_64-linux"; 
       specialArgs = { inherit inputs; };
       modules = [
-        ./configuration.nix
+         ./configuration.nix
         #stolen from https://rycee.gitlab.io/home-manager/index.html#sec-flakes-nixos-module
         inputs.home-manager.nixosModules.home-manager
         {
@@ -33,35 +34,10 @@
         }
         agenix.nixosModules.default
         {
+          # use a version of nixpkgs taking from flake-utils? so i can do it against various systems
           environment.systemPackages = [ agenix.packages.x86_64-linux.default ];
         }
       ];
-    };
-    homeConfigurations = {
-      "g0vib@m1" = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages."aarch64-linux";
-        modules = [
-          ./users/g0vib.nix
-          ./users/common.nix
-          {
-            home = {
-              username = "g0vib";
-              homeDirectory = "/home/g0vib";
-              stateVersion = "23.05";
-            };
-          }
-          # install hyprland
-          inputs.hyprland.homeManagerModules.default
-          {
-            wayland.windowManager.hyprland = {
-              enable = true;
-              xwayland = {
-                enable = false;
-              };
-            };
-          }
-        ];
-      };
     };
   };
 }

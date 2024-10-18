@@ -4,6 +4,9 @@
 { inputs, config, pkgs, ... }:
 
 {
+  # allow hibernation in another life
+  #https://wiki.nixos.org/wiki/Power_Management#Hibernation
+  # i need to make a swap 
   # Allow unfree packages
   nixpkgs.config = {
     allowUnfree = true;
@@ -15,10 +18,13 @@
   # secrets
   # wip
   age.secrets = {
-    # secret nix code that you don't want anyone to see
     nix-code = {
-      file = /home/watashi/my-nixos/secrets/nix-code.age;
+      file = ./secrets/nix-code.age; # encrypted nix-code (must be nix path type)
       owner = "watashi";
+      # if no path is specified it goes to /run/agenix/nix-code
+      # which i can pass*
+      # will be impure but derivation will fail if path doesn't exist
+      #path = "${inputs.self}/nix-code"; # agenix cant write to nix-store cuz of permissions?
       mode = "600";
     };
   };
@@ -29,7 +35,7 @@
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./conf/nvidia.nix
-      /run/agenix/nix-code # run code from agenix that is encrypted
+      /run/agenix/nix-code # decrypted nix code(see agenix ^)
       # use firewall with defaults
       (import ./utils/firewall.nix ({
         config = config;
