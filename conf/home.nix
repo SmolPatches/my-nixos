@@ -56,6 +56,10 @@
       ignores = [ "*.*~" "#*#" ];
       userEmail = "rob73hall@gmail.com";
       userName = "mdnlss";
+      aliases = {
+        l1 = "log --oneline";
+        last = "log -1 HEAD";
+      };
       extraConfig = {
         core = {
           defaultBranch = "trunk";
