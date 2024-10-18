@@ -1,7 +1,7 @@
 { config, pkgs, ... }: let
   useEmacs = false;
   useNvim = false;
-  defaultEditor = if useEmacs then "emacsclient" else if useNvim then "nvim" else "helix";
+  defaultEditor = if useEmacs then "emacsclient" else if useNvim then "nvim" else "hx";
   in
     {
 
