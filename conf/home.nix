@@ -1,23 +1,21 @@
-{ config, pkgs, ... }: let
+{ config, pkgs, ... }:
+let
   useEmacs = false;
   useNvim = false;
+  useMoar = true;
+  enableManColors = true;
   defaultEditor = if useEmacs then "emacsclient" else if useNvim then "nvim" else "hx";
-  in
-    {
+in
+{
 
   # TODO
   # configure wofi/rofi
   # eww
-
   # home-manager.users.rob = {
   /* The home.stateVersion option does not have a default and must be set */
   home.stateVersion = "24.05";
   home.packages = with pkgs; [
-    irssi
-    xclip
-    yazi
     lua-language-server # for neovim config
-    signal-desktop
     neofetch
     rust-analyzer
     discord
@@ -36,7 +34,6 @@
     tmux
     (neovim-qt.override { neovim = config.programs.neovim.finalPackage; })
     rpcs3
-    libreoffice
     #x org packages
     feh
     rofi
@@ -82,11 +79,12 @@
         pkgs.vimPlugins.lsp-zero-nvim
       ];
     };
-    tmux = { # comes with preset binding, i don't want it.
+    tmux = {
+      # comes with preset binding, i don't want it.
       enable = false;
     };
     vscode = {
-      enable = true;
+      enable = false;
       package = pkgs.vscode.fhs;
     };
     emacs = {
@@ -176,6 +174,8 @@
   };
   home.sessionVariables = {
     EDITOR = defaultEditor;
+    PAGER = pkgs.lib.mkForce (if useMoar then "${pkgs.lib.getExe pkgs.moar}" else "less");
+    GROFF_NO_SGR = if enableManColors then 1 else 0;
   };
   services = {
     emacs = {
@@ -189,9 +189,9 @@
       "wallpapers" = { source = ./wallpapers; };
       #"nvim" = { source = ./neovim; }; # i use a separate repo
       "zathura" = { source = ./zathura; };
-      "tmux" =  { source = ./tmux; };
-      "helix" =  { source = ./helix; };
-      "alacritty" =  { source = ./alacritty; };
+      "tmux" = { source = ./tmux; };
+      "helix" = { source = ./helix; };
+      "alacritty" = { source = ./alacritty; };
     };
   };
   # desktopEntries = {

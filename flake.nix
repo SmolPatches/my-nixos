@@ -21,10 +21,10 @@
   outputs = { nixpkgs, agenix, ... } @inputs: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       # use flake-input here? to add aarch64 support
-      system = "x86_64-linux"; 
+      system = "x86_64-linux";
       specialArgs = { inherit inputs; };
       modules = [
-         ./configuration.nix
+        ./configuration.nix
         #stolen from https://rycee.gitlab.io/home-manager/index.html#sec-flakes-nixos-module
         inputs.home-manager.nixosModules.home-manager
         {

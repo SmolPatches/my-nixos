@@ -19,7 +19,7 @@
   # wip
   age.secrets = {
     nix-code = {
-      file = ./secrets/nix-code.age; # encrypted nix-code (must be nix path type)
+      file = ./nix-code.age; # encrypted nix-code (must be nix path type)
       owner = "watashi";
       # if no path is specified it goes to /run/agenix/nix-code
       # which i can pass*
@@ -130,9 +130,8 @@
       isNormalUser = true;
       extraGroups = [ "lxd" "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
       packages = (with pkgs; [
-        #minecraft
-        #browsh
-        grub2
+        taskwarrior3
+        swayimg
         helix
         obsidian
         postman
@@ -146,8 +145,14 @@
         age
         xdg-desktop-portal-hyprland
         binutils
-        simplex-chat-desktop
-      ] ++ [ lutris protonup-qt ]); # gaming;
+      ] ++ [ lutris protonup-qt ] # gaming
+      ++ [
+        grub2
+        zip
+        unzip
+        p7zip
+        libarchive # bsdtar
+      ]);
       # authorized_keys and github keys use same format
       openssh.authorizedKeys.keyFiles = let ssh_keys = (builtins.fetchurl { url = "https://github.com/SmolPatches.keys"; sha256 = "1qwlx2yxp8ir7ygayn5jlldnb9pbxlkayl44n80ndn2q64lgywv2"; }); in [ ssh_keys ]; # point key files to the thing in nix_store
     };
@@ -250,6 +255,25 @@
     atomix # puzzle game
   ]);
   security.rtkit.enable = true;
+  # https//nixos.wiki/wiki/NixOS_Containers
+  # use to separate services(good for sec)
+  containers = {
+    # torrent server and interface
+    torrent-server = {
+      config = { config, pkgs, lib, ... }: {
+        #system.stateVersion  = ;
+        services = {
+          deluge = {
+            enable = true;
+            web = {
+              enable = true;
+              openFirewall = true;
+            };
+          };
+        };
+      };
+    };
+  };
   services = {
     displayManager = {
       sddm.enable = true;
@@ -277,10 +301,6 @@
           "bluez5.roles" = [ "hsp_hs" "hsp_ag" "hfp_hf" "hfp_ag" ];
         };
       };
-    };
-    deluge = {
-      enable = true;
-      package = pkgs.deluge-gtk;
     };
     flatpak = {
       enable = true;
