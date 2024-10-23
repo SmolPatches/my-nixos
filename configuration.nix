@@ -123,10 +123,10 @@
   };
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users = {
-    mutableUsers = false;
+    mutableUsers = pkgs.lib.mkForce false;
     users.watashi = {
       shell = pkgs.zsh;
-      password = "infamous2";
+      #password = "infamous2";
       isNormalUser = true;
       extraGroups = [ "lxd" "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
       packages = (with pkgs; [
