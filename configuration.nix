@@ -130,7 +130,8 @@
       isNormalUser = true;
       extraGroups = [ "lxd" "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
       packages = (with pkgs; [
-        taskwarrior3
+        certbot
+        mkcert
         swayimg
         helix
         obsidian
@@ -328,6 +329,9 @@
     #style = "adwaita-dark";
   };
   security = {
+    pki = {
+      certificateFiles = [ ./conf/certs/cert.pem ];
+    };
     pam.yubico = {
       enable = true;
       debug = false;
