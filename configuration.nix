@@ -274,10 +274,93 @@
         };
       };
     };
+    sourcehut = {
+      config = { pkgs, ... }:
+        let
+          disable_container = true;
+          fqdn =
+            let
+              join = hostName: domain: hostName + pkgs.lib.optionalString (domain != null) ".${domain}";
+            in
+            join config.networking.hostName config.networking.domain;
+        in
+        if disable_container then { } else # if this is disable nix will try to build this container
+          # note the container is not finished
+        {
+
+          networking = {
+            hostName = "srht";
+            #domain = "tld";
+            firewall.allowedTCPPorts = [ 22 80 443 ];
+          };
+
+          services = {
+            sourcehut = {
+              enable = true;
+              git.enable = true;
+              man.enable = true;
+              meta.enable = true;
+              nginx.enable = true;
+              postfix.enable = true;
+              postgresql.enable = true;
+              redis.enable = true;
+              settings = {
+                "sr.ht" = {
+                  environment = "production";
+                  global-domain = fqdn;
+                  origin = "https://${fqdn}";
+                  # Produce keys with srht-keygen from sourcehut.coresrht.
+                  network-key = "/run/keys/path/to/network-key";
+                  service-key = "/run/keys/path/to/service-key";
+                };
+                webhooks.private-key = "/run/keys/path/to/webhook-key";
+              };
+            };
+            nginx = {
+              enable = true;
+              # only recommendedProxySettings are strictly required, but the rest make sense as well.
+              recommendedTlsSettings = true;
+              recommendedOptimisation = true;
+              recommendedGzipSettings = true;
+              recommendedProxySettings = true;
+
+              # Settings to setup what certificates are used for which endpoint.
+              virtualHosts = {
+                "${fqdn}".enableACME = true;
+                "meta.${fqdn}".useACMEHost = fqdn;
+                "man.${fqdn}".useACMEHost = fqdn;
+                "git.${fqdn}".useACMEHost = fqdn;
+              };
+            };
+            postfix = {
+              enable = true;
+            };
+            postgresql = {
+              enable = true;
+            };
+          };
+          security.acme =
+            {
+              acceptTerms = true;
+              certs."${fqdn}".extraDomainNames = [
+                "meta.${fqdn}"
+                "man.${fqdn}"
+                "git.${fqdn}"
+              ];
+              email = "rob73hall@gmail.com";
+            };
+        };
+    };
   };
   services = {
     displayManager = {
-      sddm.enable = true;
+      #sddm.enable = true;
+      ly = {
+        enable = true;
+        settings = {
+          vi_mode = true;
+        };
+      };
     };
     desktopManager.plasma6 = {
       enable = false;
