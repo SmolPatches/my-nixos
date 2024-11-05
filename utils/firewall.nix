@@ -8,7 +8,7 @@
       enable = true;
       allowPing = true;
       package = pkgs.nftables;
-      allowedTCPPorts = [ 80 443 22 8000 8080 ] ++ (if enable_localsend then [ 53317 ] else [ ]);
+      allowedTCPPorts = [ 80 443 22 8000 8080 3000 ] ++ (if enable_localsend then [ 53317 ] else [ ]);
       allowedUDPPorts = [ ] ++ (if enable_localsend then [ 53317 ] else [ ]);
     };
   };
