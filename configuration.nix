@@ -110,6 +110,7 @@
     desktopManager = {
       xterm.enable = true;
       xfce.enable = true;
+      gnome.enable = true;
     };
     #displayManager.defaultSession = "plasmawayland";
   };
@@ -129,6 +130,7 @@
       isNormalUser = true;
       extraGroups = [ "lxd" "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
       packages = (with pkgs; [
+        signal-desktop
         certbot
         mkcert
         swayimg
@@ -199,8 +201,16 @@
         enable = true;
       };
     };
+
+    # https://wiki.archlinux.org/title/Gamescope
+    gamescope = {
+      enable = true;
+    };
     steam = {
       enable = true;
+      gamescopeSession = {
+        enable = true;
+      };
     };
     direnv = {
       enable = true;
@@ -239,11 +249,11 @@
   environment.gnome.excludePackages = (with pkgs; [
     gnome-photos
     gnome-tour
+    gedit # text editor
   ]) ++ (with pkgs.gnome; [
     cheese # webcam tool
     gnome-music
     gnome-terminal
-    gedit # text editor
     epiphany # web browser
     geary # email reader
     evince # document viewer

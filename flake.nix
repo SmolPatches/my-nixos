@@ -3,7 +3,7 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixstable.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixstable.url = "github:nixos/nixpkgs/nixos-24.11";
     flake-utils.url = github:numtide/flake-utils;
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
