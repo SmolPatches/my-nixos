@@ -75,7 +75,7 @@
     };
   };
   # newer version breaks hyprland
-  boot.kernelPackages = pkgs.linuxPackages_6_9;
+  boot.kernelPackages = pkgs.linuxPackages;
 
 
   # Enable networking
@@ -250,7 +250,7 @@
     gnome-photos
     gnome-tour
     gedit # text editor
-  ]) ++ (with pkgs.gnome; [
+  #]) ++ (with pkgs.gnome; [
     cheese # webcam tool
     gnome-music
     gnome-terminal

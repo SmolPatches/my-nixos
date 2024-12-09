@@ -13,8 +13,8 @@
     #  settingsSha256 = "sha256-vWnrXlBCb3K5uVkDFmJDVq51wrCoqgPF03lSjZOuU8M=";
     #  persistencedSha256 = lib.fakeSha256;
     #};
-    #package = config.boot.kernelPackages.nvidiaPackages.stable; #config.boot.kernelPackages.nvidiaPackages.beta;
-    package = config.boot.kernelPackages.nvidiaPackages.latest; #config.boot.kernelPackages.nvidiaPackages.beta;
+    package = config.boot.kernelPackages.nvidiaPackages.stable; #config.boot.kernelPackages.nvidiaPackages.beta;
+    #package = config.boot.kernelPackages.nvidiaPackages.latest; #config.boot.kernelPackages.nvidiaPackages.beta;
   };
   boot.kernelParams = [
     #    "nvidia-drm.modeset=1"
