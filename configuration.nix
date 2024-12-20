@@ -192,6 +192,10 @@
   programs = {
     virt-manager.enable = true;
     waybar.enable = true;
+    appimage = {
+      enable = true;
+      binfmt = true;
+    };
     hyprland = {
       # use hyprland from flake
       #package = inputs.hyprland.packages.${pkgs.system}.hyprland;
