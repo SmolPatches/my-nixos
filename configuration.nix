@@ -34,6 +34,7 @@
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./conf/nvidia.nix
+      ./mullvad.nix
       /run/agenix/nix-code # decrypted nix code(see agenix ^)
       # use firewall with defaults
       (import ./utils/firewall.nix ({
@@ -43,7 +44,7 @@
       }))
     ];
   # Bootloader.
-  boot.supportedFilesystems = [ "nfs" ];
+  boot.supportedFilesystems = [ "nfs" "ntfs"];
   boot.loader = {
     timeout = 15;
     efi = {
@@ -130,6 +131,7 @@
       isNormalUser = true;
       extraGroups = [ "lxd" "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
       packages = (with pkgs; [
+        inputs.ghostty.packages.x86_64-linux.default
         signal-desktop
         certbot
         mkcert
@@ -161,7 +163,7 @@
   };
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "FiraCode" "CascadiaCode" ]; })
+    (nerdfonts.override { fonts = [ "FiraCode" "CascadiaCode" "FiraMono" "AnonymousPro"]; })
   ];
   # List packages installed in system profile. To search, run:
   # $ nix search wget

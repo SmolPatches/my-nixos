@@ -5,7 +5,8 @@
     #nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     nixstable.url = "github:nixos/nixpkgs/nixos-24.11";
-    flake-utils.url = github:numtide/flake-utils;
+    ghostty.url = "github:ghostty-org/ghostty";
+    flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     # use hyprland flake input so i can lock it
