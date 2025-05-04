@@ -43,41 +43,51 @@
         enable_localsend = true;
       }))
     ];
-  # Bootloader.
-  boot.supportedFilesystems = [ "nfs" "ntfs"];
-  boot.loader = {
-    timeout = 15;
-    efi = {
-      canTouchEfiVariables = true;
-      # assuming /boot is the mount point of the  EFI partition in NixOS (as the installation section recommends).
-      efiSysMountPoint = "/boot";
-    };
-    grub = {
-      # despite what the configuration.nix manpage seems to indicate,
-      # as of release 17.09, setting device to "nodev" will still call
-      # `grub-install` if efiSupport is true
-      # (the devices list is not used by the EFI grub install,
-      # but must be set to some value in order to pass an assert in grub.nix)
-      devices = [ "nodev" ];
-      efiSupport = true;
-      splashImage = ./assets/lain.png;
-      enable = true;
-      # set $FS_UUID to the UUID of the EFI partition
-      extraEntries = ''
-        menuentry "Windows" {
-          insmod part_gpt
-          insmod fat
-          insmod search_fs_uuid
-          insmod chain
-          search --fs-uuid --set=root $FS_UUID
-          chainloader /EFI/Microsoft/Boot/bootmgfw.efi
-        }
-      '';
-    };
-  };
-  # newer version breaks hyprland
-  boot.kernelPackages = pkgs.linuxPackages;
 
+  boot = {
+
+    kernelParams = [
+      # serial console baby
+      "console=ttyS0,115200"
+      "console=tty1"
+    ];
+
+    supportedFilesystems = [ "nfs" "ntfs" ];
+    # Bootloader.
+    loader = {
+      timeout = 15;
+      efi = {
+        canTouchEfiVariables = true;
+        # assuming /boot is the mount point of the  EFI partition in NixOS (as the installation section recommends).
+        efiSysMountPoint = "/boot";
+      };
+      grub = {
+        # despite what the configuration.nix manpage seems to indicate,
+        # as of release 17.09, setting device to "nodev" will still call
+        # `grub-install` if efiSupport is true
+        # (the devices list is not used by the EFI grub install,
+        # but must be set to some value in order to pass an assert in grub.nix)
+        devices = [ "nodev" ];
+        efiSupport = true;
+        splashImage = ./assets/lain.png;
+        enable = true;
+        # set $FS_UUID to the UUID of the EFI partition
+        extraEntries = ''
+          menuentry "Windows" {
+            insmod part_gpt
+            insmod fat
+            insmod search_fs_uuid
+            insmod chain
+            search --fs-uuid --set=root $FS_UUID
+            chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+          }
+        '';
+      };
+    };
+    # newer version breaks hyprland
+    kernelPackages = pkgs.linuxPackages;
+
+  };
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -131,15 +141,14 @@
       isNormalUser = true;
       extraGroups = [ "lxd" "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
       packages = (with pkgs; [
-        inputs.ghostty.packages.x86_64-linux.default
         signal-desktop
-        certbot
-        mkcert
         swayimg
         helix
         obsidian
+        kitty
         postman
         moar
+        xplr # filemanager
         tradingview
         pulsemixer
         wev
@@ -158,12 +167,13 @@
         libarchive # bsdtar
       ]);
       # authorized_keys and github keys use same format
-      openssh.authorizedKeys.keyFiles = let ssh_keys = (builtins.fetchurl { url = "https://github.com/SmolPatches.keys"; sha256 = "1qwlx2yxp8ir7ygayn5jlldnb9pbxlkayl44n80ndn2q64lgywv2"; }); in [ ssh_keys ]; # point key files to the thing in nix_store
+      # openssh.authorizedKeys.keyFiles = let ssh_keys = (builtins.fetchurl { url = "https://github.com/SmolPatches.keys"; sha256 = "1qwlx2yxp8ir7ygayn5jlldnb9pbxlkayl44n80ndn2q64lgywv2"; }); in [ ssh_keys ]; # point key files to the thing in nix_store
+      openssh.authorizedKeys.keyFiles = let ssh_keys = (builtins.fetchurl { url = "https://github.com/SmolPatches.keys"; sha256 = "1xnhmkxpvkiayc89a6zg25ri9s1a8hnsqkv5lcmjwvrrc89ri0nb"; }); in [ ssh_keys ]; # point key files to the thing in nix_store
     };
   };
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "FiraCode" "CascadiaCode" "FiraMono" "AnonymousPro"]; })
+    (nerdfonts.override { fonts = [ "FiraCode" "CascadiaCode" "FiraMono" "AnonymousPro" ]; })
   ];
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -195,8 +205,8 @@
     virt-manager.enable = true;
     waybar.enable = true;
     appimage = {
-      enable = true;
-      binfmt = true;
+      # enable = true;
+      # binfmt = true;
     };
     hyprland = {
       # use hyprland from flake
@@ -256,7 +266,7 @@
     gnome-photos
     gnome-tour
     gedit # text editor
-  #]) ++ (with pkgs.gnome; [
+    #]) ++ (with pkgs.gnome; [
     cheese # webcam tool
     gnome-music
     gnome-terminal

@@ -13,17 +13,14 @@ in
   # eww
   # home-manager.users.rob = {
   /* The home.stateVersion option does not have a default and must be set */
-  home.stateVersion = "24.05";
+  home.stateVersion = "24.11";
   home.packages = with pkgs; [
-    lua-language-server # for neovim config
     neofetch
-    rust-analyzer
-    discord
+    #discord
     mako # notifications for wayland
     eza
     localsend
     yaml-language-server
-    zls
     nil
     nixpkgs-fmt
     moar
@@ -89,7 +86,7 @@ in
     };
     emacs = {
       enable = true;
-      package = pkgs.emacs29-pgtk;
+      package = pkgs.emacs30-pgtk;
       extraPackages = epkgs: with epkgs; [ tsc tree-sitter-langs tree-sitter vterm ];
     };
     zsh = {
@@ -207,13 +204,13 @@ in
   # };
   # this was a test idek what this does
   # https://rycee.gitlab.io/home-manager/options.html#opt-nixpkgs.overlays
-  nixpkgs.overlays = [
-    (final: prev: {
-      openssh = prev.openssh.override {
-        hpnSupport = true;
-        withKerberos = true;
-        kerberos = final.libkrb5;
-      };
-    })
-  ];
+  # nixpkgs.overlays = [
+  #   (final: prev: {
+  #     openssh = prev.openssh.override {
+  #       hpnSupport = true;
+  #       withKerberos = true;
+  #       kerberos = final.libkrb5;
+  #     };
+  #   })
+  # ];
 }
