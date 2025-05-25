@@ -3,12 +3,11 @@
 {
   inputs = {
     #nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
-    nixstable.url = "github:nixos/nixpkgs/nixos-24.11";
-    ghostty.url = "github:ghostty-org/ghostty";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    # home-manager.url = "github:nix-community/home-manager";
-    home-manager.url = "github:nix-community/home-manager/0b491b460f52e87e23eb17bbf59c6ae64b7664c1";
+     home-manager.url = "github:nix-community/home-manager";
+    #home-manager.url = "github:nix-community/home-manager/0b491b460f52e87e23eb17bbf59c6ae64b7664c1";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     # use hyprland flake input so i can lock it
     # dont want to update unless something isn't working
@@ -31,7 +30,7 @@
         #stolen from https://rycee.gitlab.io/home-manager/index.html#sec-flakes-nixos-module
         inputs.home-manager.nixosModules.home-manager
         {
-          home-manager.useGlobalPkgs = false;
+          home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.watashi = import ./conf/home.nix;
         }

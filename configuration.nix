@@ -35,8 +35,7 @@
       ./hardware-configuration.nix
       ./conf/nvidia.nix
       ./mullvad.nix
-      /run/agenix/nix-code # decrypted nix code(see agenix ^)
-      # use firewall with defaults
+      (import /run/agenix/nix-code { inherit inputs config pkgs; sV = config.system.stateVersion; })       # use firewall with defaults
       (import ./utils/firewall.nix ({
         config = config;
         pkgs = pkgs;
@@ -120,10 +119,9 @@
     };
     desktopManager = {
       xterm.enable = true;
-      xfce.enable = true;
       gnome.enable = true;
     };
-    #displayManager.defaultSession = "plasmawayland";
+    displayManager.gdm.autoSuspend = false; # suspend causes driver issues in gnome
   };
   hardware.pulseaudio.enable = false;
   # bluetooth support
@@ -150,7 +148,6 @@
         moar
         xplr # filemanager
         tradingview
-        pulsemixer
         wev
         vulkan-tools
         killall
@@ -172,8 +169,9 @@
     };
   };
 
-  fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "FiraCode" "CascadiaCode" "FiraMono" "AnonymousPro" ]; })
+  fonts.packages = with pkgs.nerd-fonts; [
+    fira-code
+    caskaydia-mono
   ];
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -181,7 +179,7 @@
     mkvtoolnix-cli
     dracula-theme
     dracula-icon-theme
-    nfs-utils
+    # nfs-utils
     distrobox
     wget
     hwinfo
@@ -195,7 +193,7 @@
     wl-clipboard
     usbutils
     pciutils
-    gnumake
+    # gnumake
     man-pages
     man-pages-posix
   ] ++ [ ripgrep fd tree file binwalk bat ] ++
@@ -211,7 +209,7 @@
     hyprland = {
       # use hyprland from flake
       #package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-      package = inputs.nixstable.legacyPackages."x86_64-linux".hyprland;
+      package = inputs.nixpkgs.legacyPackages."x86_64-linux".hyprland;
       enable = true;
       xwayland = {
         enable = true;
@@ -283,11 +281,12 @@
   security.rtkit.enable = true;
   # https//nixos.wiki/wiki/NixOS_Containers
   # use to separate services(good for sec)
-  containers = {
+  containers = let stateVersion = config.system.stateVersion; in {
     # torrent server and interface
     torrent-server = {
       config = { config, pkgs, lib, ... }: {
-        #system.stateVersion  = ;
+        system.stateVersion  = stateVersion;
+        #system.stateVersion = "23.05";
         services = {
           deluge = {
             enable = true;
@@ -299,9 +298,14 @@
         };
       };
     };
-    forgejo = import ./conf/forgejo.nix ({ root_config = config; enable = false; });
   };
   services = {
+    #crab-hole.enable = true;
+    gnome = {
+      core-apps.enable = pkgs.lib.mkForce false;
+      core-os-services.enable = pkgs.lib.mkForce false;
+      core-shell.enable = pkgs.lib.mkForce false;
+    };
     displayManager = {
       #sddm.enable = true;
       ly = {
