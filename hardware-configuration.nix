@@ -9,11 +9,24 @@
       (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+  boot.plymouth = {
+    enable = true;
+    theme = "catppuccin-macchiato";
+    themePackages = [
+      pkgs.catppuccin-plymouth
+    ];
+  };
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "cryptd" "dm-crypt" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
-
+  # raid 1 btrfs disks
+  # https://nixos.wiki/wiki/Full_Disk_Encryption
+  # TODO: move / to these disks temporarily then luks encrypt the next
+  boot.initrd.luks.devices = {
+    raider0 = { device = "/dev/disk/by-label/raider0"; };
+    raider1 = { device = "/dev/disk/by-label/raider1"; };
+  };
   fileSystems."/" =
     {
       device = "/dev/disk/by-uuid/ab7aa4e1-c45c-4267-be12-181ebccabfa1";
@@ -21,6 +34,14 @@
       options = [ "subvol=@" ];
     };
 
+  fileSystems."/home/raider" =
+    {
+      device = "/dev/mapper/raider0";
+      fsType = "btrfs";
+      options = [ "nofail" "noatime" ];
+      # options = [ "nofail" "uid=1000" "gid=1000"];
+      depends = [ "/" ];
+    };
   fileSystems."/boot" =
     {
       device = "/dev/disk/by-uuid/760E-DB56";

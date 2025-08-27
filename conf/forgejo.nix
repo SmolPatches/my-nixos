@@ -6,7 +6,8 @@
       cfg = config.services.forgejo;
       srv = cfg.settings.server;
     in
-    if !enable then { } else { # this will disable / enable based on function args passed
+    if !enable then { } else {
+      # this will disable / enable based on function args passed
       services.nginx = {
         virtualHosts.${cfg.settings.server.DOMAIN} = {
           forceSSL = true;

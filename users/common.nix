@@ -38,35 +38,6 @@
         background = "dark";
       };
     };
-    neovim = {
-      enable = true;
-      vimAlias = true;
-      withNodeJs = true;
-      withPython3 = true;
-      extraPackages = with pkgs; [
-        zls
-        rnix-lsp
-        zig
-        rust-analyzer
-        rustc
-        cargo
-      ];
-      plugins = with pkgs.vimPlugins; [
-        zig-vim
-        trouble-nvim
-        telescope-nvim
-        nvim-lspconfig
-        nvim-cmp
-        cmp-buffer
-        cmp-path
-        cmp-nvim-lsp
-        cmp-nvim-lua
-        gitsigns-nvim
-        gruvbox-nvim
-        nvim-treesitter
-        nvim-tree-lua
-      ];
-    };
     kitty = {
       enable = true;
     };

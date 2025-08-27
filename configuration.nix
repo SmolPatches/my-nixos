@@ -5,14 +5,14 @@
 {
   # allow hibernation in another life
   #https://wiki.nixos.org/wiki/Power_Management#Hibernation
-  # i need to make a swap 
+  # i need to make a swap
   # Allow unfree packages
   nixpkgs.config = {
     allowUnfree = true;
     allowBroken = false;
   };
   nixpkgs.overlays = [
-
+    (final: prev: { grub2 = import ./grub.nix { pkgs = prev; }; })
   ];
   # secrets
   # wip
@@ -35,7 +35,7 @@
       ./hardware-configuration.nix
       ./conf/nvidia.nix
       ./mullvad.nix
-      (import /run/agenix/nix-code { inherit inputs config pkgs; sV = config.system.stateVersion; })       # use firewall with defaults
+      (import /run/agenix/nix-code { inherit inputs config pkgs; sV = config.system.stateVersion; }) # use firewall with defaults
       (import ./utils/firewall.nix ({
         config = config;
         pkgs = pkgs;
@@ -92,6 +92,45 @@
   networking.networkmanager.enable = true;
   networking = {
     hostName = "nixos"; # Define your hostname.
+    #hosts = {"127.0.0.1" = ["google.dev"];};
+    # nftables.ruleset = ''
+    #   table ip nat {
+    #     chain POSTROUTING {
+    #       type nat hook postrouting priority 100; policy accept;
+    #       ip saddr 192.168.100.0/24 ip daddr != 192.168.100.0/24 masquerade
+    #     }
+    #   }
+
+    #   table ip filter {
+    #     chain FORWARD {
+    #       type filter hook forward priority 0; policy accept;
+    #       iifname "virbr0" accept
+    #       oifname "virbr0" accept;
+    #     }
+    #   }
+    # '';
+    # nftables.ruleset = ''
+    # table ip nat {
+    #   chain prerouting {
+    #     type nat hook prerouting priority dstnat; policy accept;
+    #     tcp dport 80 redirect to :5000
+    #   }
+
+    #   chain output {
+    #     type nat hook output priority -100; policy accept;
+    #     ip daddr 127.0.0.1 tcp dport 80 redirect to :5000
+    #   }
+    # }
+
+    # '';
+    # "network" = {
+    #   forward = "nat";
+    #   bridge = "virbr20";
+    #   ip = "192.168.100.1";
+    #   netmask = "255.255.255.0";
+    #   dhcpStart = "192.168.100.128";
+    #   dhcpEnd = "192.168.100.254";
+    # };
   };
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -139,23 +178,29 @@
       isNormalUser = true;
       extraGroups = [ "lxd" "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
       packages = (with pkgs; [
+        lm_sensors
+        fanctl
+        kicad
+        catppuccin-plymouth
+        sbctl
         signal-desktop
+        pcmanfm
+        prismlauncher # minecraft
+        wireguard-tools
         swayimg
         helix
         obsidian
         kitty
         postman
         moar
-        xplr # filemanager
         tradingview
         wev
         vulkan-tools
         killall
-        #ungoogled-chromium # failing to build rn
         age
         xdg-desktop-portal-hyprland
         binutils
-      ] ++ [ lutris protonup-qt ] # gaming
+      ] ++ [ protonup-qt ] # gaming
       ++ [
         grub2
         zip
@@ -179,7 +224,6 @@
     mkvtoolnix-cli
     dracula-theme
     dracula-icon-theme
-    # nfs-utils
     distrobox
     wget
     hwinfo
@@ -193,11 +237,10 @@
     wl-clipboard
     usbutils
     pciutils
-    # gnumake
     man-pages
     man-pages-posix
   ] ++ [ ripgrep fd tree file binwalk bat ] ++
-  [ tcpdump nmap netcat-openbsd lsof dig tshark ]; # network monitoring
+  [ iptables tcpdump nmap netcat-openbsd lsof dig tshark ]; # network monitoring
 
   programs = {
     virt-manager.enable = true;
@@ -278,14 +321,15 @@
     hitori # sudoku game
     atomix # puzzle game
   ]);
-  security.rtkit.enable = true;
+  # security.rtkit.enable = true;
+  security.polkit.enable = true;
   # https//nixos.wiki/wiki/NixOS_Containers
   # use to separate services(good for sec)
   containers = let stateVersion = config.system.stateVersion; in {
     # torrent server and interface
     torrent-server = {
       config = { config, pkgs, lib, ... }: {
-        system.stateVersion  = stateVersion;
+        system.stateVersion = stateVersion;
         #system.stateVersion = "23.05";
         services = {
           deluge = {
@@ -301,9 +345,10 @@
   };
   services = {
     #crab-hole.enable = true;
+    whoogle-search.enable = true;
     gnome = {
       core-apps.enable = pkgs.lib.mkForce false;
-      core-os-services.enable = pkgs.lib.mkForce false;
+      core-os-services.enable = pkgs.lib.mkForce true; # settings?
       core-shell.enable = pkgs.lib.mkForce false;
     };
     displayManager = {
@@ -355,6 +400,7 @@
   environment = {
     #noXlibs = true;
     variables = {
+      RIPGREP_CONFIG_PATH = "$HOME/.config/ripgrep/.rgrc";
       GTK_THEME = "Dracula:dark";
     };
   };
@@ -419,6 +465,10 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
   #
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hibernate.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;
   documentation = {
     enable = true;
     man = {
