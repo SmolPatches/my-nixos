@@ -26,12 +26,13 @@
   boot.initrd.luks.devices = {
     raider0 = { device = "/dev/disk/by-label/raider0"; };
     raider1 = { device = "/dev/disk/by-label/raider1"; };
+    burro = { device = "/dev/disk/by-label/burro"; };
   };
   fileSystems."/" =
     {
-      device = "/dev/disk/by-uuid/ab7aa4e1-c45c-4267-be12-181ebccabfa1";
+      device = "/dev/mapper/burro";
       fsType = "btrfs";
-      options = [ "subvol=@" ];
+      options = [ "subvol=/" "noatime" ];
     };
 
   fileSystems."/home/raider" =
@@ -39,12 +40,11 @@
       device = "/dev/mapper/raider0";
       fsType = "btrfs";
       options = [ "nofail" "noatime" ];
-      # options = [ "nofail" "uid=1000" "gid=1000"];
       depends = [ "/" ];
     };
   fileSystems."/boot" =
     {
-      device = "/dev/disk/by-uuid/760E-DB56";
+      device = "/dev/disk/by-label/STIVALE";
       fsType = "vfat";
     };
 

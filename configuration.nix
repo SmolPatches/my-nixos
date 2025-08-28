@@ -12,7 +12,7 @@
     allowBroken = false;
   };
   nixpkgs.overlays = [
-    (final: prev: { grub2 = import ./grub.nix { pkgs = prev; }; })
+    #(final: prev: { grub2 = import ./grub.nix { pkgs = prev; }; })
   ];
   # secrets
   # wip
@@ -44,14 +44,7 @@
     ];
 
   boot = {
-
-    kernelParams = [
-      # serial console baby
-      "console=ttyS0,115200"
-      "console=tty1"
-    ];
-
-    supportedFilesystems = [ "nfs" "ntfs" ];
+    supportedFilesystems = [ "nfs" ];
     # Bootloader.
     loader = {
       timeout = 15;
@@ -70,17 +63,6 @@
         efiSupport = true;
         splashImage = ./assets/lain.png;
         enable = true;
-        # set $FS_UUID to the UUID of the EFI partition
-        extraEntries = ''
-          menuentry "Windows" {
-            insmod part_gpt
-            insmod fat
-            insmod search_fs_uuid
-            insmod chain
-            search --fs-uuid --set=root $FS_UUID
-            chainloader /EFI/Microsoft/Boot/bootmgfw.efi
-          }
-        '';
       };
     };
     # newer version breaks hyprland
