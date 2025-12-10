@@ -2,6 +2,8 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 { inputs, config, pkgs, ... }:
+let enable_ipfs = false;
+  in
 {
   # allow hibernation in another life
   #https://wiki.nixos.org/wiki/Power_Management#Hibernation
@@ -67,9 +69,10 @@
       };
       systemd-boot.enable = pkgs.lib.mkForce false;
     };
-    lanzaboot = {
+    #https://nix-community.github.io/lanzaboote/getting-started/prepare-your-system.html
+    lanzaboote = {
       enable = true;
-      pkiPundle = "/var/lib/sbctl";
+      pkiBundle = "/var/lib/sbctl";
     };
     initrd.systemd.enable = true;
     kernelPackages = pkgs.linuxPackages;
@@ -306,7 +309,7 @@
   services = {
     #crab-hole.enable = true;
     kubo = {
-      enable = true;
+      enable = enable_ipfs;
     };
     whoogle-search.enable = true;
     gnome = {
