@@ -16,17 +16,17 @@
   ];
   # secrets
   # wip
-  age.secrets = {
-    nix-code = {
-      file = ./nix-code.age; # encrypted nix-code (must be nix path type)
-      owner = "watashi";
-      # if no path is specified it goes to /run/agenix/nix-code
-      # which i can pass*
-      # will be impure but derivation will fail if path doesn't exist
-      #path = "${inputs.self}/nix-code"; # agenix cant write to nix-store cuz of permissions?
-      mode = "600";
-    };
-  };
+  # age.secrets = {
+  #   nix-code = {
+  #     file = ./nix-code.age; # encrypted nix-code (must be nix path type)
+  #     owner = "watashi";
+  #     # if no path is specified it goes to /run/agenix/nix-code
+  #     # which i can pass*
+  #     # will be impure but derivation will fail if path doesn't exist
+  #     #path = "${inputs.self}/nix-code"; # agenix cant write to nix-store cuz of permissions?
+  #     mode = "600";
+  #   };
+  # };
   #enable flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   imports =
@@ -34,8 +34,9 @@
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./conf/nvidia.nix
+      # ./ollama.nix
       ./mullvad.nix
-      (import /run/agenix/nix-code { inherit inputs config pkgs; sV = config.system.stateVersion; }) # use firewall with defaults
+      # (import /run/agenix/nix-code { inherit inputs config pkgs; sV = config.system.stateVersion; }) # use firewall with defaults
       (import ./utils/firewall.nix ({
         config = config;
         pkgs = pkgs;
@@ -44,7 +45,7 @@
     ];
 
   boot = {
-    supportedFilesystems = [ "nfs" ];
+    # supportedFilesystems = [ "nfs" ];
     # Bootloader.
     loader = {
       timeout = 15;
@@ -62,73 +63,39 @@
         devices = [ "nodev" ];
         efiSupport = true;
         splashImage = ./assets/lain.png;
-        enable = true;
+        enable = false; # using lanzboot
       };
+      systemd-boot.enable = pkgs.lib.mkForce false;
     };
-    # newer version breaks hyprland
+    lanzaboot = {
+      enable = true;
+      pkiPundle = "/var/lib/sbctl";
+    };
+    initrd.systemd.enable = true;
     kernelPackages = pkgs.linuxPackages;
-
   };
 
   # Enable networking
   networking.networkmanager.enable = true;
   networking = {
     hostName = "nixos"; # Define your hostname.
-    #hosts = {"127.0.0.1" = ["google.dev"];};
-    # nftables.ruleset = ''
-    #   table ip nat {
-    #     chain POSTROUTING {
-    #       type nat hook postrouting priority 100; policy accept;
-    #       ip saddr 192.168.100.0/24 ip daddr != 192.168.100.0/24 masquerade
-    #     }
-    #   }
-
-    #   table ip filter {
-    #     chain FORWARD {
-    #       type filter hook forward priority 0; policy accept;
-    #       iifname "virbr0" accept
-    #       oifname "virbr0" accept;
-    #     }
-    #   }
-    # '';
-    # nftables.ruleset = ''
-    # table ip nat {
-    #   chain prerouting {
-    #     type nat hook prerouting priority dstnat; policy accept;
-    #     tcp dport 80 redirect to :5000
-    #   }
-
-    #   chain output {
-    #     type nat hook output priority -100; policy accept;
-    #     ip daddr 127.0.0.1 tcp dport 80 redirect to :5000
-    #   }
-    # }
-
-    # '';
-    # "network" = {
-    #   forward = "nat";
-    #   bridge = "virbr20";
-    #   ip = "192.168.100.1";
-    #   netmask = "255.255.255.0";
-    #   dhcpStart = "192.168.100.128";
-    #   dhcpEnd = "192.168.100.254";
-    # };
   };
   # Set your time zone.
-  time.timeZone = "America/New_York";
+  time.timeZone = "Europe/Rome";
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
+  #i18n.defaultLocale = "en_US.UTF-8";
+  i18n.defaultLocale = "it_IT.UTF-8";
 
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONETARY = "en_US.UTF-8";
-    LC_NAME = "en_US.UTF-8";
-    LC_NUMERIC = "en_US.UTF-8";
-    LC_PAPER = "en_US.UTF-8";
-    LC_TELEPHONE = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
+    LC_ADDRESS = "it_IT.UTF-8";
+    LC_IDENTIFICATION = "it_IT.UTF-8";
+    LC_MEASUREMENT = "it_IT.UTF-8";
+    LC_MONETARY = "it_IT.UTF-8";
+    LC_NAME = "it_IT.UTF-8";
+    LC_NUMERIC = "it_IT.UTF-8";
+    LC_PAPER = "it_IT.UTF-8";
+    LC_TELEPHONE = "it_IT.UTF-8";
+    LC_TIME = "it_IT.UTF-8";
   };
 
   # Configure keymap in X11
@@ -144,7 +111,7 @@
     };
     displayManager.gdm.autoSuspend = false; # suspend causes driver issues in gnome
   };
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   # bluetooth support
   hardware.bluetooth = {
     enable = true;
@@ -156,24 +123,26 @@
     mutableUsers = pkgs.lib.mkForce false;
     users.watashi = {
       shell = pkgs.zsh;
-      #password = "infamous2";
+      password = "infamous2";
       isNormalUser = true;
-      extraGroups = [ "lxd" "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" ]; # Enable ‘sudo’ for the user.
+      extraGroups = [ "networkmanager" "wheel" "video" "audio" "seatd" "docker" "libvirtd" "tss" ];
       packages = (with pkgs; [
+        papers
+        ngspice
+        tor-browser
         lm_sensors
         fanctl
-        kicad
+        mission-center
+        hardinfo2
+        helix
+        nvtopPackages.full
         catppuccin-plymouth
-        sbctl
         signal-desktop
         pcmanfm
         prismlauncher # minecraft
         wireguard-tools
         swayimg
-        helix
-        obsidian
         kitty
-        postman
         moar
         tradingview
         wev
@@ -183,12 +152,14 @@
         xdg-desktop-portal-hyprland
         binutils
       ] ++ [ protonup-qt ] # gaming
-      ++ [
-        grub2
+      ++ [ # archive utils
         zip
         unzip
         p7zip
         libarchive # bsdtar
+      ] ++ [ # alternative launcher for non drm games
+        gogdl
+        heroic
       ]);
       # authorized_keys and github keys use same format
       # openssh.authorizedKeys.keyFiles = let ssh_keys = (builtins.fetchurl { url = "https://github.com/SmolPatches.keys"; sha256 = "1qwlx2yxp8ir7ygayn5jlldnb9pbxlkayl44n80ndn2q64lgywv2"; }); in [ ssh_keys ]; # point key files to the thing in nix_store
@@ -204,6 +175,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     mkvtoolnix-cli
+    sbctl
     dracula-theme
     dracula-icon-theme
     distrobox
@@ -214,7 +186,7 @@
     swayidle
     xdg-utils
     mpv
-    firefox-wayland
+    #firefox-wayland
     pavucontrol
     wl-clipboard
     usbutils
@@ -222,14 +194,20 @@
     man-pages
     man-pages-posix
   ] ++ [ ripgrep fd tree file binwalk bat ] ++
-  [ iptables tcpdump nmap netcat-openbsd lsof dig tshark ]; # network monitoring
+  [fuzzel swaylock mako swayidle] ++ # niri stuff? check wiki link below
+  [ iperf3 iptables tcpdump nmap netcat-openbsd lsof dig tshark ]; # network monitoring
 
   programs = {
+    localsend.openFirewall = true;
     virt-manager.enable = true;
     waybar.enable = true;
     appimage = {
       # enable = true;
       # binfmt = true;
+    };
+    #https://wiki.nixos.org/wiki/Niri
+    niri = {
+      enable = true;
     };
     hyprland = {
       # use hyprland from flake
@@ -327,6 +305,9 @@
   };
   services = {
     #crab-hole.enable = true;
+    kubo = {
+      enable = true;
+    };
     whoogle-search.enable = true;
     gnome = {
       core-apps.enable = pkgs.lib.mkForce false;
@@ -357,14 +338,14 @@
       alsa.support32Bit = true;
       pulse.enable = true;
       jack.enable = false;
-      wireplumber.extraConfig.bluetoothEnhancements = {
-        "monitor.bluez.properties" = {
-          "bluez5.enable-sbc-xq" = true;
-          "bluez5.enable-msbc" = true;
-          "bluez5.enable-hw-volume" = true;
-          "bluez5.roles" = [ "hsp_hs" "hsp_ag" "hfp_hf" "hfp_ag" ];
-        };
-      };
+      # wireplumber.extraConfig.bluetoothEnhancements = {
+      #   "monitor.bluez.properties" = {
+      #     "bluez5.enable-sbc-xq" = true;
+      #     "bluez5.enable-msbc" = true;
+      #     "bluez5.enable-hw-volume" = true;
+      #     "bluez5.roles" = [ "hsp_hs" "hsp_ag" "hfp_hf" "hfp_ag" ];
+      #   };
+      # };
     };
     flatpak = {
       enable = true;
@@ -384,6 +365,7 @@
     variables = {
       RIPGREP_CONFIG_PATH = "$HOME/.config/ripgrep/.rgrc";
       GTK_THEME = "Dracula:dark";
+      EMACS_HOME = "$HOME/.config/emacs/";
     };
   };
   qt = {
@@ -393,8 +375,13 @@
     #style = "adwaita-dark";
   };
   security = {
+    tpm2 = {
+      enable = true;
+      pkcs11.enable = true;
+      tctiEnvironment.enable = true;
+    };
     pki = {
-      certificateFiles = [ ./conf/certs/cert.pem ];
+      # certificateFiles = [ ./conf/certs/cert.pem ];
     };
     pam.yubico = {
       enable = true;
@@ -410,12 +397,15 @@
     # ykpamcfg -2 -v
   };
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-
   services = {
+    gnome.gnome-keyring.enable = true;
     # Enable the OpenSSH daemon.
+    emacs = {
+      package = pkgs.emacs30-pgtk;
+      enable = true;
+      install = true;
+      defaultEditor = true;
+    };
     openssh = {
       enable = true;
       allowSFTP = true; # also allows sshfs
@@ -427,16 +417,13 @@
     };
   };
   virtualisation = {
-    docker = {
+    podman = {
       enable = true;
     };
     oci-containers = {
-      backend = "docker";
+      backend = "podman";
     };
     libvirtd = {
-      enable = true;
-    };
-    lxd = {
       enable = true;
     };
     virtualbox.guest.enable = false;

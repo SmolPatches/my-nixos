@@ -29,7 +29,7 @@ in
     qbittorrent
     keepassxc
     tmux
-    (neovim-qt.override { neovim = config.programs.neovim.finalPackage; })
+    #(neovim-qt.override { neovim = config.programs.neovim.finalPackage; })
     rpcs3
     #x org packages
     feh
@@ -66,7 +66,7 @@ in
       };
     };
     neovim = {
-      enable = true;
+      enable = false;
       vimAlias = true;
       withNodeJs = true;
       withPython3 = true;
@@ -110,9 +110,6 @@ in
         "${builtins.readFile ./extras.zsh}"
       '';
     };
-    nushell = {
-      enable = true;
-    };
     zoxide = {
       enable = true;
       enableZshIntegration = true;
@@ -128,33 +125,11 @@ in
       enable = false;
       enableZshIntegration = false;
     };
-    alacritty = {
-      enable = true;
-    };
-    foot = {
-      enable = true;
-      settings = {
-        main = {
-          font = "Hack:size=11";
-          dpi-aware = "yes";
-        };
-      };
-    };
-    zathura = {
-      enable = true;
-    };
-    lf = {
-      enable = true;
-    };
-    librewolf = {
-      enable = true;
-    };
-    rofi = {
-      enable = true;
-    };
-    eww = {
-      enable = false;
-    };
+    zathura.enable = false;
+    lf.enable = true;
+    rofi.enable = true;
+    librewolf.enable = true;
+    eww.enable = true;
     waybar = {
       enable = false;
     };
@@ -177,7 +152,9 @@ in
   services = {
     emacs = {
       enable = true;
-      startWithUserSession = true;
+      startWithUserSession = false;
+      client.arguments = [ "--init-dir $HOME/.config/emacs" ];
+      extraOptions = [ "--init-dir $HOME/.config/emacs" ];
     };
   };
   xdg = {
@@ -185,10 +162,8 @@ in
       "hypr" = { source = ./hypr; };
       "wallpapers" = { source = ./wallpapers; };
       #"nvim" = { source = ./neovim; }; # i use a separate repo
-      "zathura" = { source = ./zathura; };
       "tmux" = { source = ./tmux; };
-      "helix" = { source = ./helix; };
-      "alacritty" = { source = ./alacritty; };
+      # "helix" = { source = ./helix; };
     };
   };
   # desktopEntries = {

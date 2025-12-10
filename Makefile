@@ -1,5 +1,5 @@
 build:
-	sudo nixos-rebuild build --flake . --impure
+	sudo nixos-rebuild build --flake . --impure --use-remote-sudo
 boot:
 	sudo nixos-rebuild build --flake . --impure
 switch:

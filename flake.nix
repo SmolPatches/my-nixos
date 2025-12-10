@@ -3,7 +3,7 @@
 {
   inputs = {
     #nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager";
@@ -12,6 +12,12 @@
     # use hyprland flake input so i can lock it
     # dont want to update unless something isn't working
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+        lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.3";
+
+      # Optional but recommended to limit the size of your system closure.
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     #secrets
     agenix.url = "github:ryantm/agenix";
   };
@@ -27,6 +33,8 @@
       specialArgs = { inherit inputs; };
       modules = [
         ./configuration.nix
+        ./network.nix
+        inputs.lanzaboote.nixosModules.lanzaboote
         #stolen from https://rycee.gitlab.io/home-manager/index.html#sec-flakes-nixos-module
         inputs.home-manager.nixosModules.home-manager
         {
