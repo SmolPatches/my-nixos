@@ -2,7 +2,9 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 { inputs, config, pkgs, ... }:
-let enable_ipfs = false;
+let
+  enable_ipfs = false;
+  ghub_hash = "0j05iv8mcwjv10q966zlnnyf11cdq5gmg94m0lacnbdf2jf2gq2k";
   in
 {
   # allow hibernation in another life
@@ -101,6 +103,7 @@ let enable_ipfs = false;
     LC_TIME = "it_IT.UTF-8";
   };
 
+  services.desktopManager.cosmic.enable = true;
   # Configure keymap in X11
   services.xserver = {
     enable = true;
@@ -110,7 +113,6 @@ let enable_ipfs = false;
     };
     desktopManager = {
       xterm.enable = true;
-      gnome.enable = true;
     };
     displayManager.gdm.autoSuspend = false; # suspend causes driver issues in gnome
   };
@@ -165,8 +167,7 @@ let enable_ipfs = false;
         heroic
       ]);
       # authorized_keys and github keys use same format
-      # openssh.authorizedKeys.keyFiles = let ssh_keys = (builtins.fetchurl { url = "https://github.com/SmolPatches.keys"; sha256 = "1qwlx2yxp8ir7ygayn5jlldnb9pbxlkayl44n80ndn2q64lgywv2"; }); in [ ssh_keys ]; # point key files to the thing in nix_store
-      openssh.authorizedKeys.keyFiles = let ssh_keys = (builtins.fetchurl { url = "https://github.com/SmolPatches.keys"; sha256 = "1xnhmkxpvkiayc89a6zg25ri9s1a8hnsqkv5lcmjwvrrc89ri0nb"; }); in [ ssh_keys ]; # point key files to the thing in nix_store
+      openssh.authorizedKeys.keyFiles = let ssh_keys = (builtins.fetchurl { url = "https://github.com/SmolPatches.keys"; sha256 = ghub_hash; }); in [ ssh_keys ]; # point key files to the thing in nix_store
     };
   };
 
